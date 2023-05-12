@@ -21,7 +21,8 @@ namespace Core.Entities
         public string Address { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
+        public int? GroupId { get; set; }
+        public Group Group { get; set; }
         public IList<Account> Accounts { get; set; }
-        public IList<Group> Groups { get; set; }
     }
 }

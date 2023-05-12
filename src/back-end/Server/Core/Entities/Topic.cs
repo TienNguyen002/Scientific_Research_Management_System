@@ -21,13 +21,13 @@ namespace Core.Entities
         public string FileUrl { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
-        public int GroupId { get; set; }
+        public int? GroupId { get; set; }
         public Group Group { get; set; }
-        public int LecturerId { get; set; }
+        public int? LecturerId { get; set; }
         public Lecturer Lecturer { get; set; }
         public int StatusId { get; set; }
         public Status Status { get; set; }
-        public int ProcessId { get; set; }
+        public int? ProcessId { get; set; }
         public Process Process { get; set; } 
     }
 }

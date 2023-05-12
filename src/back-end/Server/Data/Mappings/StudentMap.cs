@@ -54,6 +54,12 @@ namespace Data.Mappings
                 .HasForeignKey(d => d.DepartmentId)
                 .HasConstraintName("FK_Students_Departments")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(g => g.Group)
+                .WithMany(s => s.Students)
+                .HasForeignKey(g => g.GroupId)
+                .HasConstraintName("FK_Students_Groups")
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

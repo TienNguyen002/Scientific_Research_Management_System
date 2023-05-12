@@ -20,6 +20,7 @@ namespace TatBlog.WebApi.Extensions
 
             builder.Services.AddScoped<ITimeProvider, LocalTimeProvider>();
             builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
+            builder.Services.AddScoped<IDataSeeder, DataSeeder>();
             
             return builder;
         }

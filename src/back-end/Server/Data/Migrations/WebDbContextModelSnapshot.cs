@@ -33,7 +33,7 @@ namespace Data.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("LecturerId")
+                    b.Property<int?>("LecturerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -42,7 +42,7 @@ namespace Data.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int?>("StudentId")
                         .HasColumnType("int");
 
                     b.Property<int>("TypeAccountId")
@@ -196,6 +196,9 @@ namespace Data.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -214,6 +217,8 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Students");
                 });
@@ -238,10 +243,10 @@ namespace Data.Migrations
                     b.Property<string>("FileUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GroupId")
+                    b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<int>("LecturerId")
+                    b.Property<int?>("LecturerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Note")
@@ -250,7 +255,7 @@ namespace Data.Migrations
                     b.Property<string>("Price")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ProcessId")
+                    b.Property<int?>("ProcessId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegistrationDate")
@@ -302,34 +307,15 @@ namespace Data.Migrations
                     b.ToTable("TypeAccounts");
                 });
 
-            modelBuilder.Entity("GroupStudent", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GroupsId", "StudentsId");
-
-                    b.HasIndex("StudentsId");
-
-                    b.ToTable("GroupStudent");
-                });
-
             modelBuilder.Entity("Core.Entities.Account", b =>
                 {
                     b.HasOne("Core.Entities.Lecturer", "Lecturer")
                         .WithMany("Accounts")
-                        .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LecturerId");
 
                     b.HasOne("Core.Entities.Student", "Student")
                         .WithMany("Accounts")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StudentId");
 
                     b.HasOne("Core.Entities.TypeAccount", "TypeAccount")
                         .WithMany("Accounts")
@@ -374,7 +360,13 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.Group", "Group")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId");
+
                     b.Navigation("Department");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("Core.Entities.Topic", b =>
@@ -387,21 +379,15 @@ namespace Data.Migrations
 
                     b.HasOne("Core.Entities.Group", "Group")
                         .WithMany("Topics")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GroupId");
 
                     b.HasOne("Core.Entities.Lecturer", "Lecturer")
                         .WithMany("Topics")
-                        .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LecturerId");
 
                     b.HasOne("Core.Entities.Process", "Process")
                         .WithMany("Topics")
-                        .HasForeignKey("ProcessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProcessId");
 
                     b.HasOne("Core.Entities.Status", "Status")
                         .WithMany("Topics")
@@ -420,21 +406,6 @@ namespace Data.Migrations
                     b.Navigation("Status");
                 });
 
-            modelBuilder.Entity("GroupStudent", b =>
-                {
-                    b.HasOne("Core.Entities.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Student", null)
-                        .WithMany()
-                        .HasForeignKey("StudentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Core.Entities.Department", b =>
                 {
                     b.Navigation("Groups");
@@ -448,6 +419,8 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Group", b =>
                 {
+                    b.Navigation("Students");
+
                     b.Navigation("Topics");
                 });
 

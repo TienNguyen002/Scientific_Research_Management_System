@@ -30,10 +30,6 @@ namespace Data.Mappings
                 .HasForeignKey(d => d.DepartmentId)
                 .HasConstraintName("FK_Groups_Departments")
                 .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasMany(s => s.Students)
-                .WithMany(g => g.Groups)
-                .UsingEntity(sg => sg.ToTable("GroupStudents"));
         }
     }
 }

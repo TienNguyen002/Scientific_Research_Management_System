@@ -15,9 +15,9 @@ namespace Core.Entities
         public string Password { get; set; }
         public int TypeAccountId { get; set; }
         public TypeAccount TypeAccount { get; set; }
-        public int StudentId { get; set; }
+        public int? StudentId { get; set; }
         public Student Student { get; set; }
-        public int LecturerId { get; set; }
+        public int? LecturerId { get; set; }
         public Lecturer Lecturer { get; set; }
     }
 }

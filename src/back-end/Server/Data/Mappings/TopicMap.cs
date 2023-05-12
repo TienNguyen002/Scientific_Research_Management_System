@@ -57,7 +57,7 @@ namespace Data.Mappings
                 .WithMany(t => t.Topics)
                 .HasForeignKey(t => t.GroupId)
                 .HasConstraintName("FK_Topics_Groups")
-                .OnDelete(DeleteBehavior.ClientSetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(l => l.Lecturer)
                 .WithMany(t => t.Topics)
