@@ -22,43 +22,6 @@ namespace Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Core.Entities.Account", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("LecturerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TypeAccountId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LecturerId");
-
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("TypeAccountId");
-
-                    b.ToTable("Accounts");
-                });
-
             modelBuilder.Entity("Core.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -86,9 +49,6 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -96,8 +56,6 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DepartmentId");
 
                     b.ToTable("Groups");
                 });
@@ -116,14 +74,23 @@ namespace Data.Migrations
                     b.Property<DateTime>("DoB")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Qualification")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
                         .HasColumnType("nvarchar(max)");
@@ -131,6 +98,8 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Lecturers");
                 });
@@ -152,6 +121,25 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Processes");
+                });
+
+            modelBuilder.Entity("Core.Entities.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrlSlug")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Core.Entities.Status", b =>
@@ -193,6 +181,9 @@ namespace Data.Migrations
                     b.Property<DateTime>("DoB")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
@@ -202,8 +193,14 @@ namespace Data.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("StudentId")
                         .HasColumnType("nvarchar(max)");
@@ -219,6 +216,8 @@ namespace Data.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("GroupId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Students");
                 });
@@ -294,59 +293,6 @@ namespace Data.Migrations
                     b.ToTable("Topics");
                 });
 
-            modelBuilder.Entity("Core.Entities.TypeAccount", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UrlSlug")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TypeAccounts");
-                });
-
-            modelBuilder.Entity("Core.Entities.Account", b =>
-                {
-                    b.HasOne("Core.Entities.Lecturer", "Lecturer")
-                        .WithMany("Accounts")
-                        .HasForeignKey("LecturerId");
-
-                    b.HasOne("Core.Entities.Student", "Student")
-                        .WithMany("Accounts")
-                        .HasForeignKey("StudentId");
-
-                    b.HasOne("Core.Entities.TypeAccount", "TypeAccount")
-                        .WithMany("Accounts")
-                        .HasForeignKey("TypeAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lecturer");
-
-                    b.Navigation("Student");
-
-                    b.Navigation("TypeAccount");
-                });
-
-            modelBuilder.Entity("Core.Entities.Group", b =>
-                {
-                    b.HasOne("Core.Entities.Department", "Department")
-                        .WithMany("Groups")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
             modelBuilder.Entity("Core.Entities.Lecturer", b =>
                 {
                     b.HasOne("Core.Entities.Department", "Department")
@@ -355,7 +301,15 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Core.Entities.Role", "Role")
+                        .WithMany("Lecturers")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Department");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Core.Entities.Student", b =>
@@ -370,9 +324,17 @@ namespace Data.Migrations
                         .WithMany("Students")
                         .HasForeignKey("GroupId");
 
+                    b.HasOne("Core.Entities.Role", "Role")
+                        .WithMany("Students")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Department");
 
                     b.Navigation("Group");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Core.Entities.Topic", b =>
@@ -414,8 +376,6 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Department", b =>
                 {
-                    b.Navigation("Groups");
-
                     b.Navigation("Lecturers");
 
                     b.Navigation("Students");
@@ -432,8 +392,6 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Core.Entities.Lecturer", b =>
                 {
-                    b.Navigation("Accounts");
-
                     b.Navigation("Topics");
                 });
 
@@ -442,19 +400,16 @@ namespace Data.Migrations
                     b.Navigation("Topics");
                 });
 
+            modelBuilder.Entity("Core.Entities.Role", b =>
+                {
+                    b.Navigation("Lecturers");
+
+                    b.Navigation("Students");
+                });
+
             modelBuilder.Entity("Core.Entities.Status", b =>
                 {
                     b.Navigation("Topics");
-                });
-
-            modelBuilder.Entity("Core.Entities.Student", b =>
-                {
-                    b.Navigation("Accounts");
-                });
-
-            modelBuilder.Entity("Core.Entities.TypeAccount", b =>
-                {
-                    b.Navigation("Accounts");
                 });
 #pragma warning restore 612, 618
         }

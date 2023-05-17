@@ -10,7 +10,6 @@ namespace Data.Contexts
 {
     public class WebDbContext : DbContext
     {
-        public DbSet<Account> Accounts { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Group> Groups { get; set; }
         public DbSet<Lecturer> Lecturers { get; set; }
@@ -18,7 +17,7 @@ namespace Data.Contexts
         public DbSet<Status> Status { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Topic> Topics { get; set; }
-        public DbSet<TypeAccount> TypeAccounts { get; set; }
+        public DbSet<Role> Roles { get; set; }
 
         public WebDbContext(DbContextOptions<WebDbContext> options) : base(options) { }
 

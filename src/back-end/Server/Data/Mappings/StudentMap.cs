@@ -25,6 +25,14 @@ namespace Data.Mappings
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(s => s.Email)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(s => s.Password)
+                .IsRequired()
+                .HasMaxLength(100);
+
             builder.Property(s => s.UrlSlug) 
                 .IsRequired()
                 .HasMaxLength(100);
@@ -59,6 +67,12 @@ namespace Data.Mappings
                 .WithMany(s => s.Students)
                 .HasForeignKey(g => g.GroupId)
                 .HasConstraintName("FK_Students_Groups")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(r => r.Role)
+                .WithMany(s => s.Students)
+                .HasForeignKey(r => r.RoleId)
+                .HasConstraintName("FK_Students_Roles")
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
