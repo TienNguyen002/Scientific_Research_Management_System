@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace Data.Mappings
 {
-    public class TypeAccountMap : IEntityTypeConfiguration<TypeAccount>
+    public class RoleMap : IEntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<TypeAccount> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.ToTable("TypeAccounts");
+            builder.ToTable("Roles");
 
-            builder.HasKey(t => t.Id);
+            builder.HasKey(r => r.Id);
 
-            builder.Property(t => t.Type)
+            builder.Property(r => r.Name)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(t => t.UrlSlug)
+            builder.Property(r => r.UrlSlug)
                 .IsRequired()
                 .HasMaxLength(100);
         }

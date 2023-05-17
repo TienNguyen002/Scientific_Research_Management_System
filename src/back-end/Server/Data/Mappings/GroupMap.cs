@@ -24,12 +24,6 @@ namespace Data.Mappings
             builder.Property(g => g.UrlSlug)
                 .IsRequired()
                 .HasMaxLength(100);
-
-            builder.HasOne(d => d.Department)
-                .WithMany(g => g.Groups)
-                .HasForeignKey(d => d.DepartmentId)
-                .HasConstraintName("FK_Groups_Departments")
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
