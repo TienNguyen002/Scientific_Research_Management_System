@@ -44,8 +44,14 @@ namespace Data.Mappings
             builder.Property(t => t.Price)
                 .IsRequired();
 
-            builder.Property(t => t.FileUrl)
+            builder.Property(t => t.OutlineUrl)
                 .HasMaxLength(10000);
+
+            builder.Property(t => t.ResultUrl)
+                .HasMaxLength(10000);
+
+            builder.Property(t => t.Point)
+                .HasMaxLength(3);
 
             builder.HasOne(d => d.Department)
                 .WithMany(t => t.Topics)

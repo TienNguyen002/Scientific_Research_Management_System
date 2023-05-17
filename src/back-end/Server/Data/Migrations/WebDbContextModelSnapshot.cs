@@ -240,9 +240,6 @@ namespace Data.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("FileUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("GroupId")
                         .HasColumnType("int");
 
@@ -252,6 +249,12 @@ namespace Data.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OutlineUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Point")
+                        .HasColumnType("int");
+
                     b.Property<string>("Price")
                         .HasColumnType("nvarchar(max)");
 
@@ -260,6 +263,9 @@ namespace Data.Migrations
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ResultUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");

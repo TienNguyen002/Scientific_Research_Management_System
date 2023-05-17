@@ -18,7 +18,9 @@ namespace Core.Entities
         public DateTime? EndDate { get; set; }
         public int StudentNumbers { get; set; }
         public string Price { get; set; }
-        public string FileUrl { get; set; }
+        public string OutlineUrl { get; set; }
+        public string ResultUrl { get; set; }
+        public int Point { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
         public int? GroupId { get; set; }
