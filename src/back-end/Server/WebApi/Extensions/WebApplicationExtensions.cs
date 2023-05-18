@@ -4,6 +4,8 @@ using Data.Contexts;
 using Services.Media;
 using Services.Timing;
 using Data.Seeders;
+using Services.Apps.Others;
+using Carter;
 
 namespace TatBlog.WebApi.Extensions
 {
@@ -11,6 +13,7 @@ namespace TatBlog.WebApi.Extensions
     {
         public static WebApplicationBuilder ConfigureServices(this WebApplicationBuilder builder)
         {
+            builder.Services.AddCarter();
             builder.Services.AddMemoryCache();
 
             builder.Services.AddDbContext<WebDbContext>(options =>
@@ -21,6 +24,7 @@ namespace TatBlog.WebApi.Extensions
             builder.Services.AddScoped<ITimeProvider, LocalTimeProvider>();
             builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
             builder.Services.AddScoped<IDataSeeder, DataSeeder>();
+            builder.Services.AddScoped<IAppRepository, AppRepository>();
             
             return builder;
         }
