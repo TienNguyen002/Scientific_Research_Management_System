@@ -1,4 +1,4 @@
-﻿namespace WebApi.Models.Lecturer
+﻿namespace WebApi.Models.Lecturer.Account
 {
     public class LecturerAccount
     {

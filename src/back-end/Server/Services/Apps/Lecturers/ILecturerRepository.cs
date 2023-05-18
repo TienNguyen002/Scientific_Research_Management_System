@@ -28,6 +28,10 @@ namespace Services.Apps.Lecturers
 
         Task<bool> CreateLecturerAccountAsync(Lecturer lecturer, CancellationToken cancellationToken = default);
 
-        Task<bool> ChangeInformationAsync(Lecturer lecturer, CancellationToken cancellationToken = default);
+        Task<bool> UpdateLecturerAsync(Lecturer lecturer, CancellationToken cancellationToken = default);
+
+        Task<bool> GetLecturerPasswordBySlugAsync(string slug, string password, CancellationToken cancellationToken = default);
+
+        Task<bool> DeleteLecturerByIdAsync(int id, CancellationToken cancellationToken = default);
     }
 }

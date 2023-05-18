@@ -10,6 +10,7 @@ using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
 using WebApi.Models.Lecturer;
+using WebApi.Models.Lecturer.Account;
 
 namespace WebApi.Endpoints
 {
@@ -40,9 +41,18 @@ namespace WebApi.Endpoints
                 .AddEndpointFilter<ValidatorFilter<LecturerCreateAccount>>()
                 .Produces<ApiResponse<LecturerAccount>>();
 
-            routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}", ChangeInformation)
+            routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInformation)
                 .WithName("ChangeInformation")
                 .AddEndpointFilter<ValidatorFilter<LecturerEditModel>>()
+                .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/change-password", ChangePassword)
+                .WithName("ChangePassword")
+                .AddEndpointFilter<ValidatorFilter<LecturerPassword>>()
+                .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapDelete("/{id:int}", DeleteLecturer)
+                .WithName("DeleteLecturer")
                 .Produces<ApiResponse<string>>();
         }
 
@@ -111,7 +121,7 @@ namespace WebApi.Endpoints
 
         private static async Task<IResult> ChangeInformation(
             string slug,
-            LecturerEditModel model,
+            [AsParameters] LecturerEditModel model,
             IMapper mapper,
             ILecturerRepository lecturerRepository)
         {
@@ -122,9 +132,52 @@ namespace WebApi.Endpoints
                     $"Không tìm thấy giảng viên có slug {slug}"));
             }
             mapper.Map(model, lecturer);
-            return await lecturerRepository.ChangeInformationAsync(lecturer)
+            return await lecturerRepository.UpdateLecturerAsync(lecturer)
                ? Results.Ok(ApiResponse.Success($"Thay đổi giảng viên có slug = {slug} thành công"))
                : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có có slug = {slug}"));
+        }
+
+        private static async Task<IResult> ChangePassword(
+            string slug,
+            LecturerPassword model,
+            IMapper mapper,
+            ILecturerRepository lecturerRepository)
+        {
+            var lecturer = await lecturerRepository.GetLecturerBySlugAsync(slug);
+            if (lecturer == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                    $"Không tìm thấy giảng viên có slug {slug}"));
+            }
+            if(await lecturerRepository.GetLecturerPasswordBySlugAsync(slug, model.Password))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                    $"Mật khẩu hiện tại không đúng"));
+            }
+            if(model.NewPassword == model.Password)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                    $"Mật khẩu mới không được trùng với mật khẩu cũ"));
+            }
+            if (model.ConfirmPassword != model.Password)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                    $"Mật khẩu xác nhận không trùng khớp"));
+            }
+            model.Password = model.NewPassword;
+            mapper.Map(model, lecturer);
+            return await lecturerRepository.UpdateLecturerAsync(lecturer)
+               ? Results.Ok(ApiResponse.Success($"Đổi mật khẩu của giảng viên có slug {slug} thành công"))
+               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có có slug = {slug}"));
+        }
+
+        private static async Task<IResult> DeleteLecturer(
+            int id,
+            ILecturerRepository lecturerRepository)
+        {
+            return await lecturerRepository.DeleteLecturerByIdAsync(id)
+                ? Results.Ok(ApiResponse.Success("Xóa giảng viên thành công", HttpStatusCode.NoContent))
+                : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có id = {id}"));
         }
     } 
 }
