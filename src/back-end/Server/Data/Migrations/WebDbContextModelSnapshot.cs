@@ -68,7 +68,7 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DoB")
@@ -89,7 +89,7 @@ namespace Data.Migrations
                     b.Property<string>("Qualification")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
@@ -175,7 +175,7 @@ namespace Data.Migrations
                     b.Property<string>("Class")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DoB")
@@ -199,7 +199,7 @@ namespace Data.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("StudentId")
@@ -297,15 +297,11 @@ namespace Data.Migrations
                 {
                     b.HasOne("Core.Entities.Department", "Department")
                         .WithMany("Lecturers")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Core.Entities.Role", "Role")
                         .WithMany("Lecturers")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
 
@@ -316,9 +312,7 @@ namespace Data.Migrations
                 {
                     b.HasOne("Core.Entities.Department", "Department")
                         .WithMany("Students")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Core.Entities.Group", "Group")
                         .WithMany("Students")
@@ -326,9 +320,7 @@ namespace Data.Migrations
 
                     b.HasOne("Core.Entities.Role", "Role")
                         .WithMany("Students")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
 

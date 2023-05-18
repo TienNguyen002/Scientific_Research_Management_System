@@ -6,6 +6,7 @@ using Services.Timing;
 using Data.Seeders;
 using Services.Apps.Others;
 using Carter;
+using Services.Apps.Lecturers;
 
 namespace TatBlog.WebApi.Extensions
 {
@@ -25,6 +26,7 @@ namespace TatBlog.WebApi.Extensions
             builder.Services.AddScoped<IMediaManager, LocalFileSystemMediaManager>();
             builder.Services.AddScoped<IDataSeeder, DataSeeder>();
             builder.Services.AddScoped<IAppRepository, AppRepository>();
+            builder.Services.AddScoped<ILecturerRepository, LecturerRepository>();
             
             return builder;
         }
