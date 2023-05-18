@@ -17,9 +17,9 @@ namespace Core.Entities
         public string Qualification { get; set; }
         public DateTime DoB { get; set; }
         public string ImageUrl { get; set; }
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public Department Department { get; set; }
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
         public Role Role { get; set; }
         public IList<Topic> Topics { get; set; }
     }
