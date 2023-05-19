@@ -59,12 +59,6 @@ namespace Data.Mappings
                 .HasConstraintName("FK_Topics_Departments")
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(g => g.Group)
-                .WithMany(t => t.Topics)
-                .HasForeignKey(t => t.GroupId)
-                .HasConstraintName("FK_Topics_Groups")
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasOne(l => l.Lecturer)
                 .WithMany(t => t.Topics)
                 .HasForeignKey(l => l.LecturerId)
@@ -82,6 +76,10 @@ namespace Data.Mappings
                 .HasForeignKey(p => p.Process)
                 .HasConstraintName("FK_Topics_Processes")
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(s => s.Students)
+                .WithMany(t => t.Topics)
+                .UsingEntity(pt => pt.ToTable("TopicStudents"));
         }
     }
 }

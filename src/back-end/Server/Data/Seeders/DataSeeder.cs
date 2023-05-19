@@ -30,8 +30,7 @@ namespace Data.Seeders
 
             var students = AddStudents(departments, roles);
             var lecturers = AddLecturers(departments, roles);
-            var groups = AddGroups(students);
-            var topics = AddTopics(groups, lecturers, departments, status, processes);
+            var topics = AddTopics(students, lecturers, departments, status, processes);
         }
 
         private IList<Status> AddStatus()
@@ -326,81 +325,6 @@ namespace Data.Seeders
             return students;
         }
 
-        private IList<Group> AddGroups(
-            IList<Student> students)
-        {
-            var groups = new List<Group>()
-            {
-                new()
-                {
-                    Name = "Nhóm Công nghệ thông tin 1",
-                    UrlSlug = "cntt-1",
-                    Students = new List<Student>()
-                    {
-                        students[0],
-                        students[1],
-                        students[2]
-                    }
-                },
-                new()
-                {
-                    Name = "Nhóm Luật",
-                    UrlSlug = "luat",
-                    Students = new List<Student>()
-                    {
-                        students[3],
-                    }
-                },
-                new()
-                {
-                    Name = "Nhóm Sư phạm",
-                    UrlSlug = "su-pham",
-                    Students = new List<Student>()
-                    {
-                        students[4],
-                    }
-                },
-                new()
-                {
-                    Name = "Nhóm Du lịch",
-                    UrlSlug = "du-lich",
-                    Students = new List<Student>()
-                    {
-                        students[5],
-                    }
-                },
-                new()
-                {
-                    Name = "Nhóm Ngoại ngữ",
-                    UrlSlug = "ngoai-ngu",
-                    Students = new List<Student>()
-                    {
-                        students[6],
-                    }
-                },
-                new()
-                {
-                    Name = "Nhóm Nông lâm",
-                    UrlSlug = "nong-lam",          
-                    Students = new List<Student>()
-                    {
-                        students[7],
-                    }
-                },
-            };
-            var groupAdd = new List<Group>();
-            foreach (var group in groups)
-            {
-                if (!_context.Groups.Any(g => g.UrlSlug == group.UrlSlug))
-                {
-                    groupAdd.Add(group);
-                }
-            }
-            _context.AddRange(groupAdd);
-            _context.SaveChanges();
-            return groups;
-        }
-
         private IList<Lecturer> AddLecturers(
             IList<Department> departments,
             IList<Role> roles)
@@ -488,7 +412,7 @@ namespace Data.Seeders
         }
 
         private IList<Topic> AddTopics(
-            IList<Group> groups,
+            IList<Student> students,
             IList<Lecturer> lecturers,
             IList<Department> departments,
             IList<Status> status,
@@ -504,7 +428,12 @@ namespace Data.Seeders
                     RegistrationDate = new DateTime(2023, 4, 23),
                     StudentNumbers = 3,
                     Price = "1,000,000 VNĐ",
-                    Group = groups[0],
+                    Students = new List<Student>()
+                    {
+                        students[0],
+                        students[1],
+                        students[2]
+                    },
                     Lecturer = lecturers[0],
                     Department = departments[0],
                     Status = status[1],
