@@ -170,7 +170,7 @@ namespace WebApi.Endpoints
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
                     $"Mật khẩu mới không được trùng với mật khẩu cũ"));
             }
-            if (model.ConfirmPassword != model.Password)
+            if (model.ConfirmPassword != model.NewPassword)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
                     $"Mật khẩu xác nhận không trùng khớp"));

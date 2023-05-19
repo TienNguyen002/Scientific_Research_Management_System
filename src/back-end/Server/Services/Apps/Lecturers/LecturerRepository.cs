@@ -5,6 +5,8 @@ using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Services.Extensions;
+using Services.Helper;
+using SlugGenerator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,14 +89,40 @@ namespace Services.Apps.Lecturers
 
         public async Task<bool> CreateLecturerAccountAsync(Lecturer lecturer, CancellationToken cancellationToken = default)
         {
+            lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
+            //lecturer.UrlSlug = SlugHelper.GenerateSlug(lecturer.FullName);
             _context.Add(lecturer); 
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
-        public async Task<bool> ChangeInformationAsync(Lecturer lecturer, CancellationToken cancellationToken = default)
+        public async Task<bool> UpdateLecturerAsync(Lecturer lecturer, CancellationToken cancellationToken = default)
         {
+            lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
+            //lecturer.UrlSlug = SlugHelper.GenerateSlug(lecturer.FullName);
             _context.Update(lecturer);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<bool> GetLecturerPasswordBySlugAsync(string slug, string password, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>()
+                .AnyAsync(l => l.UrlSlug == slug && l.Password != password, cancellationToken);
+        }
+
+        public async Task<bool> DeleteLecturerByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            var lecturerToDelete = await _context.Set<Lecturer>()
+                .Include(l => l.Department)
+                .Include(l => l.Role)
+                .Where(l => l.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
+            if(lecturerToDelete == null)
+            {
+                return false;
+            }
+            _context.Remove(lecturerToDelete);
+            await _context.SaveChangesAsync(cancellationToken);
+            return true;
         }
     }
 }

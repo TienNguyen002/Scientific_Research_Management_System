@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using WebApi.Models.Lecturer;
+using WebApi.Models.Lecturer.Account;
 
 namespace WebApi.Validations.Lecturers
 {
