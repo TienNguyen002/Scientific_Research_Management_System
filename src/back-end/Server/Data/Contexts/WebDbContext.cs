@@ -11,7 +11,6 @@ namespace Data.Contexts
     public class WebDbContext : DbContext
     {
         public DbSet<Department> Departments { get; set; }
-        public DbSet<Group> Groups { get; set; }
         public DbSet<Lecturer> Lecturers { get; set; }
         public DbSet<Process> Processes { get; set; }
         public DbSet<Status> Status { get; set; }

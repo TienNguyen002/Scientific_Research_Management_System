@@ -23,8 +23,7 @@ namespace Core.Entities
         public int Point { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
-        public int? GroupId { get; set; }
-        public Group Group { get; set; }
+        public IList<Student> Students { get; set; }
         public int? LecturerId { get; set; }
         public Lecturer Lecturer { get; set; }
         public int StatusId { get; set; }
