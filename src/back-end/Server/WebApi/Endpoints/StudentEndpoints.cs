@@ -20,7 +20,7 @@ namespace WebApi.Endpoints
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            var routeGroupBuilder = app.MapGroup("/api/Students");
+            var routeGroupBuilder = app.MapGroup("/api/students");
 
             routeGroupBuilder.MapGet("/", GetStudent)
                 .WithName("GetStudent")
@@ -43,17 +43,17 @@ namespace WebApi.Endpoints
                 .Produces<ApiResponse<StudentItem>>();
 
             routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInf)
-                .WithName("ChangeInformation")
+                .WithName("ChangeStudentInf")
                 .AddEndpointFilter<ValidatorFilter<StudentEditModel>>()
                 .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapPost("/", CreateAccount)
-                .WithName("CreateAccount")
+                .WithName("CreateStudentAccount")
                 .AddEndpointFilter<ValidatorFilter<StudentCreateccount>>()
                 .Produces<ApiResponse<StudentAccount>>();
 
             routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/change-password", ChangePassword)
-                .WithName("ChangePassword")
+                .WithName("ChangeStudentPassword")
                 .AddEndpointFilter<ValidatorFilter<StudentPassword>>()
                 .Produces<ApiResponse<string>>();
         }
