@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Core.Contracts;
 using Services.Extensions;
 using Services.Helper;
+using SlugGenerator;
 
 namespace Services.Apps.Students
 {
@@ -97,7 +98,7 @@ namespace Services.Apps.Students
 
         public async Task<bool> UpdateStudentAsync(Student student, CancellationToken cancellationToken = default)
         {
-            student.UrlSlug = SlugHelper.GenerateSlug(student.FullName);
+            student.UrlSlug = student.FullName.GenerateSlug();
             _context.Update(student);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
@@ -115,7 +116,7 @@ namespace Services.Apps.Students
 
         public async Task<bool> CreateStudentAccountAsync(Student student, CancellationToken cancellationToken = default)
         {
-            student.UrlSlug = SlugHelper.GenerateSlug(student.FullName);
+            student.UrlSlug = student.FullName.GenerateSlug();
             _context.Add(student);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
