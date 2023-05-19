@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Services.Extensions;
 using Services.Helper;
+using SlugGenerator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,14 +89,16 @@ namespace Services.Apps.Lecturers
 
         public async Task<bool> CreateLecturerAccountAsync(Lecturer lecturer, CancellationToken cancellationToken = default)
         {
-            lecturer.UrlSlug = SlugHelper.GenerateSlug(lecturer.FullName);
+            lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
+            //lecturer.UrlSlug = SlugHelper.GenerateSlug(lecturer.FullName);
             _context.Add(lecturer); 
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
         public async Task<bool> UpdateLecturerAsync(Lecturer lecturer, CancellationToken cancellationToken = default)
         {
-            lecturer.UrlSlug = SlugHelper.GenerateSlug(lecturer.FullName);
+            lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
+            //lecturer.UrlSlug = SlugHelper.GenerateSlug(lecturer.FullName);
             _context.Update(lecturer);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
