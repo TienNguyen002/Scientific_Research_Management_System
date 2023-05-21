@@ -1,6 +1,6 @@
-﻿namespace WebApi.Models.Lecturer.Account
+﻿namespace WebApi.Models.Student.Account
 {
-    public class LecturerPassword
+    public class StudentPassword
     {
         public string Password { get; set; }
         public string NewPassword { get; set; }
