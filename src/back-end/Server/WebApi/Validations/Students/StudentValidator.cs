@@ -3,9 +3,9 @@ using WebApi.Models.Student;
 
 namespace WebApi.Validations.Students
 {
-    public class StudentValidator : AbstractValidator<StudentEditModel>
+    public class TopicValidator : AbstractValidator<StudentEditModel>
     {
-        public StudentValidator() 
+        public TopicValidator() 
         {
             RuleFor(x => x.StudentId)
                 .NotEmpty()
@@ -22,12 +22,6 @@ namespace WebApi.Validations.Students
                 .WithMessage("Email không được để trống")
                 .MaximumLength(1000)
                 .WithMessage("Email chỉ tối đa 1000 ký tự");
-
-            RuleFor(x => x.UrlSlug)
-                .NotEmpty()
-                .WithMessage("UrlSlug không được để trống")
-                .MaximumLength(1000)
-                .WithMessage("UrlSlug chỉ tối đa 1000 ký tự");
 
             RuleFor(x => x.DoB)
                 .GreaterThan(DateTime.MinValue)

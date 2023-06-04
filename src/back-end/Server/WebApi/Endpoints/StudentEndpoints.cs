@@ -42,7 +42,7 @@ namespace WebApi.Endpoints
                 .WithName("GetStudentBySlug")
                 .Produces<ApiResponse<StudentItem>>();
 
-            routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInf)
+            routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInformation)
                 .WithName("ChangeStudentInf")
                 .AddEndpointFilter<ValidatorFilter<StudentEditModel>>()
                 .Produces<ApiResponse<string>>();
@@ -59,7 +59,7 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> GetStudent(
-            [AsParameters] LecturerFilterModel model,
+            [AsParameters] StudentFilterModel model,
             IStudentRepository studentRepository,
             IMapper mapper)
         {
@@ -86,7 +86,7 @@ namespace WebApi.Endpoints
             return Results.Ok(ApiResponse.Success(students));
         }
 
-        private static async Task<IResult> ChangeInf(
+        private static async Task<IResult> ChangeInformation(
             string slug,
             [AsParameters] StudentEditModel model,
             IMapper mapper,

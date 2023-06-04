@@ -76,7 +76,6 @@ namespace Services.Apps.Students
         {
             var StudentNToDelete = await _context.Set<Student>()
                 .Include(x => x.Department)
-                .Include(x => x.Group)
                 .Include(x => x.Role)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
