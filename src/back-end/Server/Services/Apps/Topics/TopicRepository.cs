@@ -106,11 +106,19 @@ namespace Services.Apps.Topics
             {
                 topicQuery = topicQuery.Where(t => t.DepartmentId == query.DepartmentId);
             }
+            if (!string.IsNullOrWhiteSpace(query.DepartmentSlug))
+            {
+                topicQuery = topicQuery.Where(t => t.Department.UrlSlug.Contains(query.DepartmentSlug));
+            }
             if(query.LecturerId > 0)
             {
                 topicQuery = topicQuery.Where(t => t.LecturerId == query.LecturerId);
             }
-            if(query.StatusId > 0)
+            if (!string.IsNullOrWhiteSpace(query.LecturerSlug))
+            {
+                topicQuery = topicQuery.Where(t => t.Lecturer.UrlSlug.Contains(query.LecturerSlug));
+            }
+            if (query.StatusId > 0)
             {
                 topicQuery = topicQuery.Where(t => t.StatusId == query.StatusId);
             }
@@ -144,7 +152,7 @@ namespace Services.Apps.Topics
                 foreach(var student in students)
                 {
                     topicQuery = topicQuery.Include(t => t.Students)
-                        .Where(t => t.Students.Any(s => s.FullName == student));
+                        .Where(t => t.Students.Any(s => s.UrlSlug.Contains(student)));
                 }
             }
             return topicQuery;

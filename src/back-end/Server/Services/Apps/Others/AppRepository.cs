@@ -36,5 +36,21 @@ namespace Services.Apps.Others
                 .ToListAsync(cancellationToken);
         }
         #endregion
+
+        #region Process
+        public async Task<IList<ProcessItem>> GetProcessAsync(CancellationToken cancellationToken = default)
+        {
+            IQueryable<Process> process = _context.Set<Process>();
+            return await process
+                .OrderBy(s => s.Name)
+                .Select(s => new ProcessItem()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    UrlSlug = s.UrlSlug,
+                })
+                .ToListAsync(cancellationToken);
+        }
+        #endregion
     }
 }

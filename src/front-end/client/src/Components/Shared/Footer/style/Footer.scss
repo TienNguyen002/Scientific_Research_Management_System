@@ -1,0 +1,55 @@
+.footer{
+    background-color: #3d3d3d;
+}
+
+.about-footer{
+    padding: 20px;
+    color: white;
+    font-size: 15px;
+    font-style: bold;
+    .about-page{
+        text-decoration: none;
+        color: green;
+    }
+    .footer-hotline-call {
+        text-decoration: none;
+        padding: 5px;
+    }
+    .footer-email-send{
+        padding: 5px;
+        text-decoration: none;
+    }
+}
+
+.social{
+    padding: 20px;
+    color: white;
+    font-size: 15px;
+    font-style: bold;
+}
+
+.link{
+    padding: 20px;
+    color: white;
+    font-size: 15px;
+    font-style: bold;
+}
+
+.social{
+    .facebook{
+        max-width: 40px;
+        max-height: 40px;
+    }
+    .youtube{
+        max-width: 70px;
+        max-height: 70px;
+    }
+    .zalo{
+        max-width: 70px;
+        max-height: 70px;
+    }
+}
+
+.footer-bottom{
+    color: white;
+}

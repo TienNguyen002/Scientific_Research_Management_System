@@ -7,7 +7,9 @@ namespace WebApi.Models.Topic
     {
         public string Keyword { get; set; }
         public int? DepartmentId { get; set; }
+        public string DepartmentSlug { get; set; }
         public int? LecturerId { get; set; }
+        public string LecturerSlug { get; set; }
         public int? StatusId { get; set; }
         public int? ProcessId { get; set; }
         public int? RegistrationMonth { get; set; }
@@ -15,6 +17,7 @@ namespace WebApi.Models.Topic
         public int? StudentNumbers { get; set; }
         public string Price { get; set; }
         public int? Point { get; set; }
+        public string Students { get; set; }
 
         public IEnumerable<SelectListItem> DepartmentList { get; set; }
         public IEnumerable<SelectListItem> LecturerList { get; set; }

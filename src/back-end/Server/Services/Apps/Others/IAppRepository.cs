@@ -12,5 +12,9 @@ namespace Services.Apps.Others
         #region Status
         Task<IList<StatusItem>> GetStatusAsync(CancellationToken cancellationToken = default);
         #endregion
+
+        #region Process
+        Task<IList<ProcessItem>> GetProcessAsync(CancellationToken cancellationToken = default);
+        #endregion
     }
 }

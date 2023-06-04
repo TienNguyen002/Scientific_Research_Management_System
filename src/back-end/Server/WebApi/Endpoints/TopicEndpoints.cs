@@ -31,7 +31,7 @@ namespace WebApi.Endpoints
                   .WithName("GetTopicById")
                   .Produces<ApiResponse<TopicDto>>();
 
-            routeGroupBuilder.MapGet("/byslug/{slug:regex(^[a-z0-9_-]+$)}/posts", GetTopicBySlug)
+            routeGroupBuilder.MapGet("/byslug/{slug:regex(^[a-z0-9_-]+$)}", GetTopicBySlug)
                   .WithName("GetTopicBySlug")
                   .Produces<ApiResponse<TopicDto>>();
 

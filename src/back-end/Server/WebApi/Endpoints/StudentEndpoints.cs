@@ -13,6 +13,7 @@ using Mapster;
 using WebApi.Filters;
 using WebApi.Models.Student.Account;
 using Core.Entities;
+using Services.Apps.Others;
 
 namespace WebApi.Endpoints
 {
@@ -36,11 +37,11 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapGet("/{id:int}", GetStudentById)
                 .WithName("GetStudentById")
-                .Produces<ApiResponse<StudentItem>>();
+                .Produces<ApiResponse<StudentDto>>();
 
             routeGroupBuilder.MapGet("/byslug/{slug:regex(^[a-z0-9_-]+$)}", GetStudentBySlug)
                 .WithName("GetStudentBySlug")
-                .Produces<ApiResponse<StudentItem>>();
+                .Produces<ApiResponse<StudentDto>>();
 
             routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInformation)
                 .WithName("ChangeStudentInf")
@@ -109,10 +110,10 @@ namespace WebApi.Endpoints
             IStudentRepository studentRepository,
             IMapper mapper)
         {
-            var student = await studentRepository.GetStudentByIdAsync(id);
+            var student = await studentRepository.GetStudentByIdAsync(id, true);
             return student == null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy sinh viên có mã số {id}"))
-                : Results.Ok(ApiResponse.Success(mapper.Map<LecturerItem>(student)));
+                : Results.Ok(ApiResponse.Success(mapper.Map<StudentDto>(student)));
         }
 
         private static async Task<IResult> GetStudentBySlug(
@@ -120,10 +121,10 @@ namespace WebApi.Endpoints
             IStudentRepository studentRepository,
             IMapper mapper)
         {
-            var student = await studentRepository.GetStudentBySlugAsync(slug);
+            var student = await studentRepository.GetStudentBySlugAsync(slug, true);
             return student == null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy sinh viên có Slug {slug}"))
-                : Results.Ok(ApiResponse.Success(mapper.Map<LecturerItem>(student)));
+                : Results.Ok(ApiResponse.Success(mapper.Map<StudentDto>(student)));
         }
 
         private static async Task<IResult> CreateAccount(
