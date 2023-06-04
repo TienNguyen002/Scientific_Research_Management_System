@@ -75,8 +75,7 @@ namespace Services.Apps.Students
         public async Task<bool> DeleteStudentByIdAsync(int id, CancellationToken cancellationToken = default)
         {
             var StudentNToDelete = await _context.Set<Student>()
-                .Include(x => x.Department)
-                .Include(x => x.Group)
+                .Include(x => x.Department)               
                 .Include(x => x.Role)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
