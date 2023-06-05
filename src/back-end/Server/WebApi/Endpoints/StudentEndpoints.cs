@@ -14,6 +14,8 @@ using WebApi.Filters;
 using WebApi.Models.Student.Account;
 using Core.Entities;
 using Services.Apps.Others;
+using Services.Apps.Departments;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApi.Endpoints
 {
@@ -57,6 +59,10 @@ namespace WebApi.Endpoints
                 .WithName("ChangeStudentPassword")
                 .AddEndpointFilter<ValidatorFilter<StudentPassword>>()
                 .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapGet("/get-filter", GetFilter)
+                .WithName("GetStudentFilter")
+                .Produces<ApiResponse<StudentFilterModel>>();
         }
 
         private static async Task<IResult> GetStudent(
@@ -181,6 +187,21 @@ namespace WebApi.Endpoints
             return await studentRepository.UpdateStudentAsync(student)
                ? Results.Ok(ApiResponse.Success($"Đổi mật khẩu của sinh viên có slug {slug} thành công"))
                : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy sinh viên có có slug = {slug}"));
+        }
+
+        private static async Task<IResult> GetFilter(
+            IDepartmentRepository departmentRepository)
+        {
+            var model = new StudentFilterModel()
+            {
+                DepartmentList = (await departmentRepository.GetAllDepartmentAsync())
+                .Select(d => new SelectListItem()
+                {
+                    Text = d.Name,
+                    Value = d.Id.ToString(),
+                })
+            };
+            return Results.Ok(ApiResponse.Success(model));
         }
     }
 }

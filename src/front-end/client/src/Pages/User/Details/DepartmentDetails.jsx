@@ -16,7 +16,7 @@ const DepartmentDetails = () => {
   const { slug } = params;
 
   useEffect(() => {
-    document.title = "Chi tiết giảng viên";
+    document.title = "Chi tiết khoa";
     getDepartmentBySlug(slug).then((data) => {
       window.scroll(0, 0);
       if (data) {
