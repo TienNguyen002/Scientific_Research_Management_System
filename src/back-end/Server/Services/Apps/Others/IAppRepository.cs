@@ -1,4 +1,6 @@
 ﻿using Core.DTO.Others;
+using Core.DTO.Roles;
+using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +13,19 @@ namespace Services.Apps.Others
     {
         #region Status
         Task<IList<StatusItem>> GetStatusAsync(CancellationToken cancellationToken = default);
+
+        Task<Status> GetStatusByIdAsync(int id, CancellationToken cancellationToken = default);
         #endregion
 
         #region Process
         Task<IList<ProcessItem>> GetProcessAsync(CancellationToken cancellationToken = default);
+
+        Task<Process> GetProcessByIdAsync(int id, CancellationToken cancellationToken = default);
+        #endregion
+
+        #region Role
+        Task<IList<RoleItems>> GetAllRolesAsync(
+            CancellationToken cancellationToken = default);
         #endregion
     }
 }

@@ -57,7 +57,13 @@ const ListTopic = () => {
                                 </Link>
                             </td>
                             <td className="table-content"><StudentList studentList={item.students}/></td>  
-                            <td>{item.process?.name}</td>                         
+                            <td>{item.process?.id == 1 ? <p className="start">Bắt đầu làm</p>
+                                : item.process?.id == 2 ? <p className="doing">Đang làm</p>
+                                : item.process?.id == 3 ? <p className="stop">Tạm dừng</p>
+                                : item.process?.id == 4 ? <p className="doing">Đang viết báo cáo</p>
+                                : item.process?.id == 5 ? <p className="stop">Chưa hoàn thành</p>
+                                : item.process?.id == 5 ?<p className="done">Hoàn thành</p>
+                                : <p className="not-regis">Chưa có người thực hiện</p>}</td>                         
                         </tr>
                     )
                     : 

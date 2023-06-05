@@ -1,19 +1,19 @@
 import React, { useEffect, useState} from "react";
 import { Table } from "react-bootstrap";
-import { getTopicsByLecturerSlug } from "../../../Services/TopicService";
+import { getTopicsByDepartmentSlug } from "../../../Services/TopicService";
 import { Link, useParams } from "react-router-dom";
 import format from "date-fns/format";
 import {Button} from "react-bootstrap";
 import StudentList from "../../../Components/Shared/StudentList";
 
-const TopicByLecturers = () => {
+const TopicByDepartment = () => {
     const [topicsList, setTopicsList] = useState([]);
     const params = useParams();
     const {slug} = params;
 
     let p = 1, ps = 5;
     useEffect((ps, p) => {
-        getTopicsByLecturerSlug(slug).then(data => {
+        getTopicsByDepartmentSlug(slug).then(data => {
             if(data){
                 setTopicsList(data.items)
             }
@@ -24,7 +24,7 @@ const TopicByLecturers = () => {
 
     return(
         <>
-            <h1>Danh sách đề tài hướng dẫn</h1>
+            <h1>Danh sách đề tài của khoa</h1>
             <Table striped responsive bordered>
                 <thead className="table text-center">
                     <tr className="table-title">
@@ -32,8 +32,8 @@ const TopicByLecturers = () => {
                         <th>Ngày đăng ký</th>
                         <th>Số người thực hiện</th>
                         <th>Khoa</th>
-                        <th>Sinh viên thực hiện</th>
-                        <th>Tiến trình</th>
+                        <th>Giảng viên</th>
+                        <th>Trạng thái</th>
                     </tr>
                 </thead>
                 <tbody className="table-content">
@@ -47,9 +47,9 @@ const TopicByLecturers = () => {
                             </td>
                             <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>
                             <td>{item.studentNumbers}</td>
-                            <td>{item.department?.name}</td>
-                            <td><td className="table-content"><StudentList studentList={item.students}/></td> </td>
-                            <td>{item.process?.name}</td>
+                            <td>{item.department.name}</td>
+                            <td>{item.lecturer.fullName}</td>
+                            <td>{item.status.name}</td>
                         </tr>
                     )
                     : 
@@ -65,4 +65,4 @@ const TopicByLecturers = () => {
     )
 }
 
-export default TopicByLecturers;
+export default TopicByDepartment;

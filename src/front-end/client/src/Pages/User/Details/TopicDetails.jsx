@@ -77,11 +77,11 @@ const TopicDetails = () => {
           </tr>
           <tr>
             <th>Điểm</th>
-            <td>{topic.point}</td>
+            <td>{topic.point == 0 ? "" : topic.point}</td>
           </tr>
           <tr>
             <th>Trạng thái</th>
-            <td>{topic.status?.name}</td>
+            <td>{topic.status?.name == "Chưa đăng ký" ? <Link to={`/dang-ky-de-tai`}>{topic.status?.name}</Link> : topic.status?.name}</td>
           </tr>
           <tr>
             <th>Tiến trình</th>

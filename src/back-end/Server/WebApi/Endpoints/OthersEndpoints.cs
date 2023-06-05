@@ -1,6 +1,7 @@
 ﻿using Carter;
 using Core.Collections;
 using Core.DTO.Others;
+using Core.DTO.Roles;
 using Services.Apps.Others;
 using WebApi.Models;
 
@@ -19,6 +20,10 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapGet("/process", GetAllProcess)
                 .WithName("GetAllProcess")
                 .Produces<ApiResponse<PaginationResult<ProcessItem>>>();
+
+            routeGroupBuilder.MapGet("/roles", GetAllRoles)
+                .WithName("GetAllRoles")
+                .Produces<ApiResponse<PaginationResult<RoleItems>>>();
         }
 
         private static async Task<IResult> GetAllStatus(
@@ -33,6 +38,13 @@ namespace WebApi.Endpoints
         {
             var process = await appRepository.GetProcessAsync();
             return Results.Ok(ApiResponse.Success(process));
+        }
+
+        private async Task<IResult> GetAllRoles(
+            IAppRepository appRepository)
+        {
+            var roles = await appRepository.GetAllRolesAsync();
+            return Results.Ok(ApiResponse.Success(roles));
         }
     }
 }

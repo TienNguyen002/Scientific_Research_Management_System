@@ -2,13 +2,17 @@
 using Carter;
 using Core.Collections;
 using Core.DTO.Department;
+using Core.DTO.Topic;
 using Core.Entities;
+using Mapster;
 using MapsterMapper;
 using Services.Apps.Departments;
+using Services.Apps.Topics;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
 using WebApi.Models.Department;
+using WebApi.Models.Topic;
 
 namespace WebApi.Endpoints
 {
@@ -16,11 +20,23 @@ namespace WebApi.Endpoints
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            var routeGroupBuilder = app.MapGroup("/api/Departments");
+            var routeGroupBuilder = app.MapGroup("/api/departments");
 
-            routeGroupBuilder.MapGet("/allDepartment", GetAllDepartment)
+            routeGroupBuilder.MapGet("/", GetDepartments)
+                .WithName("GetDepartments")
+                .Produces<ApiResponse<PaginationResult<DepartmentDto>>>();
+
+            routeGroupBuilder.MapGet("/all", GetAllDepartment)
                 .WithName("GetAllDepartment")
                 .Produces<ApiResponse<PaginationResult<DepartmentItems>>>();
+
+            routeGroupBuilder.MapGet("/{id:int}", GetDepartmentById)
+                  .WithName("GetDepartmentById")
+                  .Produces<ApiResponse<DepartmentDto>>();
+
+            routeGroupBuilder.MapGet("/byslug/{slug:regex(^[a-z0-9_-]+$)}", GetDepartmentBySlug)
+                  .WithName("GetDepartmentBySlug")
+                  .Produces<ApiResponse<DepartmentDto>>();
 
             routeGroupBuilder.MapPost("/", AddDepartment)
                 .WithName("AddDepartment")
@@ -32,19 +48,48 @@ namespace WebApi.Endpoints
                 .AddEndpointFilter<ValidatorFilter<DepartmentEditmodel>>()
                 .Produces<ApiResponse<string>>();
 
-            routeGroupBuilder.MapDelete("/{id:int}", DeleteTag)
+            routeGroupBuilder.MapDelete("/{id:int}", DeleteDepartment)
                 .WithName("DeleteDepartment")
                 .Produces<ApiResponse<string>>();
-
-  
         }
-
 
         private static async Task<IResult> GetAllDepartment(
             IDepartmentRepository departmentRepository)
         {
             var depart = await departmentRepository.GetAllDepartmentAsync();
             return Results.Ok(ApiResponse.Success(depart));
+        }
+
+        private static async Task<IResult> GetDepartments(
+            [AsParameters] DepartmentFilterModel model,
+            IDepartmentRepository departmentRepository,
+            IMapper mapper)
+        {
+            var query = mapper.Map<DepartmentQuery>(model);
+            var departments = await departmentRepository.GetPagedDepartmentAsync<DepartmentDto>(query, model,
+                departments => departments.ProjectToType<DepartmentDto>());
+            var paginationResult = new PaginationResult<DepartmentDto>(departments);
+            return Results.Ok(ApiResponse.Success(paginationResult));
+        }
+
+        private static async Task<IResult> GetDepartmentById(int id,
+            IDepartmentRepository departmentRepository,
+            IMapper mapper)
+        {
+            var department = await departmentRepository.GetDepartmentByIdAsync(id, true);
+            return department == null
+                ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy khoa có mã số {id}"))
+                : Results.Ok(ApiResponse.Success(mapper.Map<DepartmentDto>(department)));
+        }
+
+        private static async Task<IResult> GetDepartmentBySlug(string slug,
+            IDepartmentRepository departmentRepository,
+            IMapper mapper)
+        {
+            var department = await departmentRepository.GetDepartmentBySlugAsync(slug, true);
+            return department == null
+                ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy khoa có slug {slug}"))
+                : Results.Ok(ApiResponse.Success(mapper.Map<DepartmentDto>(department)));
         }
 
         private static async Task<IResult> AddDepartment (
@@ -83,7 +128,7 @@ namespace WebApi.Endpoints
               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy Khoa có id = {id}"));
         }
 
-        private static async Task<IResult> DeleteTag(
+        private static async Task<IResult> DeleteDepartment(
             int id,
             IDepartmentRepository departmentRepository)
         {

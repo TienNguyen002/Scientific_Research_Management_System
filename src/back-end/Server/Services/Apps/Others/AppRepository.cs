@@ -1,4 +1,5 @@
 ﻿using Core.DTO.Others;
+using Core.DTO.Roles;
 using Core.Entities;
 using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,11 @@ namespace Services.Apps.Others
                 })
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task<Status> GetStatusByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Status>().FindAsync(id);
+        }
         #endregion
 
         #region Process
@@ -48,6 +54,27 @@ namespace Services.Apps.Others
                     Id = s.Id,
                     Name = s.Name,
                     UrlSlug = s.UrlSlug,
+                })
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<Process> GetProcessByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Process>().FindAsync(id);
+        }
+        #endregion
+
+        #region Role
+        public async Task<IList<RoleItems>> GetAllRolesAsync(CancellationToken cancellationToken = default)
+        {
+            IQueryable<Role> roles = _context.Set<Role>();
+            return await roles
+                .OrderBy(x => x.Id)
+                .Select(x => new RoleItems()
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    UrlSlug = x.UrlSlug,
                 })
                 .ToListAsync(cancellationToken);
         }

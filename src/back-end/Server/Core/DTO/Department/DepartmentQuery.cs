@@ -8,6 +8,6 @@ namespace Core.DTO.Department
 {
     public class DepartmentQuery
     {
-        public string KeyWord { get; set; }
+        public string Keyword { get; set; }
     }
 }

@@ -57,7 +57,8 @@ namespace Services.Apps.Students
                 StudentQuery = StudentQuery.Where(x => x.FullName.Contains(query.Keyword)
                 || x.Email.Contains(query.Keyword)
                 || x.UrlSlug.Contains(query.Keyword)
-                || x.Class.Contains(query.Keyword));
+                || x.Class.Contains(query.Keyword)
+                || x.Year.Contains(query.Keyword));
             }
             if (query.DepartmentId > 0)
             {
