@@ -1,4 +1,6 @@
-﻿namespace WebApi.Models.Lecturer
+﻿using WebApi.Models.Others;
+
+namespace WebApi.Models.Lecturer
 {
     public class LecturerDto
     {
@@ -8,5 +10,6 @@
         public string UrlSlug { get; set; }
         public string Qualification { get; set; }
         public DateTime DoB { get; set; }
+        public DepartmentDto Department { get; set; }
     }
 }

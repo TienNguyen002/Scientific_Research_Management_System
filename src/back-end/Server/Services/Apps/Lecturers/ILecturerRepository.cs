@@ -14,9 +14,9 @@ namespace Services.Apps.Lecturers
         //Lấy danh sách các giảng viên
         Task<IList<LecturerItem>> GetLecturersAsync(CancellationToken cancellationToken = default);
 
-        Task<Lecturer> GetLecturerByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Lecturer> GetLecturerByIdAsync(int id, bool includeDetails = false, CancellationToken cancellationToken = default);
 
-        Task<Lecturer> GetLecturerBySlugAsync(string slug, CancellationToken cancellationToken = default);
+        Task<Lecturer> GetLecturerBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default);
 
         Task<bool> IsLecturerEmailExitedAsync(int id, string email, CancellationToken cancellationToken = default);
 

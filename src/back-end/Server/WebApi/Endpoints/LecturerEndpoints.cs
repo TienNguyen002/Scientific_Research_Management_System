@@ -30,11 +30,11 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapGet("/{id:int}", GetLecturerById)
                 .WithName("GetLecturerById")
-                .Produces<ApiResponse<LecturerItem>>();
+                .Produces<ApiResponse<LecturerDto>>();
 
             routeGroupBuilder.MapGet("/byslug/{slug:regex(^[a-z0-9_-]+$)}", GetLecturerBySlug)
                 .WithName("GetLecturerBySlug")
-                .Produces<ApiResponse<LecturerItem>>();
+                .Produces<ApiResponse<LecturerDto>>();
 
             routeGroupBuilder.MapPost("/", CreateAccount)
                 .WithName("CreateAccount")
@@ -80,10 +80,10 @@ namespace WebApi.Endpoints
             ILecturerRepository lecturerRepository,
             IMapper mapper)
         {
-            var lecturer = await lecturerRepository.GetLecturerByIdAsync(id);
+            var lecturer = await lecturerRepository.GetLecturerByIdAsync(id, true);
             return lecturer == null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có mã số {id}"))
-                : Results.Ok(ApiResponse.Success(mapper.Map<LecturerItem>(lecturer)));
+                : Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer)));
         }
 
         private static async Task<IResult> GetLecturerBySlug(
@@ -91,10 +91,10 @@ namespace WebApi.Endpoints
             ILecturerRepository lecturerRepository,
             IMapper mapper)
         {
-            var lecturer = await lecturerRepository.GetLecturerBySlugAsync(slug);
+            var lecturer = await lecturerRepository.GetLecturerBySlugAsync(slug, true);
             return lecturer == null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có Slug {slug}"))
-                : Results.Ok(ApiResponse.Success(mapper.Map<LecturerItem>(lecturer)));
+                : Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer)));
         }
 
         private static async Task<IResult> CreateAccount(

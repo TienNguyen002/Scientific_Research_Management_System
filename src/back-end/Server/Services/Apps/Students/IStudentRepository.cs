@@ -20,9 +20,9 @@ namespace Services.Apps.Students
 
         Task<bool> DeleteStudentByIdAsync(int id, CancellationToken cancellationToken = default);
 
-        Task<Student> GetStudentBySlugAsync(string slug, CancellationToken cancellationToken = default);
+        Task<Student> GetStudentBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default);
         Task<bool> UpdateStudentAsync(Student student, CancellationToken cancellationToken = default);
-        Task<Student> GetStudentByIdAsync(int id, CancellationToken cancellationToken = default);
+        Task<Student> GetStudentByIdAsync(int id, bool includeDetails = false, CancellationToken cancellationToken = default);
 
         Task<bool> IsStudentEmailExitedAsync(int id, string email, CancellationToken cancellationToken = default);
 
