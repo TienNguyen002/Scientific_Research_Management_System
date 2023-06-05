@@ -8,7 +8,11 @@ using Services.Apps.Others;
 using Carter;
 using Services.Apps.Lecturers;
 using Services.Apps.Students;
+using Services.Apps.Rolee;
+using Services.Apps.Departments;
+using Core.Entities;
 using Services.Apps.Topics;
+
 
 namespace TatBlog.WebApi.Extensions
 {
@@ -30,7 +34,10 @@ namespace TatBlog.WebApi.Extensions
             builder.Services.AddScoped<IAppRepository, AppRepository>();
             builder.Services.AddScoped<ILecturerRepository, LecturerRepository>();
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<ITopicRepository, TopicRepository>();
+
 
             return builder;
         }
