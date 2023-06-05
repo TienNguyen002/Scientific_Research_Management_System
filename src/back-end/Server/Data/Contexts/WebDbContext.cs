@@ -22,10 +22,7 @@ namespace Data.Contexts
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //Tien
-            //"DefaultConnection": "Server=.\\SQLEXPRESS;Database=NCKHSV;Trusted_Connection=True;Encrypt=False;MultipleActiveResultSets=true"
-            //Hieu
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-PJ35U8S\HIEU;Database=NCKHSV;Trusted_Connection=True;Encrypt=False;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-J07JCT0\SQLEXPRESS;Database=NCKHSV;Trusted_Connection=True;Encrypt=False;MultipleActiveResultSets=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

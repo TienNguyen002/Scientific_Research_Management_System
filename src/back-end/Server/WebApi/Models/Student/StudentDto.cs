@@ -1,4 +1,6 @@
-﻿namespace WebApi.Models.Student
+﻿using WebApi.Models.Others;
+
+namespace WebApi.Models.Student
 {
     public class StudentDto
     {
@@ -7,6 +9,7 @@
         public string FullName { get; set; }
         public string Email { get; set; }
         public string UrlSlug { get; set; }
+        public DepartmentDto Department { get; set; }
         public DateTime DoB { get; set; }
         public string Phone { get; set; }
         public string Class { get; set; }

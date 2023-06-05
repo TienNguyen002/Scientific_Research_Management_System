@@ -27,7 +27,8 @@ namespace Services.Apps.Students
 
         public async Task<IList<StudentItem>> GetStudentsAsync(CancellationToken cancellationToken = default)
         {
-            IQueryable<Student> students = _context.Set<Student>();
+            IQueryable<Student> students = _context.Set<Student>()
+                .Include(s => s.Department);
             return await students
                 .OrderBy(x => x.StudentId)
                 .Select(x => new StudentItem()
@@ -37,6 +38,7 @@ namespace Services.Apps.Students
                     FullName = x.FullName,
                     Email = x.Email,
                     UrlSlug = x.UrlSlug,
+                    Department = x.Department.Name,
                     DoB = x.DoB,
                     Phone = x.Phone,
                     Class = x.Class,
@@ -54,7 +56,8 @@ namespace Services.Apps.Students
             {
                 StudentQuery = StudentQuery.Where(x => x.FullName.Contains(query.Keyword)
                 || x.Email.Contains(query.Keyword)
-                || x.UrlSlug.Contains(query.Keyword));
+                || x.UrlSlug.Contains(query.Keyword)
+                || x.Class.Contains(query.Keyword));
             }
             if (query.DepartmentId > 0)
             {
@@ -76,7 +79,6 @@ namespace Services.Apps.Students
         {
             var StudentNToDelete = await _context.Set<Student>()
                 .Include(x => x.Department)
-                .Include(x => x.Group)
                 .Include(x => x.Role)
                 .Where(x => x.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
@@ -89,10 +91,16 @@ namespace Services.Apps.Students
             return true;
         }
 
-        public async Task<Student> GetStudentBySlugAsync(string slug, CancellationToken cancellationToken = default)
+        public async Task<Student> GetStudentBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
+            if (!includeDetails)
+            {
+                return await _context.Set<Student>().Where(p => p.UrlSlug == slug)
+                    .FirstOrDefaultAsync(cancellationToken);
+            }
             return await _context.Set<Student>()
-                .Where(x => x.UrlSlug.Contains(slug))
+                .Include(x => x.Department)
+                .Where(x => x.UrlSlug == slug)
                 .FirstOrDefaultAsync(cancellationToken);
         }
 
@@ -103,9 +111,16 @@ namespace Services.Apps.Students
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
-        public async Task<Student> GetStudentByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Student> GetStudentByIdAsync(int id, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<Student>().FindAsync(id, cancellationToken);
+            if (!includeDetails)
+            {
+                return await _context.Set<Student>().FindAsync(id);
+            }
+            return await _context.Set<Student>()
+                .Include(x => x.Department)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
         public async Task<bool> IsStudentEmailExitedAsync(int id, string email, CancellationToken cancellationToken = default)

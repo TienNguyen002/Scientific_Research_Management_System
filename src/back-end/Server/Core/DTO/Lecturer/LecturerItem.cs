@@ -13,6 +13,7 @@ namespace Core.DTO.Lecturer
         public string Email { get; set; }
         public string Password { get; set; }
         public string UrlSlug { get; set; }
+        public string Department { get; set; }
         public string Qualification { get; set; }
         public DateTime DoB { get; set; }
     }

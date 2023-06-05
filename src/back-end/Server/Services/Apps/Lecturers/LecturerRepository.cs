@@ -27,7 +27,8 @@ namespace Services.Apps.Lecturers
 
         public async Task<IList<LecturerItem>> GetLecturersAsync(CancellationToken cancellationToken = default)
         {
-            IQueryable<Lecturer> lecturers = _context.Set<Lecturer>();
+            IQueryable<Lecturer> lecturers = _context.Set<Lecturer>()
+                .Include(l => l.Department);
             return await lecturers
                 .OrderBy(l => l.FullName)
                 .Select(l => new LecturerItem()
@@ -36,21 +37,35 @@ namespace Services.Apps.Lecturers
                     FullName = l.FullName,
                     Email = l.Email,
                     UrlSlug = l.UrlSlug,
+                    Department = l.Department.Name,
                     Qualification = l.Qualification,
                     DoB = l.DoB,
                 })
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Lecturer> GetLecturerByIdAsync(int id, CancellationToken cancellationToken = default)
+        public async Task<Lecturer> GetLecturerByIdAsync(int id, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
-            return await _context.Set<Lecturer>().FindAsync(id, cancellationToken);
+            if (!includeDetails)
+            {
+                return await _context.Set<Lecturer>().FindAsync(id);
+            }
+            return await _context.Set<Lecturer>()
+                .Include(x => x.Department)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
         }
 
-        public async Task<Lecturer> GetLecturerBySlugAsync(string slug, CancellationToken cancellationToken = default)
+        public async Task<Lecturer> GetLecturerBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default)
         {
+            if (!includeDetails)
+            {
+                return await _context.Set<Lecturer>().Where(p => p.UrlSlug == slug)
+                    .FirstOrDefaultAsync(cancellationToken);
+            }
             return await _context.Set<Lecturer>()
-                .Where(l => l.UrlSlug.Contains(slug))
+                .Include(x => x.Department)
+                .Where(x => x.UrlSlug == slug)
                 .FirstOrDefaultAsync(cancellationToken);
         }
 

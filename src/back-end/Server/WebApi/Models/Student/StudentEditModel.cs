@@ -5,7 +5,6 @@
         public string StudentId { get; set; }
         public string FullName { get; set; }
         public string Email { get; set; }
-        public string UrlSlug { get; set; }
         public DateTime DoB { get; set; }
         public string Phone { get; set; }
         public string Class { get; set; }

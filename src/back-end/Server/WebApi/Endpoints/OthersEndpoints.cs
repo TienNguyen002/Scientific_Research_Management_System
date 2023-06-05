@@ -15,6 +15,10 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapGet("/status", GetAllStatus)
                 .WithName("GetAllStatus")
                 .Produces<ApiResponse<PaginationResult<StatusItem>>>();
+
+            routeGroupBuilder.MapGet("/process", GetAllProcess)
+                .WithName("GetAllProcess")
+                .Produces<ApiResponse<PaginationResult<ProcessItem>>>();
         }
 
         private static async Task<IResult> GetAllStatus(
@@ -22,6 +26,13 @@ namespace WebApi.Endpoints
         {
             var status = await appRepository.GetStatusAsync();
             return Results.Ok(ApiResponse.Success(status));
+        }
+
+        private static async Task<IResult> GetAllProcess(
+            IAppRepository appRepository)
+        {
+            var process = await appRepository.GetProcessAsync();
+            return Results.Ok(ApiResponse.Success(process));
         }
     }
 }
