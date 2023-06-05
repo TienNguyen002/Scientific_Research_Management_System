@@ -11,7 +11,7 @@ namespace WebApi.Validations.Topics
                 .NotEmpty()
                 .WithMessage("Tiêu đề không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("Tiêu đề chỉ tối đa 1000 ký tự"); ;
+                .WithMessage("Tiêu đề chỉ tối đa 1000 ký tự");
 
             RuleFor(x => x.Description)
                 .NotEmpty()
@@ -23,25 +23,17 @@ namespace WebApi.Validations.Topics
                 .MaximumLength(1000)
                 .WithMessage("Ghi chú chỉ tối đa 1000 ký tự");
 
-            RuleFor(x => x.EndDate)
-                .GreaterThan(DateTime.MinValue)
-                .WithMessage("Ngày kết thúc không hợp lệ");
-
             RuleFor(x => x.StudentNumbers)
                 .NotEmpty()
                 .WithMessage("Số lượng học sinh không được để trống");
 
             RuleFor(x => x.Price)
-                .MaximumLength(1000)
+                .MaximumLength(100000)
                 .WithMessage("Số tiền chỉ tối đa 1000 ký tự");
 
             RuleFor(x => x.DepartmentId)
                 .NotEmpty()
                 .WithMessage("Khoa không được để trống");
-
-            RuleFor(x => x.LecturerId)
-                .NotEmpty()
-                .WithMessage("Giảng viên không được để trống");
 
             RuleFor(x => x.StatusId)
                 .NotEmpty()

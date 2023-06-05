@@ -1,4 +1,4 @@
-﻿using WebApi.Models.Others;
+﻿using WebApi.Models.Department;
 
 namespace WebApi.Models.Student
 {

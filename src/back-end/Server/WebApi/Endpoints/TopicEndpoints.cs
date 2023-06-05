@@ -1,11 +1,16 @@
 ﻿using Carter;
 using Core.Collections;
 using Core.DTO.Topic;
+using Core.Entities;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Services.Apps.Departments;
+using Services.Apps.Lecturers;
+using Services.Apps.Others;
 using Services.Apps.Topics;
+using Services.Media;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
@@ -25,7 +30,7 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapGet("/all", GetAllTopic)
                 .WithName("GetAllTopic")
-                .Produces<ApiResponse<PaginationResult<TopicItem>>>();
+                .Produces<ApiResponse<PaginationResult<TopicDto>>>();
 
             routeGroupBuilder.MapGet("/{id:int}", GetTopicById)
                   .WithName("GetTopicById")
@@ -35,15 +40,15 @@ namespace WebApi.Endpoints
                   .WithName("GetTopicBySlug")
                   .Produces<ApiResponse<TopicDto>>();
 
-            //routeGroupBuilder.MapPost("/", AddCourse)
-            //    .WithName("AddCourse")
-            //    .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
-            //    .Produces<ApiResponse<TopicDto>>();
+            routeGroupBuilder.MapPost("/", AddTopic)
+                .WithName("AddCourse")
+                .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
+                .Produces<ApiResponse<TopicDto>>();
 
-            //routeGroupBuilder.MapPut("/{id:int}", UpdateCourse)
-            //    .WithName("UpdateCourse")
-            //    .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
-            //    .Produces<ApiResponse<string>>();
+            routeGroupBuilder.MapPut("/{id:int}", UpdateTopic)
+                .WithName("UpdateCourse")
+                .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
+                .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteTopic)
                 .WithName("DeleteTopic")
@@ -87,6 +92,64 @@ namespace WebApi.Endpoints
             return topics == null
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có slug {slug}"))
                 : Results.Ok(ApiResponse.Success(mapper.Map<TopicDto>(topics)));
+        }
+
+        private static async Task<IResult> AddTopic(
+            [AsParameters] TopicEditModel model,
+            IMapper mapper,
+            ITopicRepository topicRepository,
+            IDepartmentRepository departmentRepository,
+            ILecturerRepository lecturerRepository,
+            IAppRepository appRepository,
+            IMediaManager mediaManager)
+        {
+            if(await departmentRepository.GetDepartmentByIdAsync(model.DepartmentId) == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy khoa có id = '{model.DepartmentId}' "));
+            }
+            if (await appRepository.GetStatusByIdAsync(model.StatusId) == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy trạng thái có id = '{model.StatusId}' "));
+            }
+            var topic = mapper.Map<Topic>(model);
+            topic.RegistrationDate = DateTime.Now;
+            if(await topicRepository.IsTopicSlugExitedAsync(0, topic.UrlSlug))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"UrlSlug '{topic.UrlSlug}' đã được sử dụng"));
+            }
+            await topicRepository.AddOrUpdateTopicAsync(topic);
+            return Results.Ok(ApiResponse.Success(mapper.Map<TopicDto>(topic), HttpStatusCode.Created));
+        }
+
+        private static async Task<IResult> UpdateTopic(
+            int id,
+            TopicEditModel model,
+            IMapper mapper,
+            ITopicRepository topicRepository,
+            IDepartmentRepository departmentRepository,
+            ILecturerRepository lecturerRepository,
+            IAppRepository appRepository,
+            IMediaManager mediaManager)
+        {
+            var topic = await topicRepository.GetTopicByIdAsync(id);
+            if(topic == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                    $"Không tìm thấy đề tài có id {id}"));
+            }
+            if (await departmentRepository.GetDepartmentByIdAsync(model.DepartmentId) == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy khoa có id = '{model.DepartmentId}' "));
+            }
+            if (await appRepository.GetStatusByIdAsync(model.StatusId) == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy trạng thái có id = '{model.StatusId}' "));
+            }
+            mapper.Map(model, topic);
+            topic.Id = id;
+            return await topicRepository.AddOrUpdateTopicAsync(topic)
+               ? Results.Ok(ApiResponse.Success($"Thay đổi đề tài có id = {id} thành công"))
+               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có id = {id}"));
         }
 
         private static async Task<IResult> DeleteTopic(int id,

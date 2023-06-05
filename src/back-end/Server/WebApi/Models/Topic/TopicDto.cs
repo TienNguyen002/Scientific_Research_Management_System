@@ -1,7 +1,8 @@
 ﻿using Core.Entities;
 using WebApi.Models.Lecturer;
-using WebApi.Models.Others;
+using WebApi.Models.Department;
 using WebApi.Models.Student;
+using WebApi.Models.Others;
 
 namespace WebApi.Models.Topic
 {
