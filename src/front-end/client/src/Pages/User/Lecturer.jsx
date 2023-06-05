@@ -1,30 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getLecturers } from "../../Services/LecturerService";
+import { getLecturersFilter } from "../../Services/LecturerService";
 import { Link } from "react-router-dom";
 import "./style/user.scss";
+import LecturerFilter from "../../Components/User/Filter/LecturerFilter"
+import Loading from "../../Components/Shared/Loading";
+import { useSelector } from "react-redux";
 
 const Lecturer = () => {
-  const [lecturersList, setLecturersList] = useState([]);
-  let ps = 5,
+  const [lecturersList, setLecturersList] = useState([]),
+    [isVisibleLoading, setIsVisibleLoading] = useState(true),
+    lecturerFilter = useSelector(state => state.lecturerFilter);
+
+  let ps = 10,
     p = 1;
+
   useEffect(
-    (ps, p) => {
+    () => {
       document.title = "Danh sách Giảng viên";
-      getLecturers().then((data) => {
+      getLecturersFilter(lecturerFilter.keyword,
+        lecturerFilter.departmentId,
+        ps, p).then((data) => {
         if (data) {
           setLecturersList(data.items);
-        } else {
+        } else 
           setLecturersList([]);
-        }
+        setIsVisibleLoading(false);
       });
     },
-    [ps, p]
+    [lecturerFilter, ps, p]
   );
 
   return (
     <>
       <h1>Danh sách giảng viên</h1>
+      <LecturerFilter/>
+      {isVisibleLoading ? (
+        <Loading />
+      ) : (
       <Table striped responsive bordered>
         <thead className="table text-center">
           <tr className="table-title">
@@ -64,6 +77,7 @@ const Lecturer = () => {
           )}
         </tbody>
       </Table>
+      )}
     </>
   );
 };

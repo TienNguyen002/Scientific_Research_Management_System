@@ -1,29 +1,46 @@
 import React, { useEffect, useState} from "react";
 import { Table } from "react-bootstrap";
-import { getTopicsNotRegis } from "../../Services/TopicService";
+import { getTopicsFilterNotRegis } from "../../Services/TopicService";
 import { Link } from "react-router-dom";
 import "./style/user.scss"
 import format from "date-fns/format";
 import {Button} from "react-bootstrap";
+import TopicFilter from "../../Components/User/Filter/TopicFilter"
+import Loading from "../../Components/Shared/Loading";
+import { useSelector } from "react-redux";
 
 const Topic = () => {
-    const [topicsList, setTopicsList] = useState([]);
+    const [topicsList, setTopicsList] = useState([]),
+    [isVisibleLoading, setIsVisibleLoading] = useState(true),
+    topicFilter = useSelector(state => state.topicFilter);
 
-    let p = 1, ps = 5;
-    useEffect((ps, p) => {
+    let statusId = 1, p = 1, ps = 10;
+
+    useEffect(() => {
         document.title = "Đăng ký đề tài"
-        getTopicsNotRegis().then(data => {
+        getTopicsFilterNotRegis(topicFilter.keyword,
+            topicFilter.departmentId,
+            topicFilter.lecturerId,
+            statusId,
+            topicFilter.year,
+            topicFilter.month,
+            ps, p).then(data => {
             if(data){
                 setTopicsList(data.items)
             }
             else
                 setTopicsList([])
+            setIsVisibleLoading(false);
         })
-    }, [ps, p])
+    }, [topicFilter, ps, p])
 
     return(
         <>
             <h1>Đăng ký đề tài</h1>
+            <TopicFilter/>
+            {isVisibleLoading ? (
+                <Loading />
+            ) : (
             <Table striped responsive bordered>
                 <thead className="table text-center">
                     <tr className="table-title">
@@ -62,6 +79,7 @@ const Topic = () => {
                     }
                 </tbody>
             </Table>
+            )}
         </>
     )
 }

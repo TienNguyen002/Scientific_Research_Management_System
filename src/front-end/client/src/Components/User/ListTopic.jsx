@@ -63,7 +63,7 @@ const ListTopic = () => {
                                 : item.process?.id == 4 ? <p className="doing">Đang viết báo cáo</p>
                                 : item.process?.id == 5 ? <p className="stop">Chưa hoàn thành</p>
                                 : item.process?.id == 5 ?<p className="done">Hoàn thành</p>
-                                : <p className="not-regis">Chưa đăng ký</p>}</td>                         
+                                : <p className="not-regis">Chưa có người thực hiện</p>}</td>                         
                         </tr>
                     )
                     : 

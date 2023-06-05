@@ -5,12 +5,15 @@ using Core.DTO.Others;
 using Core.Entities;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Services.Apps.Departments;
 using Services.Apps.Lecturers;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
 using WebApi.Models.Lecturer;
 using WebApi.Models.Lecturer.Account;
+using WebApi.Models.Student;
 
 namespace WebApi.Endpoints
 {
@@ -54,6 +57,10 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapDelete("/{id:int}", DeleteLecturer)
                 .WithName("DeleteLecturer")
                 .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapGet("/get-filter", GetFilter)
+                .WithName("GetLecturerFilter")
+                .Produces<ApiResponse<LecturerFilterModel>>();
         }
 
         private static async Task<IResult> GetAllLecturers(
@@ -178,6 +185,21 @@ namespace WebApi.Endpoints
             return await lecturerRepository.DeleteLecturerByIdAsync(id)
                 ? Results.Ok(ApiResponse.Success("Xóa giảng viên thành công", HttpStatusCode.NoContent))
                 : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có id = {id}"));
+        }
+
+        private static async Task<IResult> GetFilter(
+            IDepartmentRepository departmentRepository)
+        {
+            var model = new LecturerFilterModel()
+            {
+                DepartmentList = (await departmentRepository.GetAllDepartmentAsync())
+                .Select(d => new SelectListItem()
+                {
+                    Text = d.Name,
+                    Value = d.Id.ToString(),
+                })
+            };
+            return Results.Ok(ApiResponse.Success(model));
         }
     } 
 }

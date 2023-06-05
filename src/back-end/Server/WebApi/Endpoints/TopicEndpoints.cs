@@ -5,6 +5,7 @@ using Core.Entities;
 using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Hosting;
 using Services.Apps.Departments;
 using Services.Apps.Lecturers;
@@ -14,6 +15,7 @@ using Services.Media;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
+using WebApi.Models.Student;
 using WebApi.Models.Topic;
 
 namespace WebApi.Endpoints
@@ -53,6 +55,10 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapDelete("/{id:int}", DeleteTopic)
                 .WithName("DeleteTopic")
                 .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapGet("/get-filter", GetFilter)
+                .WithName("GetTopicFilter")
+                .Produces<ApiResponse<TopicFilterModel>>();
         }
 
         private static async Task<IResult> GetAllTopic(
@@ -158,6 +164,41 @@ namespace WebApi.Endpoints
             return await topicRepository.RemoveTopicAsync(id)
                 ? Results.Ok(ApiResponse.Success("Xóa đề tài thành công", HttpStatusCode.NoContent))
                 : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có id = {id}"));
+        }
+
+        private static async Task<IResult> GetFilter(
+            IDepartmentRepository departmentRepository,
+            ILecturerRepository lecturerRepository,
+            IAppRepository appRepository)
+        {
+            var model = new TopicFilterModel()
+            {
+                DepartmentList = (await departmentRepository.GetAllDepartmentAsync())
+                .Select(d => new SelectListItem()
+                {
+                    Text = d.Name,
+                    Value = d.Id.ToString(),
+                }),
+                LecturerList = (await lecturerRepository.GetLecturersAsync())
+                .Select(l => new SelectListItem()
+                {
+                    Text = l.FullName,
+                    Value = l.Id.ToString(),
+                }),
+                StatusList = (await appRepository.GetStatusAsync())
+                .Select(s => new SelectListItem()
+                {
+                    Text = s.Name,
+                    Value = s.Id.ToString(),
+                }),
+                ProcessList = (await appRepository.GetProcessAsync())
+                .Select(p =>  new SelectListItem()
+                {
+                    Text = p.Name,
+                    Value = p.Id.ToString(),
+                })
+            };
+            return Results.Ok(ApiResponse.Success(model));
         }
     }
 }
