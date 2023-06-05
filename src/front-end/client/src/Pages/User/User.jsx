@@ -5,19 +5,21 @@ import { Link } from "react-router-dom";
 import "./style/user.scss"
 
 const User = () => {
-    const [students, setStudents] = useState([]);
+    const [studentsList, setStudentsList] = useState([]);
 
-    useEffect(() => {
+    let ps = 10, p = 1;
+
+    useEffect((ps, p) => {
         document.title = "Danh sách Sinh viên"
         getStudents().then(data => {
             if(data){
-                setStudents(data);
+                setStudentsList(data.items);
             }
             else{
-                setStudents([])
+                setStudentsList([])
             }
         })
-    }, [])
+    }, [ps, p])
 
     return(
         <>
@@ -34,7 +36,7 @@ const User = () => {
                     </tr>
                 </thead>
                 <tbody className="table-content">
-                    {students.length > 0 ? students.map((item, index) => 
+                    {studentsList.length > 0 ? studentsList.map((item, index) => 
                         <tr key={index}>
                             <td>
                                 <Link className="content" to={`/sinh-vien/${item.urlSlug}`}>
@@ -48,8 +50,8 @@ const User = () => {
                             </td>
                             <td>{item.email}</td>
                             <td>
-                                <Link className="content" to={`/khoa/${item.department}`}>
-                                    {item.department}
+                                <Link className="content" to={`/khoa/${item.department.urlSlug}`}>
+                                    {item.department.name}
                                 </Link>
                             </td>
                             <td>{item.class}</td>

@@ -21,7 +21,7 @@ namespace WebApi.Endpoints
                 .WithName("GetAllProcess")
                 .Produces<ApiResponse<PaginationResult<ProcessItem>>>();
 
-            routeGroupBuilder.MapGet("/", GetAllRoles)
+            routeGroupBuilder.MapGet("/roles", GetAllRoles)
                 .WithName("GetAllRoles")
                 .Produces<ApiResponse<PaginationResult<RoleItems>>>();
         }

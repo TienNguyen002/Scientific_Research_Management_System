@@ -19,3 +19,7 @@ export function getTopicsByStudentSlug(slug){
 export function getTopicsByLecturerSlug(slug){
     return get_api(`https://localhost:7129/api/topics?LecturerSlug=${slug}&PageSize=11&PageNumber=1`)
 }
+
+export function getTopicsByDepartmentSlug(slug){
+    return get_api(`https://localhost:7129/api/topics?DepartmentSlug=${slug}&PageSize=11&PageNumber=1`)
+}
