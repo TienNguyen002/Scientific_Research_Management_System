@@ -85,25 +85,6 @@ namespace Data.Migrations
                     b.ToTable("Lecturers");
                 });
 
-            modelBuilder.Entity("Core.Entities.Process", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UrlSlug")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Processes");
-                });
-
             modelBuilder.Entity("Core.Entities.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -212,7 +193,7 @@ namespace Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("LecturerId")
@@ -229,9 +210,6 @@ namespace Data.Migrations
 
                     b.Property<string>("Price")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProcessId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
@@ -251,13 +229,14 @@ namespace Data.Migrations
                     b.Property<string>("UrlSlug")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("LecturerId");
-
-                    b.HasIndex("ProcessId");
 
                     b.HasIndex("StatusId");
 
@@ -321,10 +300,6 @@ namespace Data.Migrations
                         .WithMany("Topics")
                         .HasForeignKey("LecturerId");
 
-                    b.HasOne("Core.Entities.Process", "Process")
-                        .WithMany("Topics")
-                        .HasForeignKey("ProcessId");
-
                     b.HasOne("Core.Entities.Status", "Status")
                         .WithMany("Topics")
                         .HasForeignKey("StatusId")
@@ -334,8 +309,6 @@ namespace Data.Migrations
                     b.Navigation("Department");
 
                     b.Navigation("Lecturer");
-
-                    b.Navigation("Process");
 
                     b.Navigation("Status");
                 });
@@ -365,11 +338,6 @@ namespace Data.Migrations
                 });
 
             modelBuilder.Entity("Core.Entities.Lecturer", b =>
-                {
-                    b.Navigation("Topics");
-                });
-
-            modelBuilder.Entity("Core.Entities.Process", b =>
                 {
                     b.Navigation("Topics");
                 });

@@ -49,10 +49,10 @@
     }
 }
 
-.start{
-    color: rgb(240, 8, 240)
+.not{
+    color: red
 }
-.doing{
+.regis{
     color: green
 }
 .stop{
@@ -60,4 +60,14 @@
 }
 .done{
     color: rgb(0, 60, 255)
+}
+
+.width{
+    width: 100px;
+}
+
+.small-table{
+    border: 2px solid forestgreen;
+    width: 800px;
+    height: 200px;
 }

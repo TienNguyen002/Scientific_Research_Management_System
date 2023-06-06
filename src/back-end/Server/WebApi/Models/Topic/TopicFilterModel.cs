@@ -22,7 +22,6 @@ namespace WebApi.Models.Topic
         public IEnumerable<SelectListItem> DepartmentList { get; set; }
         public IEnumerable<SelectListItem> LecturerList { get; set; }
         public IEnumerable<SelectListItem> StatusList { get; set; }
-        public IEnumerable<SelectListItem> ProcessList { get; set; }
         public IEnumerable<SelectListItem> MonthList { get; set; }
 
         public TopicFilterModel()

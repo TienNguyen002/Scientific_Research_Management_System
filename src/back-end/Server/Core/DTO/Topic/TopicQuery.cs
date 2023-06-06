@@ -18,7 +18,9 @@ namespace Core.DTO.Topic
         public int? StatusId { get; set; }
         public int? ProcessId { get; set; }
         public int? RegistrationMonth { get; set; }
+        public int? EndMonth { get; set; }
         public int? RegistrationYear { get; set; }
+        public int? EndYear { get; set; }
         public int? StudentNumbers { get; set; }
         public string Price { get; set; }
         public int? Point { get; set; }

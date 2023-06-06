@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { isEmptyOrSpaces } from "../../../Utils/Utils";
 import { getTopicBySlug } from "../../../Services/TopicService";
 import { Table } from "react-bootstrap";
@@ -12,6 +12,7 @@ const TopicDetails = () => {
   const params = useParams();
   const [topic, setTopic] = useState([]);
   const { slug } = params;
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Chi tiết đề tài";
@@ -30,7 +31,7 @@ const TopicDetails = () => {
         <tbody className="table-content">
           <tr></tr>
           <tr>
-            <th>Tiêu đề</th>
+            <th>Tên đề tài</th>
             <td>{topic.title}</td>
           </tr>
           <tr>
@@ -42,11 +43,15 @@ const TopicDetails = () => {
             <td>{topic.registrationDate}</td>
           </tr>
           <tr>
+            <th>Ngày nghiệm thu</th>
+            <td>{topic.endDate}</td>
+          </tr>
+          <tr>
             <th>Số sinh viên thực hiện</th>
             <td>{topic.studentNumbers}</td>
           </tr>
           <tr>
-            <th>Giá tiền ước tính</th>
+            <th>Kinh phí</th>
             <td>{topic.price}</td>
           </tr>
 
@@ -72,7 +77,7 @@ const TopicDetails = () => {
             </td>
           </tr>
           <tr>
-            <th>Đề cương</th>
+            <th>Thuyết minh đề tài</th>
             <td>{topic.outlineUrl}</td>
           </tr>
           <tr>
@@ -81,11 +86,13 @@ const TopicDetails = () => {
           </tr>
           <tr>
             <th>Trạng thái</th>
-            <td>{topic.status?.name == "Chưa đăng ký" ? <Link to={`/dang-ky-de-tai`}>{topic.status?.name}</Link> : topic.status?.name}</td>
-          </tr>
-          <tr>
-            <th>Tiến trình</th>
-            <td>{topic.process?.name}</td>
+            <td>
+              {topic.status?.name == "Chưa đăng ký" ? (
+                <Link to={`/dang-ky-de-tai`}>{topic.status?.name}</Link>
+              ) : (
+                topic.status?.name
+              )}
+            </td>
           </tr>
           <tr>
             <th>Kết quả</th>
@@ -93,6 +100,10 @@ const TopicDetails = () => {
           </tr>
         </tbody>
       </Table>
+      <hr/>
+      <Button onClick={() => navigate(-1)} className="btn-danger white-text">
+        Quay lại
+      </Button>
     </>
   );
 };

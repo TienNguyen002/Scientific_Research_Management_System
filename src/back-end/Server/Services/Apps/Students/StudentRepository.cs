@@ -50,11 +50,11 @@ namespace Services.Apps.Students
 
         private IQueryable<Student> GetStudentByQueryable(StudentQuery query)
         {
-            IQueryable<Student> StudentQuery = _context.Set<Student>()
+            IQueryable<Student> studentQuery = _context.Set<Student>()
                 .Include(x => x.Department);
             if (!string.IsNullOrEmpty(query.Keyword))
             {
-                StudentQuery = StudentQuery.Where(x => x.FullName.Contains(query.Keyword)
+                studentQuery = studentQuery.Where(x => x.FullName.Contains(query.Keyword)
                 || x.Email.Contains(query.Keyword)
                 || x.UrlSlug.Contains(query.Keyword)
                 || x.Class.Contains(query.Keyword)
@@ -62,9 +62,13 @@ namespace Services.Apps.Students
             }
             if (query.DepartmentId > 0)
             {
-                StudentQuery = StudentQuery.Where(x => x.DepartmentId == query.DepartmentId);
+                studentQuery = studentQuery.Where(x => x.DepartmentId == query.DepartmentId);
             }
-            return StudentQuery;
+            if (!string.IsNullOrWhiteSpace(query.DepartmentSlug))
+            {
+                studentQuery = studentQuery.Where(x => x.Department.UrlSlug.Contains(query.DepartmentSlug));
+            }
+            return studentQuery;
         }
         public async Task<IPagedList<T>> GetPagedStudentAsync<T>(StudentQuery query,
             IPagingParams pagingParams,

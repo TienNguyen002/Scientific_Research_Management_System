@@ -32,8 +32,8 @@ const Navbar = () => {
                             </Link>
                         </NavItem>
                         <NavItem>
-                            <Link to='/nha-khoa-hoc' className="navitem">
-                                NHÀ KHOA HỌC
+                            <Link to='/sinh-vien-nghien-cuu' className="navitem">
+                                SINH VIÊN NGHIÊN CỨU
                             </Link>
                         </NavItem>
                         <NavItem>

@@ -28,12 +28,12 @@ const TopicByLecturers = () => {
             <Table striped responsive bordered>
                 <thead className="table text-center">
                     <tr className="table-title">
-                        <th>Tiêu đề</th>
+                        <th>Tên đề tài</th>
                         <th>Ngày đăng ký</th>
                         <th>Số người thực hiện</th>
                         <th>Khoa</th>
                         <th>Sinh viên thực hiện</th>
-                        <th>Tiến trình</th>
+                        <th>Trạng thái</th>
                     </tr>
                 </thead>
                 <tbody className="table-content">
@@ -49,7 +49,7 @@ const TopicByLecturers = () => {
                             <td>{item.studentNumbers}</td>
                             <td>{item.department?.name}</td>
                             <td><td className="table-content"><StudentList studentList={item.students}/></td> </td>
-                            <td>{item.process?.name}</td>
+                            <td>{item.status?.name}</td>
                         </tr>
                     )
                     : 

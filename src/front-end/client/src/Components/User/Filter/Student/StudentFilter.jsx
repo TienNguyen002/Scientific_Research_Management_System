@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "bootstrap";
 import { Link } from "react-router-dom";
-import { getFilter } from "../../../Services/LecturerService";
+import { getFilter } from "../../../../Services/StudentService";
 import { useSelector, useDispatch } from "react-redux";
 import {
   reset,
   updateKeyword,
   updateDepartmentId,
-} from "../../../Redux/Lecturer";
+} from "../../../../Redux/Student";
 
-const LecturerFilter = () => {
-  const lecturerFilter = useSelector((state) => state.lecturerFilter),
-    dispatch = useDispatch(),
-    [filter, setFilter] = useState({
-      departmentList: [],
-    });
+const StudentFilter = () => {
+  const studentFilter = useSelector(state => state.studentFilter),
+      dispatch = useDispatch(),
+      [filter, setFilter] = useState({
+        departmentList: [],
+      })
 
   const handleReset = (e) => {
     dispatch(reset());
@@ -47,7 +47,7 @@ const LecturerFilter = () => {
           type="text"
           placeholder="Nhập từ khóa..."
           name="keyword"
-          value={lecturerFilter.keyword}
+          value={studentFilter.keyword}
           onChange={(e) => dispatch(updateKeyword(e.target.value))}
         />
       </Form.Group>
@@ -55,11 +55,11 @@ const LecturerFilter = () => {
         <Form.Label className="visually-hidden">DepartmentId</Form.Label>
         <Form.Select
           name="departmentId"
-          value={lecturerFilter.departmentId}
+          value={studentFilter.departmentId}
           onChange={(e) => dispatch(updateDepartmentId(e.target.value))}
           title="Department Id"
         >
-          <option value="">-- Chọn khoa --</option>
+          <option value="">-- Lọc theo khoa --</option>
           {filter.departmentList.length > 0 &&
             filter.departmentList.map((item, index) => (
               <option key={index} value={item.value}>
@@ -69,10 +69,10 @@ const LecturerFilter = () => {
         </Form.Select>
       </Form.Group>
       <Form.Group className="col-auto">
-        
+
       </Form.Group>
     </Form>
   );
 };
 
-export default LecturerFilter;
+export default StudentFilter;

@@ -5,7 +5,6 @@ const initialState = {
     departmentId: '',
     lecturerId: '',
     statusId: '',
-    processId: '',
     year: '',
     month: '',
 }
@@ -41,12 +40,6 @@ const topicFilterReducer = createSlice({
                 statusId: action.payload
             }
         },
-        updateProcessId: (state, action) => {
-            return {
-                ...state,
-                processId: action.payload
-            }
-        },
         updateMonth: (state, action) => {
             return {
                 ...state,
@@ -68,7 +61,6 @@ export const {
     updateDepartmentId,
     updateLecturerId,
     updateStatusId,
-    updateProcessId,
     updateMonth,
     updateYear
 } = topicFilterReducer.actions;

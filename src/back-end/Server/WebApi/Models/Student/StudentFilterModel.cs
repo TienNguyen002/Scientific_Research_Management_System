@@ -10,6 +10,7 @@ namespace WebApi.Models.Student
 
         [DisplayName("Khoa")]
         public int? DepartmentId { get; set; }
+        public string DepartmentSlug { get; set; }
 
         public IEnumerable<SelectListItem> DepartmentList { get; set; }
     }

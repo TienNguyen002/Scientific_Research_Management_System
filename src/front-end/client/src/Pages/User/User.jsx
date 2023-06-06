@@ -2,88 +2,96 @@ import React, { useEffect, useState } from "react";
 import { getStudentsFilter } from "../../Services/StudentService";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
 import "./style/user.scss";
-import StudentFilter from "../../Components/User/Filter/StudentFilter";
+import StudentFilter from "../../Components/User/Filter/Student/StudentFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
+import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const User = () => {
   const [studentsList, setStudentsList] = useState([]),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    studentFilter = useSelector(state => state.studentFilter);
+    studentFilter = useSelector((state) => state.studentFilter);
 
   let ps = 10,
     p = 1;
 
-  useEffect(
-    () => {
-      document.title = "Danh sách Sinh viên";
-      getStudentsFilter(studentFilter.keyword,
-        studentFilter.departmentId,
-        ps, p).then((data) => {
-        if (data) {
-          setStudentsList(data.items);
-        } else setStudentsList([]);
-        setIsVisibleLoading(false);
-      });
-    },
-    [studentFilter, ps, p]
-  );
+  useEffect(() => {
+    document.title = "Danh sách Sinh viên";
+    getStudentsFilter(
+      studentFilter.keyword,
+      studentFilter.departmentId,
+      ps,
+      p
+    ).then((data) => {
+      if (data) {
+        setStudentsList(data.items);
+      } else setStudentsList([]);
+      setIsVisibleLoading(false);
+    });
+  }, [studentFilter, ps, p]);
 
   return (
     <>
-      <h1>Danh sách Sinh viên</h1>
       <StudentFilter />
       {isVisibleLoading ? (
         <Loading />
       ) : (
-        <Table striped responsive bordered>
-          <thead className="table text-center">
-            <tr className="table-title">
-              <th>MSSV</th>
-              <th>Họ và tên</th>
-              <th>Email</th>
-              <th>Khoa</th>
-              <th>Lớp</th>
-              <th>Năm học</th>
-            </tr>
-          </thead>
-          <tbody className="table-content">
-            {studentsList.length > 0 ? (
-              studentsList.map((item, index) => (
-                <tr key={index}>
-                  <td>
-                    <Link className="content" to={`/sinh-vien/${item.urlSlug}`}>
-                      {item.studentId}
+        <div className="row department-item">
+          {studentsList.length > 0 ? (
+            studentsList.map((item, index) => (
+              <div className="col-6" key={index}>
+                <div className="item-card mt-3">
+                  <div className="d-flex card-content">
+                    <FontAwesomeIcon
+                      icon={faUser}
+                      fontSize={50}
+                      className="px-3 text-success"
+                    />
+                    <div className="d-flex flex-column">
+                      <Link
+                        className="text-success text-decoration-none"
+                        to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}
+                      >
+                        <div className="text-name">Họ tên: {item.fullName}</div>
+                      </Link>
+
+                      {item.email === null ? (
+                        <span className="text-danger">
+                          Email: Sinh viên chưa cập nhật email
+                        </span>
+                      ) : (
+                        <Link
+                          className="text-danger text-decoration-none"
+                          to={`mailto:${item.email}`}
+                        >
+                          Email: {item.email}
+                        </Link>
+                      )}
+                      <Link
+                        className="text-decoration-none"
+                        to={`/khoa/${item.department.urlSlug}`}
+                      >
+                        Khoa: {item.department.name}
+                      </Link>
+                    </div>
+                  </div>
+                  <div>
+                  <Link to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}>
+                      <Button>Xem chi tiết</Button>
                     </Link>
-                  </td>
-                  <td>
-                    <Link className="content" to={`/sinh-vien/${item.urlSlug}`}>
-                      {item.fullName}
-                    </Link>
-                  </td>
-                  <td>{item.email}</td>
-                  <td>
-                    <Link
-                      className="content"
-                      to={`/khoa/${item.department.urlSlug}`}
-                    >
-                      {item.department.name}
-                    </Link>
-                  </td>
-                  <td>{item.class}</td>
-                  <td>{item.year}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td>
-                  <h4>Không tìm thấy sinh viên nào</h4>
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <h2 className="text-warning text-center py-3">
+              Không tìm thấy sinh viên
+            </h2>
+          )}
+        </div>
       )}
     </>
   );

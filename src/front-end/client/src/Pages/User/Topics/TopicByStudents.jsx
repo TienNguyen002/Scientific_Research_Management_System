@@ -27,12 +27,12 @@ const TopicByStudents = () => {
             <Table striped responsive bordered>
                 <thead className="table text-center">
                     <tr className="table-title">
-                        <th>Tiêu đề</th>
+                        <th>Tên đề tài</th>
                         <th>Ngày đăng ký</th>
                         <th>Số người thực hiện</th>
                         <th>Khoa</th>
                         <th>Giảng viên</th>
-                        <th>Tiến trình</th>
+                        <th>Tra</th>
                     </tr>
                 </thead>
                 <tbody className="table-content">
@@ -49,10 +49,10 @@ const TopicByStudents = () => {
                             <td>{item.department.name}</td>
                             <td>
                                 <Link className="table-content" to={`/giang-vien/${item.lecturer.urlSlug}`}>
-                                    {item.lecturer.fullName}
+                                    {item.lecturer?.fullName}
                                 </Link>
                             </td>
-                            <td>{item.process.name}</td>
+                            <td>{item.status?.name}</td>
                         </tr>
                     )
                     : 

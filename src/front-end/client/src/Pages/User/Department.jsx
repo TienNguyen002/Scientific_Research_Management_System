@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { getDepartments } from "../../Services/DepartmentService";
 import { Link } from "react-router-dom";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./style/user.scss";
 
 const Department = () => {
@@ -20,31 +22,40 @@ const Department = () => {
 
   return (
     <>
-      <h1 className="text-center">Danh sách các khoa</h1>
-      <div className="container">
-        <div className="wrapper row">
+      <div className="department">
+        <h1 className="text danger text-center department">Danh sách Khoa</h1>
+      </div>
+      <div>
+        <div className="row department-item">
           {departments.length > 0 ? (
             departments.map((item, index) => (
-              <div className="col-4 card" key={index}>
-                <img
-                  src="https://du-lich-da-lat.com/wp-content/uploads/2022/03/Top-truong-Dai-hoc-Da-Lat.jpg"
-                  class="card-img-top"
-                  alt="..."
-                />
-                <div className="card-body text-center">
-                  <h5 className="card-title">{item.name}</h5>
-                  <Button className="btn">
-                    <Link to={`/khoa/${item.urlSlug}`} className="btn">Xem chi tiết</Link>
-                  </Button>
+              <div className="col-6" key={index}>
+                <div className="item-card mt-3 text-center">
+                  <div className="d-flex card-content">
+                    <FontAwesomeIcon
+                      icon={faHome}
+                      fontSize={50}
+                      className="px-3 text-success text-center"
+                    />
+                    <Link
+                      className="text-success text-decoration-none"
+                      to={`/khoa/${item.urlSlug}`}
+                    >
+                      <div className="text-name">{item.name}</div>
+                    </Link>
+                  </div>
+                  <div>
+                    <Link to={`/khoa/${item.urlSlug}`}>
+                      <Button>Xem chi tiết</Button>
+                    </Link>
+                  </div>
                 </div>
               </div>
             ))
           ) : (
-            <tr>
-              <td>
-                <h4>Không tìm thấy khoa nào</h4>
-              </td>
-            </tr>
+            <h2 className="text-warning text-center py-3">
+              Không tìm thấy đơn vị khoa
+            </h2>
           )}
         </div>
       </div>

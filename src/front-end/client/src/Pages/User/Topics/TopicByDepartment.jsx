@@ -28,11 +28,13 @@ const TopicByDepartment = () => {
             <Table striped responsive bordered>
                 <thead className="table text-center">
                     <tr className="table-title">
-                        <th>Tiêu đề</th>
-                        <th>Ngày đăng ký</th>
+                        <th>Tên đề tài</th>
+                        <th>Ngày thực hiện</th>
+                        <th>Ngày nghiệm thu</th>
                         <th>Số người thực hiện</th>
                         <th>Khoa</th>
                         <th>Giảng viên</th>
+                        <th>Sinh viên thực hiện</th>
                         <th>Trạng thái</th>
                     </tr>
                 </thead>
@@ -46,9 +48,11 @@ const TopicByDepartment = () => {
                                 <p className="shortDescription">{item.description}</p>
                             </td>
                             <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>
+                            <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
                             <td>{item.studentNumbers}</td>
                             <td>{item.department.name}</td>
-                            <td>{item.lecturer.fullName}</td>
+                            <td>{item.lecturer?.fullName}</td>
+                            <td className="table-content"><StudentList studentList={item.students}/></td>  
                             <td>{item.status.name}</td>
                         </tr>
                     )
