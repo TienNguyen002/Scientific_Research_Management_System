@@ -17,12 +17,6 @@ namespace Services.Apps.Others
         Task<Status> GetStatusByIdAsync(int id, CancellationToken cancellationToken = default);
         #endregion
 
-        #region Process
-        Task<IList<ProcessItem>> GetProcessAsync(CancellationToken cancellationToken = default);
-
-        Task<Process> GetProcessByIdAsync(int id, CancellationToken cancellationToken = default);
-        #endregion
-
         #region Role
         Task<IList<RoleItems>> GetAllRolesAsync(
             CancellationToken cancellationToken = default);

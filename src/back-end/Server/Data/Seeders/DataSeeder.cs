@@ -24,13 +24,12 @@ namespace Data.Seeders
             if (_context.Topics.Any()) return;
 
             var status = AddStatus();
-            var processes = AddProcesses();
             var departments = AddDepartments();
             var roles = AddRoles();
 
             var students = AddStudents(departments, roles);
             var lecturers = AddLecturers(departments, roles);
-            var topics = AddTopics(students, lecturers, departments, status, processes);
+            var topics = AddTopics(students, lecturers, departments, status);
         }
 
         private IList<Status> AddStatus()
@@ -47,6 +46,16 @@ namespace Data.Seeders
                     Name = "Đã đăng ký",
                     UrlSlug = "da-dang-ky"
                 },
+                new()
+                {
+                    Name = "Đã nghiệm thu",
+                    UrlSlug = "da-nghiem-thu"
+                },
+                new()
+                {
+                    Name = "Tạm dừng",
+                    UrlSlug = "tam-dung",
+                },
             };
             var statusAdd = new List<Status>();
             foreach (var item in status)
@@ -59,54 +68,6 @@ namespace Data.Seeders
             _context.AddRange(statusAdd);
             _context.SaveChanges();
             return status;
-        }
-
-        private IList<Process> AddProcesses()
-        {
-            var processes = new List<Process>()
-            {
-                new()
-                {
-                    Name = "Bắt đầu làm",
-                    UrlSlug = "bat-dau-lam"
-                },
-                new()
-                {
-                    Name = "Đang làm",
-                    UrlSlug = "dang-lam",
-                },
-                new()
-                {
-                    Name = "Tạm dừng",
-                    UrlSlug = "tam-dung",
-                },
-                new()
-                {
-                    Name = "Đang viết báo cáo",
-                    UrlSlug = "viet-bao-cao",
-                },
-                new()
-                {
-                    Name = "Chưa hoàn thành",
-                    UrlSlug = "chua-hoan-thanh"
-                },
-                new()
-                {
-                    Name = "Hoàn thành",
-                    UrlSlug = "hoan-thanh"
-                },
-            };
-            var processAdd = new List<Process>();
-            foreach (var process in processes)
-            {
-                if (!_context.Processes.Any(p => p.UrlSlug == process.UrlSlug))
-                {
-                    processAdd.Add(process);
-                }
-            }
-            _context.AddRange(processAdd);
-            _context.SaveChanges();
-            return processes;
         }
 
         private IList<Department> AddDepartments()
@@ -415,8 +376,7 @@ namespace Data.Seeders
             IList<Student> students,
             IList<Lecturer> lecturers,
             IList<Department> departments,
-            IList<Status> status,
-            IList<Process> processes)
+            IList<Status> status)
         {
             var topics = new List<Topic>()
             {
@@ -426,6 +386,7 @@ namespace Data.Seeders
                     UrlSlug = "nckh-cntt",
                     Description = "Nghiên cứu khoa học - CNTT",
                     RegistrationDate = new DateTime(2023, 4, 23),
+                    EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 3,
                     Price = "1,000,000 VNĐ",
                     Students = new List<Student>()
@@ -437,7 +398,6 @@ namespace Data.Seeders
                     Lecturer = lecturers[0],
                     Department = departments[0],
                     Status = status[1],
-                    Process = processes[0]
                 },
                 new()
                 {
@@ -445,6 +405,7 @@ namespace Data.Seeders
                     UrlSlug = "nckh-luat",
                     Description = "Nghiên cứu khoa học - Luật",
                     RegistrationDate = new DateTime(2023, 4, 23),
+                    EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
                     Price = "500,000 VNĐ",
                     Lecturer = lecturers[1],
@@ -457,6 +418,7 @@ namespace Data.Seeders
                     UrlSlug = "nckh-su-pham",
                     Description = "Nghiên cứu khoa học - Sư phạm",
                     RegistrationDate = new DateTime(2023, 4, 23),
+                    EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
                     Price = "500,000 VNĐ",
                     Lecturer = lecturers[2],
@@ -469,6 +431,7 @@ namespace Data.Seeders
                     UrlSlug = "nckh-du-lich",
                     Description = "Nghiên cứu khoa học - Du lịch",
                     RegistrationDate = new DateTime(2023, 4, 23),
+                    EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
                     Price = "500,000 VNĐ",
                     Lecturer = lecturers[3],
@@ -481,6 +444,7 @@ namespace Data.Seeders
                     UrlSlug = "nckh-ngoai-ngu",
                     Description = "Nghiên cứu khoa học - Ngoại ngữ",
                     RegistrationDate = new DateTime(2023, 4, 23),
+                    EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
                     Price = "500,000 VNĐ",
                     Lecturer = lecturers[4],
@@ -493,6 +457,7 @@ namespace Data.Seeders
                     UrlSlug = "nckh-nong-lam",
                     Description = "Nghiên cứu khoa học - Nông lâm",
                     RegistrationDate = new DateTime(2023, 4, 23),
+                    EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
                     Price = "500,000 VNĐ",
                     Lecturer = lecturers[5],

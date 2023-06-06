@@ -40,12 +40,12 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapPost("/", AddDepartment)
                 .WithName("AddDepartment")
-                .AddEndpointFilter<ValidatorFilter<DepartmentEditmodel>>()
+                .AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
                 .Produces<ApiResponse<DepartmentItems>>();
 
             routeGroupBuilder.MapPut("/{id:int}", UpdateDepartment)
                 .WithName("UpdateDepartment")
-                .AddEndpointFilter<ValidatorFilter<DepartmentEditmodel>>()
+                .AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
                 .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteDepartment)
@@ -93,7 +93,7 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> AddDepartment (
-            DepartmentEditmodel model,
+            DepartmentEditModel model,
             IDepartmentRepository departmentRepository,
             IMapper mapper)
         {
@@ -110,17 +110,23 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> UpdateDepartment(
-            int id, DepartmentEditmodel model,
+            int id, DepartmentEditModel model,
             IDepartmentRepository departmentRepository,
             IMapper mapper)
         {
+            var depart = await departmentRepository.GetDepartmentByIdAsync(id);
+            if (depart == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                    $"Không tìm thấy khoa có id {id}"));
+            }
             if (await departmentRepository.IsDepartmentExistBySlugAsync(0, model.UrlSlug))
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
                     $"Slug '{model.UrlSlug}' đã được sử dụng"));
             }
 
-            var depart = mapper.Map<Department>(model);
+            mapper.Map(model, depart);
             depart.Id = id;
 
             return await departmentRepository.AddOrUpdateDepartmentAsync(depart)

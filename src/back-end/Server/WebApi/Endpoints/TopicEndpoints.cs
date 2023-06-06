@@ -143,6 +143,10 @@ namespace WebApi.Endpoints
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
                     $"Không tìm thấy đề tài có id {id}"));
             }
+            if(model.EndDate == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Thời gian nghiệm thu không được để trống"));
+            }
             if (await departmentRepository.GetDepartmentByIdAsync(model.DepartmentId) == null)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy khoa có id = '{model.DepartmentId}' "));
@@ -191,12 +195,6 @@ namespace WebApi.Endpoints
                     Text = s.Name,
                     Value = s.Id.ToString(),
                 }),
-                ProcessList = (await appRepository.GetProcessAsync())
-                .Select(p =>  new SelectListItem()
-                {
-                    Text = p.Name,
-                    Value = p.Id.ToString(),
-                })
             };
             return Results.Ok(ApiResponse.Success(model));
         }

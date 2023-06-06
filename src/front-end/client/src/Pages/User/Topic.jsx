@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "./style/user.scss"
 import format from "date-fns/format";
 import {Button} from "react-bootstrap";
-import TopicFilter from "../../Components/User/Filter/TopicFilter"
+import TopicFilter from "../../Components/User/Filter/Topic/TopicFilter"
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 
@@ -36,7 +36,6 @@ const Topic = () => {
 
     return(
         <>
-            <h1>Đăng ký đề tài</h1>
             <TopicFilter/>
             {isVisibleLoading ? (
                 <Loading />
@@ -44,8 +43,9 @@ const Topic = () => {
             <Table striped responsive bordered>
                 <thead className="table text-center">
                     <tr className="table-title">
-                        <th>Tiêu đề</th>
+                        <th>Tên đề tài</th>
                         <th>Ngày đăng ký</th>
+                        <th>Ngày nghiệm thu</th>
                         <th>Số người thực hiện</th>
                         <th>Khoa</th>
                         <th>Giảng viên</th>
@@ -63,9 +63,10 @@ const Topic = () => {
                                 <p className="shortDescription">{item.description}</p>
                             </td>
                             <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>
+                            <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
                             <td>{item.studentNumbers}</td>
                             <td>{item.department.name}</td>
-                            <td>{item.lecturer.fullName}</td>
+                            <td>{item.lecturer?.fullName ? item.lecturer?.fullName : "Chưa có giảng viên hướng dẫn"}</td>
                             <td>{item.status.name}</td>
                             <td><Button>Đăng ký đề tài</Button></td>
                         </tr>

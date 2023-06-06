@@ -151,6 +151,7 @@ namespace WebApi.Endpoints
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không được bỏ trống"));
             }
             var student = mapper.Map<Student>(model);
+            student.RoleId = 1;
             await studentRepository.CreateStudentAccountAsync(student);
             return Results.Ok(ApiResponse.Success(mapper.Map<StudentAccount>(student), HttpStatusCode.Created));
         }

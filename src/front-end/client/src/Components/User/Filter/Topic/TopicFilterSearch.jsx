@@ -2,20 +2,20 @@ import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "bootstrap";
 import { Link } from "react-router-dom";
-import { getFilter } from "../../../Services/StudentService";
+import { getFilter } from "../../../../Services/TopicService";
 import { useSelector, useDispatch } from "react-redux";
 import {
   reset,
   updateKeyword,
   updateDepartmentId,
-} from "../../../Redux/Student";
+} from "../../../../Redux/Topic";
 
-const StudentFilter = () => {
-  const studentFilter = useSelector(state => state.studentFilter),
+const TopicFilterSearch = () => {
+  const topicFilter = useSelector(state => state.topicFilter),
       dispatch = useDispatch(),
       [filter, setFilter] = useState({
         departmentList: [],
-      })
+      });
 
   const handleReset = (e) => {
     dispatch(reset());
@@ -47,7 +47,7 @@ const StudentFilter = () => {
           type="text"
           placeholder="Nhập từ khóa..."
           name="keyword"
-          value={studentFilter.keyword}
+          value={topicFilter.keyword}
           onChange={(e) => dispatch(updateKeyword(e.target.value))}
         />
       </Form.Group>
@@ -55,11 +55,11 @@ const StudentFilter = () => {
         <Form.Label className="visually-hidden">DepartmentId</Form.Label>
         <Form.Select
           name="departmentId"
-          value={studentFilter.departmentId}
+          value={topicFilter.departmentId}
           onChange={(e) => dispatch(updateDepartmentId(e.target.value))}
           title="Department Id"
         >
-          <option value="">-- Chọn khoa --</option>
+          <option value="">-- Lọc theo khoa --</option>
           {filter.departmentList.length > 0 &&
             filter.departmentList.map((item, index) => (
               <option key={index} value={item.value}>
@@ -68,11 +68,8 @@ const StudentFilter = () => {
             ))}
         </Form.Select>
       </Form.Group>
-      <Form.Group className="col-auto">
-
-      </Form.Group>
     </Form>
   );
 };
 
-export default StudentFilter;
+export default TopicFilterSearch;

@@ -30,8 +30,7 @@ namespace Services.Apps.Topics
                 .Include(t => t.Department)
                 .Include(t => t.Lecturer)
                 .Include(t => t.Students)
-                .Include(t => t.Status)
-                .Include(t => t.Process);
+                .Include(t => t.Status);
             return await topics
                 .OrderBy(t => t.Title)
                 .Select(t => new TopicItem()
@@ -44,7 +43,6 @@ namespace Services.Apps.Topics
                     Lecturer = t.Lecturer.FullName,
                     Students = t.Students.ToString(),
                     Status = t.Status.Name,
-                    Process = t.Process.Name,
                 })
                 .ToListAsync(cancellationToken);
         }
@@ -60,7 +58,6 @@ namespace Services.Apps.Topics
                 .Include(t => t.Lecturer)
                 .Include(t => t.Students)
                 .Include(t => t.Status)
-                .Include(t => t.Process)
                 .Where(t => t.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -83,7 +80,6 @@ namespace Services.Apps.Topics
                 .Include(t => t.Lecturer)
                 .Include(t => t.Students)
                 .Include(t => t.Status)
-                .Include(t => t.Process)
                 .Where(t => t.UrlSlug == slug)
                 .FirstOrDefaultAsync(cancellationToken);
         }
@@ -94,8 +90,7 @@ namespace Services.Apps.Topics
                 .Include(t => t.Department)
                 .Include(t => t.Lecturer)
                 .Include(t => t.Students)
-                .Include(t => t.Status)
-                .Include(t => t.Process);
+                .Include(t => t.Status);
             if (!string.IsNullOrEmpty(query.Keyword))
             {
                 topicQuery = topicQuery.Where(t => t.Title.Contains(query.Keyword)
@@ -122,19 +117,23 @@ namespace Services.Apps.Topics
             {
                 topicQuery = topicQuery.Where(t => t.StatusId == query.StatusId);
             }
-            if(query.ProcessId > 0)
-            {
-                topicQuery = topicQuery.Where(t => t.ProcessId == query.ProcessId);
-            }
             if(query.RegistrationMonth > 0)
             {
                 topicQuery = topicQuery.Where(t => t.RegistrationDate.Month == query.RegistrationMonth);
+            }
+            if (query.EndMonth > 0)
+            {
+                topicQuery = topicQuery.Where(t => t.EndDate.Month == query.EndMonth);
             }
             if (query.RegistrationYear > 0)
             {
                 topicQuery = topicQuery.Where(t => t.RegistrationDate.Year == query.RegistrationYear);
             }
-            if(query.StudentNumbers > 0)
+            if (query.EndYear > 0)
+            {
+                topicQuery = topicQuery.Where(t => t.EndDate.Year == query.EndYear);
+            }
+            if (query.StudentNumbers > 0)
             {
                 topicQuery = topicQuery.Where(t => t.StudentNumbers == query.StudentNumbers);
             }
@@ -189,7 +188,6 @@ namespace Services.Apps.Topics
                 .Include(t => t.Lecturer)
                 .Include(t => t.Students)
                 .Include(t => t.Status)
-                .Include(t => t.Process)
                 .Where(t => t.Id == id)
                 .FirstOrDefaultAsync(cancellationToken);
             if(topicToDelete == null)

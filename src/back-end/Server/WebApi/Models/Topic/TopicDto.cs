@@ -24,6 +24,5 @@ namespace WebApi.Models.Topic
         public LecturerDto Lecturer { get; set; }
         public IList<StudentDto> Students { get; set; }
         public StatusDto Status { get; set; }
-        public ProcessDto Process { get; set; }
     }
 }

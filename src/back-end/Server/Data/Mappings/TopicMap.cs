@@ -44,6 +44,9 @@ namespace Data.Mappings
             builder.Property(t => t.Price)
                 .IsRequired();
 
+            builder.Property(t => t.ViewCount)
+                .HasMaxLength(10);
+
             builder.Property(t => t.OutlineUrl)
                 .HasMaxLength(10000);
 
@@ -69,12 +72,6 @@ namespace Data.Mappings
                 .WithMany(t => t.Topics)
                 .HasForeignKey(s => s.StatusId)
                 .HasConstraintName("FK_Topics_Status")
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(p => p.Process)
-                .WithMany(t => t.Topics)
-                .HasForeignKey(p => p.Process)
-                .HasConstraintName("FK_Topics_Processes")
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(s => s.Students)

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { Button } from "bootstrap";
 import { Link } from "react-router-dom";
-import { getFilter } from "../../../Services/TopicService";
+import { getFilter } from "../../../../Services/TopicService";
 import { useSelector, useDispatch } from "react-redux";
 import {
   reset,
@@ -11,7 +11,7 @@ import {
   updateLecturerId,
   updateMonth,
   updateYear,
-} from "../../../Redux/Topic";
+} from "../../../../Redux/Topic";
 
 const TopicFilter = () => {
   const topicFilter = useSelector((state) => state.topicFilter),
@@ -68,7 +68,7 @@ const TopicFilter = () => {
           onChange={(e) => dispatch(updateDepartmentId(e.target.value))}
           title="Department Id"
         >
-          <option value="">-- Chọn khoa --</option>
+          <option value="">-- Lọc theo khoa --</option>
           {filter.departmentList.length > 0 &&
             filter.departmentList.map((item, index) => (
               <option key={index} value={item.value}>
@@ -85,7 +85,7 @@ const TopicFilter = () => {
           onChange={(e) => dispatch(updateLecturerId(e.target.value))}
           title="Lecturer Id"
         >
-          <option value="">-- Chọn giảng viên --</option>
+          <option value="">-- Lọc theo giảng viên --</option>
           {filter.lecturerList.length > 0 &&
             filter.lecturerList.map((item, index) => (
               <option key={index} value={item.value}>
@@ -98,7 +98,7 @@ const TopicFilter = () => {
         <Form.Label className="visually-hidden">Year</Form.Label>
         <Form.Control
           type="number"
-          placeholder="Nhập năm ..."
+          placeholder="Lọc theo năm đăng ký..."
           name="year"
           value={topicFilter.year}
           max={topicFilter.year}
@@ -113,7 +113,7 @@ const TopicFilter = () => {
           onChange={(e) => dispatch(updateMonth(e.target.value))}
           title="Month"
         >
-          <option value="">-- Chọn tháng --</option>
+          <option value="">-- Lọc theo tháng đăng ký --</option>
           {filter.monthList.length > 0 &&
             filter.monthList.map((item, index) => (
               <option key={index} value={item.value}>

@@ -12,7 +12,6 @@ namespace Data.Contexts
     {
         public DbSet<Department> Departments { get; set; }
         public DbSet<Lecturer> Lecturers { get; set; }
-        public DbSet<Process> Processes { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Topic> Topics { get; set; }

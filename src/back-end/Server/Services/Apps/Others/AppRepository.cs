@@ -43,27 +43,6 @@ namespace Services.Apps.Others
         }
         #endregion
 
-        #region Process
-        public async Task<IList<ProcessItem>> GetProcessAsync(CancellationToken cancellationToken = default)
-        {
-            IQueryable<Process> process = _context.Set<Process>();
-            return await process
-                .OrderBy(s => s.Name)
-                .Select(s => new ProcessItem()
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    UrlSlug = s.UrlSlug,
-                })
-                .ToListAsync(cancellationToken);
-        }
-
-        public async Task<Process> GetProcessByIdAsync(int id, CancellationToken cancellationToken = default)
-        {
-            return await _context.Set<Process>().FindAsync(id);
-        }
-        #endregion
-
         #region Role
         public async Task<IList<RoleItems>> GetAllRolesAsync(CancellationToken cancellationToken = default)
         {

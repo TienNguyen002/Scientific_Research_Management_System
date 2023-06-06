@@ -1,5 +1,6 @@
 ﻿using Core.Contracts;
 using Core.DTO.Lecturer;
+using Core.DTO.Student;
 using Core.Entities;
 using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
@@ -89,6 +90,10 @@ namespace Services.Apps.Lecturers
             if(query.DepartmentId > 0)
             {
                 lecturerQuery = lecturerQuery.Where(l => l.DepartmentId == query.DepartmentId);
+            }
+            if (!string.IsNullOrWhiteSpace(query.DepartmentSlug))
+            {
+                lecturerQuery = lecturerQuery.Where(x => x.Department.UrlSlug.Contains(query.DepartmentSlug));
             }
             return lecturerQuery;
         }

@@ -26,20 +26,6 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Processes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UrlSlug = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Processes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -144,16 +130,16 @@ namespace Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegistrationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StudentNumbers = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OutlineUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ResultUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ViewCount = table.Column<int>(type: "int", nullable: false),
                     Point = table.Column<int>(type: "int", nullable: false),
                     DepartmentId = table.Column<int>(type: "int", nullable: false),
                     LecturerId = table.Column<int>(type: "int", nullable: true),
-                    StatusId = table.Column<int>(type: "int", nullable: false),
-                    ProcessId = table.Column<int>(type: "int", nullable: true)
+                    StatusId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,11 +154,6 @@ namespace Data.Migrations
                         name: "FK_Topics_Lecturers_LecturerId",
                         column: x => x.LecturerId,
                         principalTable: "Lecturers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Topics_Processes_ProcessId",
-                        column: x => x.ProcessId,
-                        principalTable: "Processes",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Topics_Status_StatusId",
@@ -242,11 +223,6 @@ namespace Data.Migrations
                 column: "LecturerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Topics_ProcessId",
-                table: "Topics",
-                column: "ProcessId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Topics_StatusId",
                 table: "Topics",
                 column: "StatusId");
@@ -266,9 +242,6 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Lecturers");
-
-            migrationBuilder.DropTable(
-                name: "Processes");
 
             migrationBuilder.DropTable(
                 name: "Status");
