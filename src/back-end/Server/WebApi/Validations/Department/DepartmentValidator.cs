@@ -9,9 +9,9 @@ namespace WebApi.Validations.Department
         {
             RuleFor(l => l.Name)
                 .NotEmpty()
-                .WithMessage("Name không được để trống")
+                .WithMessage("Tên khoa không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("Name chỉ tối đa 1000 ký tự");
+                .WithMessage("Tên khoa chỉ tối đa 1000 ký tự");
         }
     }
 }

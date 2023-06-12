@@ -21,12 +21,17 @@ namespace Services.Apps.Students
         Task<bool> DeleteStudentByIdAsync(int id, CancellationToken cancellationToken = default);
 
         Task<Student> GetStudentBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default);
+
         Task<bool> UpdateStudentAsync(Student student, CancellationToken cancellationToken = default);
+
         Task<Student> GetStudentByIdAsync(int id, bool includeDetails = false, CancellationToken cancellationToken = default);
 
         Task<bool> IsStudentEmailExitedAsync(int id, string email, CancellationToken cancellationToken = default);
 
+        Task<bool> IsStudentExistByFullNameAsync(int id, string fullName, CancellationToken cancellationToken = default);
+
         Task<bool> CreateStudentAccountAsync(Student student, CancellationToken cancellationToken = default);
+
         Task<bool> GetStudentPasswordBySlugAsync(string slug, string password, CancellationToken cancellationToken = default);
     }
 }

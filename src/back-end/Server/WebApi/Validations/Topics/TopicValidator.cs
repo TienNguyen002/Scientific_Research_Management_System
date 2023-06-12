@@ -29,7 +29,7 @@ namespace WebApi.Validations.Topics
 
             RuleFor(x => x.Price)
                 .MaximumLength(100000)
-                .WithMessage("Số tiền chỉ tối đa 1000 ký tự");
+                .WithMessage("Chi phí chỉ tối đa 1000 ký tự");
 
             RuleFor(x => x.DepartmentId)
                 .NotEmpty()

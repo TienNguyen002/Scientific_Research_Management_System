@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Services.Apps.Departments;
 using Services.Apps.Lecturers;
 using Services.Apps.Others;
+using Services.Apps.Students;
 using Services.Apps.Topics;
 using Services.Media;
 using System.Net;
@@ -59,6 +60,11 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
                 .WithName("GetTopicFilter")
                 .Produces<ApiResponse<TopicFilterModel>>();
+
+            routeGroupBuilder.MapPut("/register/id:int", RegisterTopic)
+                  .WithName("RegisterTopic")
+                  .AddEndpointFilter<ValidatorFilter<TopicAddStudent>>()
+                  .Produces<ApiResponse<string>>();
         }
 
         private static async Task<IResult> GetAllTopic(
@@ -197,6 +203,28 @@ namespace WebApi.Endpoints
                 }),
             };
             return Results.Ok(ApiResponse.Success(model));
+        }
+
+        private static async Task<IResult> RegisterTopic(
+            int id,
+            TopicAddStudent model,
+            IMapper mapper,
+            ITopicRepository topicRepository,
+            IStudentRepository studentRepository,
+            IMediaManager mediaManager)
+        {
+            var topic = await topicRepository.GetTopicByIdAsync(id, true);
+            if (topic == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                        $"Không tìm thấy đề tài có slug {id}"));
+            }
+            mapper.Map(model, topic);
+            topic.Id = id;
+
+            return await topicRepository.RegisterTopic(topic, model.GetSelectedStudents())
+                ? Results.Ok(ApiResponse.Success($"Đăng ký thành công"))
+               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có slug {id}"));
         }
     }
 }

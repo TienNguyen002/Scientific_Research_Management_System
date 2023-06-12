@@ -1,9 +1,11 @@
-﻿using Core.Contracts;
+﻿using Azure;
+using Core.Contracts;
 using Core.DTO.Topic;
 using Core.Entities;
 using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Services.Apps.Students;
 using Services.Extensions;
 using SlugGenerator;
 using System;
@@ -197,6 +199,52 @@ namespace Services.Apps.Topics
             _context.Remove(topicToDelete);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        public async Task<bool> RegisterTopic(Topic topic, IEnumerable<string> students, CancellationToken cancellationToken = default)
+        {
+            if(topic.Id > 0)
+            {
+                await _context.Entry(topic).Collection(t => t.Students).LoadAsync(cancellationToken);
+            }
+            else
+            {
+                topic.Students = new List<Student>();
+            }
+            var validStudents = students.Where(x => !string.IsNullOrWhiteSpace(x))
+                .Select(x => new
+                {
+                    Name = x,
+                    Slug = x.GenerateSlug()
+                })
+                .GroupBy(x => x.Slug)
+                .ToDictionary(g => g.Key, g => g.First().Name);
+
+
+            foreach (var kv in validStudents)
+            {
+                if (topic.Students.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
+
+                var student = await GetStudentBySlugAsync(kv.Key, cancellationToken) ?? new Student()
+                {
+                    FullName = kv.Value,
+                    UrlSlug = kv.Key
+                };
+                if(student == null) { return false; }
+                topic.Students.Add(student);
+            }
+
+            topic.Students = topic.Students.Where(t => validStudents.ContainsKey(t.UrlSlug)).ToList();
+            _context.Update(topic);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        private async Task<Student> GetStudentBySlugAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>()
+                .Include(x => x.Topics)
+                .Where(x => x.UrlSlug == slug)
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

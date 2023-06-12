@@ -27,5 +27,7 @@ namespace Services.Apps.Topics
         Task<bool> AddOrUpdateTopicAsync(Topic topic, CancellationToken cancellationToken = default);
 
         Task<bool> RemoveTopicAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<bool> RegisterTopic(Topic topic, IEnumerable<string> students, CancellationToken cancellationToken = default);
     }
 }

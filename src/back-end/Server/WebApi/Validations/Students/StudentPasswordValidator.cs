@@ -9,21 +9,21 @@ namespace WebApi.Validations.Students
         {
             RuleFor(x => x.NewPassword)
                 .NotEmpty()
-                .WithMessage("Password không được để trống")
+                .WithMessage("Mật khẩu mới không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("Password chỉ tối đa 1000 ký tự");
+                .WithMessage("Mật khẩu mới chỉ tối đa 1000 ký tự");
 
             RuleFor(x => x.Password)
                 .NotEmpty()
-                .WithMessage("Password không được để trống")
+                .WithMessage("Mật khẩu cũ không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("Password chỉ tối đa 1000 ký tự");
+                .WithMessage("Mật khẩu cũ chỉ tối đa 1000 ký tự");
 
             RuleFor(x => x.ConfirmPassword)
                 .NotEmpty()
-                .WithMessage("Password không được để trống")
+                .WithMessage("Mật khẩu xác nhận không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("Password chỉ tối đa 1000 ký tự");
+                .WithMessage("Mật khẩu xác nhận chỉ tối đa 1000 ký tự");
         }
     }
 }

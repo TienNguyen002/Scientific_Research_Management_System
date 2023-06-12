@@ -9,31 +9,31 @@ namespace WebApi.Validations.Lecturers
         {
             RuleFor(l => l.FullName)
                 .NotEmpty()
-                .WithMessage("FullName không được để trống")
+                .WithMessage("Họ và tên không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("FullName chỉ tối đa 1000 ký tự");
+                .WithMessage("Họ và tên chỉ tối đa 1000 ký tự");
 
             RuleFor(l => l.UrlSlug)
                 .MaximumLength(1000)
-                .WithMessage("FullName chỉ tối đa 1000 ký tự");
+                .WithMessage("UrlSlug chỉ tối đa 1000 ký tự");
 
             RuleFor(l => l.Qualification)
                 .NotEmpty()
-                .WithMessage("FullName không được để trống")
+                .WithMessage("Trình độ không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("FullName chỉ tối đa 1000 ký tự");
+                .WithMessage("Trình độ chỉ tối đa 1000 ký tự");
 
             RuleFor(l => l.DoB)
                 .GreaterThan(DateTime.MinValue)
-                .WithMessage("Ngày tham gia không hợp lệ");
+                .WithMessage("Ngày sinh không hợp lệ");
 
             RuleFor(l => l.DepartmentId)
                 .NotEmpty()
-                .WithMessage("FullName không được để trống");
+                .WithMessage("Khoa không được để trống");
 
             RuleFor(l => l.RoleId)
                 .NotEmpty()
-                .WithMessage("FullName không được để trống");
+                .WithMessage("Role không được để trống");
         }
     }
 }

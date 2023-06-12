@@ -134,6 +134,15 @@ namespace Services.Apps.Students
                 .AnyAsync(x => x.Id != id && x.Email == email, cancellationToken);
         }
 
+        public async Task<bool> IsStudentExistByFullNameAsync(
+            int id,
+            string fullName,
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>()
+                .AnyAsync(c => c.Id == id && c.FullName == fullName, cancellationToken);
+        }
+
         public async Task<bool> CreateStudentAccountAsync(Student student, CancellationToken cancellationToken = default)
         {
             student.UrlSlug = student.FullName.GenerateSlug();
@@ -146,7 +155,5 @@ namespace Services.Apps.Students
             return await _context.Set<Student>()
                 .AnyAsync(x => x.UrlSlug == slug && x.Password != password, cancellationToken);
         }
-
-       
     }
 }
