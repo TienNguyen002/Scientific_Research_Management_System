@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using WebApi.Models.Student.Account;
+using WebApi.Models.Account;
 
-namespace WebApi.Validations.Students
+namespace WebApi.Validations.Account
 {
-    public class StudentPasswordValidator : AbstractValidator<StudentPassword>
+    public class PasswordValidator : AbstractValidator<PasswordRequest>
     {
-        public StudentPasswordValidator() 
+        public PasswordValidator()
         {
             RuleFor(x => x.NewPassword)
                 .NotEmpty()

@@ -1,6 +1,6 @@
-﻿namespace WebApi.Models.Lecturer.Account
+﻿namespace WebApi.Models.Account
 {
-    public class LecturerAccount
+    public class AccountDto
     {
         public int Id { get; set; }
         public string FullName { get; set; }

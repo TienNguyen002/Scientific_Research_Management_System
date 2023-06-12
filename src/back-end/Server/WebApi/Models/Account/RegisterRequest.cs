@@ -1,6 +1,6 @@
-﻿namespace WebApi.Models.Lecturer.Account
+﻿namespace WebApi.Models.Account
 {
-    public class LecturerCreateAccount
+    public class RegisterRequest
     {
         public string FullName { get; set; }
         public string Email { get; set; }

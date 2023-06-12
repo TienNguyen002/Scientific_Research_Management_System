@@ -11,8 +11,8 @@ using Services.Apps.Lecturers;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
+using WebApi.Models.Account;
 using WebApi.Models.Lecturer;
-using WebApi.Models.Lecturer.Account;
 using WebApi.Models.Student;
 
 namespace WebApi.Endpoints
@@ -41,8 +41,8 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapPost("/", CreateAccount)
                 .WithName("CreateAccount")
-                .AddEndpointFilter<ValidatorFilter<LecturerCreateAccount>>()
-                .Produces<ApiResponse<LecturerAccount>>();
+                .AddEndpointFilter<ValidatorFilter<RegisterRequest>>()
+                .Produces<ApiResponse<AccountDto>>();
 
             routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInformation)
                 .WithName("ChangeInformation")
@@ -51,7 +51,7 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/change-password", ChangePassword)
                 .WithName("ChangePassword")
-                .AddEndpointFilter<ValidatorFilter<LecturerPassword>>()
+                .AddEndpointFilter<ValidatorFilter<PasswordRequest>>()
                 .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteLecturer)
@@ -105,7 +105,7 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> CreateAccount(
-            LecturerCreateAccount model,
+            RegisterRequest model,
             ILecturerRepository lecturerRepository,
             IMapper mapper)
         {
@@ -123,7 +123,7 @@ namespace WebApi.Endpoints
             }
             var lecturer = mapper.Map<Lecturer>(model);
             await lecturerRepository.CreateLecturerAccountAsync(lecturer);
-            return Results.Ok(ApiResponse.Success(mapper.Map<LecturerAccount>(lecturer), HttpStatusCode.Created));
+            return Results.Ok(ApiResponse.Success(mapper.Map<AccountDto>(lecturer), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> ChangeInformation(
@@ -146,7 +146,7 @@ namespace WebApi.Endpoints
 
         private static async Task<IResult> ChangePassword(
             string slug,
-            LecturerPassword model,
+            PasswordRequest model,
             IMapper mapper,
             ILecturerRepository lecturerRepository)
         {

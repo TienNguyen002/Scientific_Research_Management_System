@@ -1,31 +1,31 @@
 ﻿using FluentValidation;
-using WebApi.Models.Student.Account;
+using WebApi.Models.Account;
 
-namespace WebApi.Validations.Students
+namespace WebApi.Validations.Account
 {
-    public class StudentAccountValidator : AbstractValidator<StudentCreateccount>
+    public class RegisterValidator : AbstractValidator<RegisterRequest>
     {
-        public StudentAccountValidator() 
+        public RegisterValidator()
         {
-            RuleFor(x => x.Email)
+            RuleFor(l => l.Email)
                 .NotEmpty()
                 .WithMessage("Email không được để trống")
                 .MaximumLength(1000)
                 .WithMessage("Email chỉ tối đa 1000 ký tự");
 
-            RuleFor(x => x.Password)
+            RuleFor(l => l.Password)
                 .NotEmpty()
                 .WithMessage("Mật khẩu không được để trống")
                 .MaximumLength(1000)
                 .WithMessage("Mật khẩu chỉ tối đa 1000 ký tự");
 
-            RuleFor(x => x.ConfirmPassword)
+            RuleFor(l => l.ConfirmPassword)
                 .NotEmpty()
                 .WithMessage("Mật khẩu xác nhận không được để trống")
                 .MaximumLength(1000)
                 .WithMessage("Mật khẩu xác nhận chỉ tối đa 1000 ký tự");
 
-            RuleFor(x => x.FullName)
+            RuleFor(l => l.FullName)
                 .NotEmpty()
                 .WithMessage("Họ và tên không được để trống")
                 .MaximumLength(1000)

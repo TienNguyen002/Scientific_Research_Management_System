@@ -11,11 +11,11 @@ using WebApi.Models.Student;
 using System.Net;
 using Mapster;
 using WebApi.Filters;
-using WebApi.Models.Student.Account;
 using Core.Entities;
 using Services.Apps.Others;
 using Services.Apps.Departments;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WebApi.Models.Account;
 
 namespace WebApi.Endpoints
 {
@@ -52,12 +52,12 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapPost("/", CreateAccount)
                 .WithName("CreateStudentAccount")
-                .AddEndpointFilter<ValidatorFilter<StudentCreateccount>>()
-                .Produces<ApiResponse<StudentAccount>>();
+                .AddEndpointFilter<ValidatorFilter<RegisterRequest>>()
+                .Produces<ApiResponse<AccountDto>>();
 
             routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/change-password", ChangePassword)
                 .WithName("ChangeStudentPassword")
-                .AddEndpointFilter<ValidatorFilter<StudentPassword>>()
+                .AddEndpointFilter<ValidatorFilter<PasswordRequest>>()
                 .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
@@ -134,7 +134,7 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> CreateAccount(
-            StudentCreateccount model,
+            RegisterRequest model,
             IStudentRepository studentRepository,
             IMapper mapper)
         {
@@ -153,12 +153,12 @@ namespace WebApi.Endpoints
             var student = mapper.Map<Student>(model);
             student.RoleId = 1;
             await studentRepository.CreateStudentAccountAsync(student);
-            return Results.Ok(ApiResponse.Success(mapper.Map<StudentAccount>(student), HttpStatusCode.Created));
+            return Results.Ok(ApiResponse.Success(mapper.Map<AccountDto>(student), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> ChangePassword(
             string slug,
-            StudentPassword model,
+            PasswordRequest model,
             IMapper mapper,
             IStudentRepository studentRepository)
         {
