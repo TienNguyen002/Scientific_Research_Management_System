@@ -200,10 +200,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011928",
-                    FullName = "Test 1",
+                    FullName = "Lê Đức Anh",
                     Email = "2011928@dlu.edu.vn",
                     Password = "password",
-                    UrlSlug = "test-1",
+                    UrlSlug = "le-duc-anh",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Luật",
@@ -215,10 +215,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011927",
-                    FullName = "Test 2",
+                    FullName = "Đinh Văn Thanh Phước Khoa",
                     Email = "2011927@dlu.edu.vn",
                     Password = "password",
-                    UrlSlug = "test-2",
+                    UrlSlug = "dinh-van-thanh-phuoc-khoa",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Sư phạm",
@@ -230,10 +230,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011926",
-                    FullName = "Test 3",
+                    FullName = "Nguyễn Văn Thuận",
                     Email = "2011926@dlu.edu.vn",
                     Password = "password",
-                    UrlSlug = "test-3",
+                    UrlSlug = "nguyen-van-thuan",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Du lịch",
@@ -245,7 +245,7 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011925",
-                    FullName = "Test 4",
+                    FullName = "Trần Thái Linh",
                     Email = "2011925@dlu.edu.vn",
                     Password = "password",
                     UrlSlug = "test-4",
@@ -260,10 +260,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011924",
-                    FullName = "Test 5",
+                    FullName = "Nguyễn Minh Hoàng",
                     Email = "2011924@dlu.edu.vn",
                     Password = "password",
-                    UrlSlug = "test-5",
+                    UrlSlug = "nguyen-minh-hoang",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Nông lâm",
@@ -294,10 +294,10 @@ namespace Data.Seeders
             {
                 new()
                 {
-                    FullName = "GV1",
-                    Email = "gv1@dlu.edu.vn",
+                    FullName = "Lê Hoàng Nghĩa",
+                    Email = "nghiahoang@dlu.edu.vn",
                     Password = "Password",
-                    UrlSlug = "gv1",
+                    UrlSlug = "le-hoang-nghia",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[0],
@@ -305,10 +305,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV2",
-                    Email = "gv2@dlu.edu.vn",
+                    FullName = "Nguyễn Phương",
+                    Email = "nguyenphuong@dlu.edu.vn",
                     Password = "Password",
-                    UrlSlug = "gv2",
+                    UrlSlug = "nguyen-phuong",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[1],
@@ -316,10 +316,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV3",
-                    Email = "gv3@dlu.edu.vn",
+                    FullName = "Lê Hải",
+                    Email = "lehai@dlu.edu.vn",
                     Password = "Password",
-                    UrlSlug = "gv3",
+                    UrlSlug = "le-hai",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[2],
@@ -327,10 +327,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV4",
-                    Email = "gv4@dlu.edu.vn",
+                    FullName = "Lê Thanh Tịnh",
+                    Email = "thanhtinh@dlu.edu.vn",
                     Password = "Password",
-                    UrlSlug = "gv4",
+                    UrlSlug = "le-thanh-tinh",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[3],
@@ -338,10 +338,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV5",
-                    Email = "gv5@dlu.edu.vn",
+                    FullName = "Nguyễn Đức Anh",
+                    Email = "ducanhnguyen@dlu.edu.vn",
                     Password = "Password",
-                    UrlSlug = "gv5",
+                    UrlSlug = "nguyen-duc-anh",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[4],
@@ -349,10 +349,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV6",
-                    Email = "gv6@dlu.edu.vn",
+                    FullName = "Phan Sĩ Phương",
+                    Email = "siphuong@dlu.edu.vn",
                     Password = "Password",
-                    UrlSlug = "gv6",
+                    UrlSlug = "phan-si-phuong",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[5],
