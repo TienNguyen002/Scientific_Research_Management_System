@@ -26,6 +26,7 @@ namespace Data.Seeders
             var status = AddStatus();
             var departments = AddDepartments();
             var roles = AddRoles();
+            var feedbacks = AddFeedbacks();
 
             var students = AddStudents(departments, roles);
             var lecturers = AddLecturers(departments, roles);
@@ -144,6 +145,21 @@ namespace Data.Seeders
             _context.AddRange(roleAdd);
             _context.SaveChanges();
             return roles;
+        }
+
+        private IList<Feedback> AddFeedbacks()
+        {
+            var feedbacks = new List<Feedback>()
+            {
+                new()
+                {
+                    Username = "Nguyễn Ngọc Minh Tiến",
+                    Content = "."
+                },
+            };
+            _context.AddRange(feedbacks);
+            _context.SaveChanges();
+            return feedbacks;
         }
 
         private IList<Student> AddStudents(

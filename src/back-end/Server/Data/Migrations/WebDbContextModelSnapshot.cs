@@ -41,6 +41,25 @@ namespace Data.Migrations
                     b.ToTable("Departments");
                 });
 
+            modelBuilder.Entity("Core.Entities.Feedback", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Feedbacks");
+                });
+
             modelBuilder.Entity("Core.Entities.Lecturer", b =>
                 {
                     b.Property<int>("Id")

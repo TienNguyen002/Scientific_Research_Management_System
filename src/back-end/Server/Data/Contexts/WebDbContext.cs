@@ -16,6 +16,7 @@ namespace Data.Contexts
         public DbSet<Student> Students { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         public WebDbContext(DbContextOptions<WebDbContext> options) : base(options) { }
 
