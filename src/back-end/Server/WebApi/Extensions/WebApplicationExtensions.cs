@@ -11,7 +11,7 @@ using Services.Apps.Students;
 using Services.Apps.Departments;
 using Core.Entities;
 using Services.Apps.Topics;
-
+using Services.Apps.Feedbacks;
 
 namespace TatBlog.WebApi.Extensions
 {
@@ -35,7 +35,7 @@ namespace TatBlog.WebApi.Extensions
             builder.Services.AddScoped<IStudentRepository, StudentRepository>();
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             builder.Services.AddScoped<ITopicRepository, TopicRepository>();
-
+            builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 
             return builder;
         }

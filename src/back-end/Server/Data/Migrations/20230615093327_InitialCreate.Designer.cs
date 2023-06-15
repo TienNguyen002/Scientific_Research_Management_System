@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(WebDbContext))]
-    [Migration("20230615085552_InitialCreate")]
+    [Migration("20230615093327_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,6 +54,9 @@ namespace Data.Migrations
 
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");

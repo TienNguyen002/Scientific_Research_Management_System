@@ -34,7 +34,7 @@ namespace Services.Apps.Topics
                 .Include(t => t.Students)
                 .Include(t => t.Status);
             return await topics
-                .OrderBy(t => t.Title)
+                .OrderBy(t => t.RegistrationDate)
                 .Select(t => new TopicItem()
                 {
                     Id = t.Id,

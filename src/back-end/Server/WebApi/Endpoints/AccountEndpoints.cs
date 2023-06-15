@@ -24,7 +24,6 @@ namespace WebApi.Endpoints
             ILecturerRepository lecturerRepository,
             IMapper mapper)
         {
-           
             return Results.Ok(ApiResponse.Success("Ok"));
         }
     }

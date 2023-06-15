@@ -21,9 +21,12 @@ namespace Data.Mappings
                 .IsRequired()
                 .HasMaxLength(100);
 
-            builder.Property(d => d.Content)
+            builder.Property(f => f.Content)
                 .IsRequired()
                 .HasMaxLength(1000);
+
+            builder.Property(f => f.CreateDate)
+                .HasColumnType("datetime");
         }
     }
 }

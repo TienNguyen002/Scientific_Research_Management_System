@@ -6,7 +6,6 @@ using Mapster;
 using MapsterMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Hosting;
 using Services.Apps.Departments;
 using Services.Apps.Lecturers;
 using Services.Apps.Others;
@@ -16,7 +15,6 @@ using Services.Media;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
-using WebApi.Models.Student;
 using WebApi.Models.Topic;
 
 namespace WebApi.Endpoints
@@ -44,12 +42,12 @@ namespace WebApi.Endpoints
                   .Produces<ApiResponse<TopicDto>>();
 
             routeGroupBuilder.MapPost("/", AddTopic)
-                .WithName("AddCourse")
+                .WithName("AddTopic")
                 .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
                 .Produces<ApiResponse<TopicDto>>();
 
             routeGroupBuilder.MapPut("/{id:int}", UpdateTopic)
-                .WithName("UpdateCourse")
+                .WithName("UpdateTopic")
                 .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
                 .Produces<ApiResponse<string>>();
 

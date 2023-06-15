@@ -154,7 +154,8 @@ namespace Data.Seeders
                 new()
                 {
                     Username = "Nguyễn Ngọc Minh Tiến",
-                    Content = "Em gặp lỗi trong quá trình đăng ký đề tài"
+                    Content = "Em gặp lỗi trong quá trình đăng ký đề tài",
+                    CreateDate = DateTime.Now,
                 },
             };
             _context.AddRange(feedbacks);
