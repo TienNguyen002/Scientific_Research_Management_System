@@ -13,6 +13,7 @@ import { IconButton, Fab } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import Swal from "sweetalert2";
 
 const ManageDepartment = () => {
   const [departments, setDepartments] = useState([]),
@@ -36,17 +37,29 @@ const ManageDepartment = () => {
     });
   }, [departmentFilter, ps, p, reRender]);
 
-  const handleDeleteDepartment = (e, id) => {
+  const handleDelete = (e, id) => {
     e.preventDefault();
     RemoveDepartment(id);
     async function RemoveDepartment(id) {
-      if (window.confirm("Bạn có muốn xoá phòng khoa này?")) {
-        const response = await deleteDepartment(id);
-        if (response) {
-          alert("Đã xoá phòng khoa này");
+      Swal.fire({
+        title: "Bạn có muốn xóa khoa này không?",
+        text: "Sau khi xóa sẽ không thể khôi phục!",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "XÓA"
+      }).then((result) => {
+        if(result.isConfirmed){
+          deleteDepartment(id);
           setRender(true);
-        } else alert("Đã xảy ra lỗi khi xoá");
-      }
+          Swal.fire({
+            title: "Xóa thành công",
+            icon: "success",
+          }
+          )
+        }
+      })
     }
   };
 
@@ -90,7 +103,7 @@ const ManageDepartment = () => {
                       </td>
                       <td className="text-center">
                         <div
-                          onClick={(e) => handleDeleteDepartment(e, item.id)}
+                          onClick={(e) => handleDelete(e, item.id)}
                         >
                           <DeleteIcon color="secondary" />
                         </div>

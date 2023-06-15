@@ -12,6 +12,7 @@ using Services.Apps.Others;
 using Services.Apps.Students;
 using Services.Apps.Topics;
 using Services.Media;
+using SlugGenerator;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
@@ -47,8 +48,9 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapPost("/", AddTopic)
                 .WithName("AddTopic")
-                .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
-                .Produces<ApiResponse<TopicDto>>();
+                .Accepts<TopicEditModel>("multipart/form-data")
+                .Produces(401)
+                .Produces<ApiResponse<TopicItem>>();
 
             routeGroupBuilder.MapPut("/{id:int}", UpdateTopic)
                 .WithName("UpdateTopic")
@@ -140,28 +142,35 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> AddTopic(
-            [AsParameters] TopicEditModel model,
+            HttpContext context,
             IMapper mapper,
             ITopicRepository topicRepository,
-            IDepartmentRepository departmentRepository,
-            ILecturerRepository lecturerRepository,
-            IAppRepository appRepository,
             IMediaManager mediaManager)
         {
-            if(await departmentRepository.GetDepartmentByIdAsync(model.DepartmentId) == null)
+            var model = await TopicEditModel.BindAsync(context);
+            var slug = model.Title.GenerateSlug();
+            if (await topicRepository.IsTopicSlugExitedAsync(model.Id, slug))
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy khoa có id = '{model.DepartmentId}' "));
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug '{slug}' đã được sử dụng"));
             }
-            if (await appRepository.GetStatusByIdAsync(model.StatusId) == null)
+            var topic = model.Id > 0 ? await topicRepository.GetTopicByIdAsync(model.Id) : null;
+            if(topic == null)
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy trạng thái có id = '{model.StatusId}' "));
+                topic = new Topic()
+                {
+                    RegistrationDate = DateTime.Now,
+                };
             }
-            var topic = mapper.Map<Topic>(model);
-            topic.RegistrationDate = DateTime.Now;
-            if(await topicRepository.IsTopicSlugExitedAsync(0, topic.UrlSlug))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"UrlSlug '{topic.UrlSlug}' đã được sử dụng"));
-            }
+            topic.Title = model.Title;
+            topic.DepartmentId = model.DepartmentId;
+            topic.StatusId = model.StatusId;
+            topic.Description = model.Description;
+            topic.Note = model.Note;
+            topic.EndDate = model.EndDate;
+            topic.StudentNumbers = model.StudentNumbers;
+            topic.Price = model.Price;
+            topic.UrlSlug = model.Title.GenerateSlug();
+            
             await topicRepository.AddOrUpdateTopicAsync(topic);
             return Results.Ok(ApiResponse.Success(mapper.Map<TopicDto>(topic), HttpStatusCode.Created));
         }

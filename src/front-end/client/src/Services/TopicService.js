@@ -6,12 +6,6 @@ export function getTopics(pageNumber = 1, pageSize = 5) {
   );
 }
 
-export function getTopicsNotRegis(pageNumber = 1, pageSize = 5) {
-  return get_api(
-    `https://localhost:7129/api/topics?StatusId=1&PageSize=${pageSize}&PageNumber=${pageNumber}&SortOrder=ASC`
-  );
-}
-
 export function getTopicBySlug(slug) {
   return get_api(`https://localhost:7129/api/topics/byslug/${slug}`);
 }
@@ -70,4 +64,16 @@ export function deleteTopic(id) {
 
 export function increaseView(slug){
   return put_api(`https://localhost:7129/api/topics/view/${slug}`)
+}
+
+export function getTopicById(id) {
+  return get_api(`https://localhost:7129/api/topics/${id}`);
+}
+
+export function addOrUpdateTopic(formData){
+  return post_api(`https://localhost:7129/api/topics`, formData)
+}
+
+export function assignmentTopic(id, formData){
+  return put_api(`https://localhost:7129/api/topics/assignment/${id}`, formData)
 }

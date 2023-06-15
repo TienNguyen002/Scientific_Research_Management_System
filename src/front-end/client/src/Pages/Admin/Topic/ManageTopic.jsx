@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getTopicsFilter, deleteTopic } from "../../Services/TopicService";
+import { getTopicsFilter, deleteTopic } from "../../../Services/TopicService";
 import { Link } from "react-router-dom";
-import "./style/admin-page.scss";
+import "../style/admin-page.scss";
 import format from "date-fns/format";
 import { Button } from "react-bootstrap";
-import AdminTopicFilter from "../../Components/Shared/Filter/Topic/AdminTopicFiler";
-import Loading from "../../Components/Shared/Loading";
+import AdminTopicFilter from "../../../Components/Shared/Filter/Topic/AdminTopicFiler";
+import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import Swal from "sweetalert2";
 
 const ManageTopic = () => {
   const [topicsList, setTopicsList] = useState([]),
@@ -34,23 +36,34 @@ const ManageTopic = () => {
     ).then((data) => {
       if (data) {
         setTopicsList(data.items);
-        console.log(data.items)
+        console.log(data.items);
       } else setTopicsList([]);
       setIsVisibleLoading(false);
     });
   }, [topicFilter, ps, p, reRender]);
 
-  const handleDeleteTopic = (e, id) => {
+  const handleDelete = (e, id) => {
     e.preventDefault();
     RemoveTopic(id);
     async function RemoveTopic(id) {
-      if (window.confirm("Bạn có muốn xoá đề tài này?")) {
-        const response = await deleteTopic(id);
-        if (response) {
-          alert("Đã xoá đề tài này");
+      Swal.fire({
+        title: "Bạn có muốn xóa đề tài này không?",
+        text: "Sau khi xóa sẽ không thể khôi phục!",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "XÓA",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteTopic(id);
           setRender(true);
-        } else alert("Đã xảy ra lỗi khi xoá");
-      }
+          Swal.fire({
+            title: "Xóa thành công",
+            icon: "success",
+          });
+        }
+      });
     }
   };
 
@@ -79,6 +92,7 @@ const ManageTopic = () => {
               <th>Giảng viên</th>
               <th>Trạng thái</th>
               <th>Sửa</th>
+              <th>Phân công</th>
               <th>Xóa</th>
             </tr>
           </thead>
@@ -86,35 +100,14 @@ const ManageTopic = () => {
             {topicsList.length > 0 ? (
               topicsList.map((item, index) => (
                 <tr key={index}>
-                  <td>
-                    <Link
-                      className="table-content"
-                      to={`/de-tai/${item.urlSlug}`}
-                    >
-                      {item.title}
-                    </Link>
-                  </td>
+                  <td>{item.title}</td>
 
                   <td>
                     {format(new Date(item.registrationDate), "dd/MM/yyyy")}
                   </td>
                   <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
-                  <td>
-                    <Link
-                      className="table-content"
-                      to={`/khoa/${item.department.urlSlug}`}
-                    >
-                      {item.department.name}
-                    </Link>
-                  </td>
-                  <td>
-                    <Link
-                      className="table-content"
-                      to={`/giang-vien/${item.lecturer.urlSlug}`}
-                    >
-                      {item.lecturer.fullName}
-                    </Link>
-                  </td>
+                  <td>{item.department.name}</td>
+                  <td>{item.lecturer?.fullName}</td>
                   <td>
                     {item.status?.id == 1 ? (
                       <p className="not">Chưa đăng ký</p>
@@ -122,10 +115,9 @@ const ManageTopic = () => {
                       <p className="regis">Đã đăng ký</p>
                     ) : item.status?.id == 3 ? (
                       <p className="done">Đã nghiệm thu</p>
-                    ) : item.status?.id == 4 (
-                      <p className="stop">Tạm dừng</p>
-                    )
-                    }
+                    ) : (
+                      item.status?.id == 4(<p className="stop">Tạm dừng</p>)
+                    )}
                   </td>
                   <td className="text-center">
                     <Link to={`/admin/de-tai/edit/${item.id}`}>
@@ -135,7 +127,14 @@ const ManageTopic = () => {
                     </Link>
                   </td>
                   <td className="text-center">
-                    <div onClick={(e) => handleDeleteTopic(e, item.id)}>
+                    <Link to={`/admin/de-tai/phan-cong/${item.id}`}>
+                      <IconButton aria-label="edit" color="primary">
+                        <AssignmentIcon />
+                      </IconButton>
+                    </Link>
+                  </td>
+                  <td className="text-center">
+                    <div onClick={(e) => handleDelete(e, item.id)}>
                       <DeleteIcon color="secondary" />
                     </div>
                   </td>
@@ -144,7 +143,9 @@ const ManageTopic = () => {
             ) : (
               <tr>
                 <td colSpan={8}>
-                  <h4 className="text-danger text-center">Không tìm thấy đề tài nào</h4>
+                  <h4 className="text-danger text-center">
+                    Không tìm thấy đề tài nào
+                  </h4>
                 </td>
               </tr>
             )}

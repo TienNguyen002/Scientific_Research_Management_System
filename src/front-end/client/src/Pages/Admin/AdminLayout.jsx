@@ -1,17 +1,20 @@
 import { Outlet } from "react-router-dom";
-import "./style/admin-page.scss"
+import "./style/admin-page.scss";
 import AdminSidebar from "../../Components/Admin/Shared/Sidebar";
 import AdminNavbar from "../../Components/Admin/Shared/Navbar";
+import { SnackbarProvider } from "notistack";
 
 const AdminLayout = () => {
   return (
-    <div className="admin">
-        <AdminSidebar/>
+    <SnackbarProvider anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+      <div className="admin">
+        <AdminSidebar />
         <div className="admin-container">
-          <AdminNavbar/>
-          <Outlet/>
+          <AdminNavbar />
+          <Outlet />
         </div>
-    </div>
+      </div>
+    </SnackbarProvider>
   );
 };
 

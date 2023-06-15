@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import format from "date-fns/format";
+import Swal from "sweetalert2";
 
 const ManageFeedback = () => {
   const [feedbacksList, setFeedbacksList] = useState([]),
@@ -40,17 +41,29 @@ const ManageFeedback = () => {
     });
   }, [feedbackFilter, ps, p, reRender]);
 
-  const handleDeleteFeedback = (e, id) => {
+  const handleDelete = (e, id) => {
     e.preventDefault();
     RemoveFeedback(id);
     async function RemoveFeedback(id) {
-      if (window.confirm("Bạn có muốn xoá feedback này?")) {
-        const response = await deleteFeedback(id);
-        if (response) {
-          alert("Đã xoá feedback này");
+      Swal.fire({
+        title: "Bạn có muốn xóa feedback này không?",
+        text: "Sau khi xóa sẽ không thể khôi phục!",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "XÓA"
+      }).then((result) => {
+        if(result.isConfirmed){
+          deleteFeedback(id);
           setRender(true);
-        } else alert("Đã xảy ra lỗi khi xoá");
-      }
+          Swal.fire({
+            title: "Xóa thành công",
+            icon: "success",
+          }
+          )
+        }
+      })
     }
   };
 
@@ -83,7 +96,7 @@ const ManageFeedback = () => {
                       <td>{format(new Date(item.createDate), "dd/MM/yyyy")}</td>
                       <td className="text-center">
                         <div
-                          onClick={(e) => handleDeleteFeedback(e, item.id)}
+                          onClick={(e) => handleDelete(e, item.id)}
                         >
                           <DeleteIcon color="secondary" />
                         </div>

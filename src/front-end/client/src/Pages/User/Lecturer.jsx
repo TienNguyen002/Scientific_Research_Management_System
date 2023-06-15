@@ -70,9 +70,9 @@ const Lecturer = () => {
                     )}
                     <Link
                         className="text-decoration-none"
-                        to={`/khoa/${item.department.urlSlug}`}
+                        to={`/khoa/${item.department?.urlSlug}`}
                       >
-                        Khoa: {item.department.name}
+                        Khoa: {item.department?.name}
                       </Link>
                   </div>
                   </div>

@@ -55,9 +55,6 @@ namespace WebApi.Validations.Students
                 .NotEmpty()
                 .WithMessage("Tên khoa không được để trống");
 
-            RuleFor(x => x.RoleId)
-                .NotEmpty()
-                .WithMessage("RoleID không được để trống");
         }
     }
 }

@@ -2,17 +2,18 @@ import React, { useEffect, useState } from "react";
 import {
   getLecturersFilter,
   deleteLecturer,
-} from "../../Services/LecturerService";
+} from "../../../Services/LecturerService";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import "./style/admin-page.scss";
-import LecturerFilter from "../../Components/Shared/Filter/Lecturer/LecturerFilter";
-import Loading from "../../Components/Shared/Loading";
+import "../style/admin-page.scss";
+import LecturerFilter from "../../../Components/Shared/Filter/Lecturer/LecturerFilter";
+import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Swal from "sweetalert2";
 import AddIcon from "@mui/icons-material/Add";
 
 const ManageLecturer = () => {
@@ -40,17 +41,29 @@ const ManageLecturer = () => {
     });
   }, [lecturerFilter, ps, p, reRender]);
 
-  const handleDeleteLecturer = (e, id) => {
+  const handleDelete = (e, id) => {
     e.preventDefault();
     RemoveLecturer(id);
     async function RemoveLecturer(id) {
-      if (window.confirm("Bạn có muốn xoá giảng viên này?")) {
-        const response = await deleteLecturer(id);
-        if (response) {
-          alert("Đã xoá giảng viên này");
+      Swal.fire({
+        title: "Bạn có muốn xóa giảng viên này không?",
+        text: "Sau khi xóa sẽ không thể khôi phục!",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "XÓA"
+      }).then((result) => {
+        if(result.isConfirmed){
+          deleteLecturer(id);
           setRender(true);
-        } else alert("Đã xảy ra lỗi khi xoá");
-      }
+          Swal.fire({
+            title: "Xóa thành công",
+            icon: "success",
+          }
+          )
+        }
+      })
     }
   };
 
@@ -73,7 +86,6 @@ const ManageLecturer = () => {
                   <th>Họ và tên</th>
                   <th>Email</th>
                   <th>Khoa</th>
-                  <th>Sửa</th>
                   <th>Xoá</th>
                 </tr>
               </thead>
@@ -85,15 +97,8 @@ const ManageLecturer = () => {
                       <td>{item.email}</td>
                       <td>{item.department?.name}</td>
                       <td className="text-center">
-                        <Link to={`/admin/sinh-vien/edit/${item.id}`}>
-                          <IconButton aria-label="edit" color="primary">
-                            <EditIcon />
-                          </IconButton>
-                        </Link>
-                      </td>
-                      <td className="text-center">
                         <div
-                          onClick={(e) => handleDeleteLecturer(e, item.id)}
+                          onClick={(e) => handleDelete(e, item.id)}
                         >
                           <DeleteIcon color="secondary" />
                         </div>

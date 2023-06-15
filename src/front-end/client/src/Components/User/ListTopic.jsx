@@ -91,8 +91,8 @@ const ListTopic = () => {
               ))
             ) : (
               <tr>
-                <td>
-                  <h4>Không tìm thấy khóa học nào</h4>
+                <td colSpan={5}>
+                  <h4>Không tìm thấy đề tài nào</h4>
                 </td>
               </tr>
             )}

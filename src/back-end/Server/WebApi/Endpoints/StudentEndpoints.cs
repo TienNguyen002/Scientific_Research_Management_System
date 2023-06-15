@@ -48,7 +48,7 @@ namespace WebApi.Endpoints
                 .Produces<ApiResponse<StudentDto>>();
 
             routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInformation)
-                .WithName("ChangeStudentInf")
+                .WithName("ChangeStudentInfomation")
                 .AddEndpointFilter<ValidatorFilter<StudentEditModel>>()
                 .Produces<ApiResponse<string>>();
 

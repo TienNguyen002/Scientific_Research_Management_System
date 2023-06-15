@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 import {
   getStudentsFilter,
   deleteStudent,
-} from "../../Services/StudentService";
+} from "../../../Services/StudentService";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
-import "./style/admin-page.scss";
-import StudentFilter from "../../Components/Shared/Filter/Student/StudentFilter";
-import Loading from "../../Components/Shared/Loading";
+import "../style/admin-page.scss";
+import StudentFilter from "../../../Components/Shared/Filter/Student/StudentFilter";
+import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import Swal from "sweetalert2";
 
 const ManageStudent = () => {
   const [studentsList, setStudentsList] = useState([]),
@@ -40,17 +41,29 @@ const ManageStudent = () => {
     });
   }, [studentFilter, ps, p, reRender]);
 
-  const handleDeleteStudent = (e, id) => {
+  const handleDelete = (e, id) => {
     e.preventDefault();
     RemoveStudent(id);
     async function RemoveStudent(id) {
-      if (window.confirm("Bạn có muốn xoá sinh viên này?")) {
-        const response = await deleteStudent(id);
-        if (response) {
-          alert("Đã xoá sinh viên này");
+      Swal.fire({
+        title: "Bạn có muốn xóa sinh viên này không?",
+        text: "Sau khi xóa sẽ không thể khôi phục!",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "XÓA"
+      }).then((result) => {
+        if(result.isConfirmed){
+          deleteStudent(id);
           setRender(true);
-        } else alert("Đã xảy ra lỗi khi xoá");
-      }
+          Swal.fire({
+            title: "Xóa thành công",
+            icon: "success",
+          }
+          )
+        }
+      })
     }
   };
 
@@ -73,7 +86,6 @@ const ManageStudent = () => {
                   <th>Họ và tên</th>
                   <th>Email</th>
                   <th>Khoa</th>
-                  <th>Sửa</th>
                   <th>Xoá</th>
                 </tr>
               </thead>
@@ -85,15 +97,8 @@ const ManageStudent = () => {
                       <td>{item.email}</td>
                       <td>{item.department?.name}</td>
                       <td className="text-center">
-                        <Link to={`/admin/sinh-vien/edit/${item.id}`}>
-                          <IconButton aria-label="edit" color="primary">
-                            <EditIcon />
-                          </IconButton>
-                        </Link>
-                      </td>
-                      <td className="text-center">
                         <div
-                          onClick={(e) => handleDeleteStudent(e, item.id)}
+                          onClick={(e) => handleDelete(e, item.id)}
                         >
                           <DeleteIcon color="secondary" />
                         </div>

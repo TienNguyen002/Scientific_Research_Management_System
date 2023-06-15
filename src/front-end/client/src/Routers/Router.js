@@ -12,13 +12,15 @@ import DepartmentDetails from "../Pages/User/Details/DepartmentDetails";
 import AdminLayout from "../Pages/Admin/AdminLayout";
 import Dashboard from "../Pages/Admin/Dashboard";
 import ManageDepartment from "../Pages/Admin/Department/ManageDepartment";
-import ManageTopic from "../Pages/Admin/ManageTopic";
-import ManageStudent from "../Pages/Admin/ManageStudent";
-import ManageLecturer from "../Pages/Admin/ManageLecturer";
+import ManageTopic from "../Pages/Admin/Topic/ManageTopic";
+import ManageStudent from "../Pages/Admin/Student/ManageStudent";
+import ManageLecturer from "../Pages/Admin/Lecturer/ManageLecturer";
 import ManageFeedback from "../Pages/Admin/ManageFeedback";
 import AdminProfile from "../Pages/Admin/AdminProfile"
 import DepartmentEditAdmin from "../Pages/Admin/Department/DepartmentEdit";
 import Feedback from "../Pages/User/Feedback";
+import TopicEditAdmin from "../Pages/Admin/Topic/TopicEdit";
+import AssignmentTopic from "../Pages/Admin/Topic/AssignmentTopic";
 
 const Router = () => {
     return(
@@ -42,6 +44,9 @@ const Router = () => {
                     <Route path="/admin/khoa/edit" element={<DepartmentEditAdmin/>}/>
                     <Route path="/admin/khoa/edit/:id" element={<DepartmentEditAdmin/>}/>
                     <Route path="/admin/de-tai" element={<ManageTopic/>}/>
+                    <Route path="/admin/de-tai/phan-cong/:id" element={<AssignmentTopic/>}/>
+                    <Route path="/admin/de-tai/edit" element={<TopicEditAdmin/>}/>
+                    <Route path="/admin/de-tai/edit/:id" element={<TopicEditAdmin/>}/>
                     <Route path="/admin/sinh-vien" element={<ManageStudent/>}/>
                     <Route path="/admin/giang-vien" element={<ManageLecturer/>}/>
                     <Route path="/admin/feedback" element={<ManageFeedback/>}/>

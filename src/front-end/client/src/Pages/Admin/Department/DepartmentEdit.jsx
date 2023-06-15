@@ -14,13 +14,15 @@ const DepartmentEditAdmin = () => {
       name: "",
     },
     [department, setDepartment] = useState(initialState),
-    navigate = useNavigate();;
+    navigate = useNavigate(),
+    { enqueueSnackbar } = useSnackbar(),
+    [validated, setValidated] = useState(false);
 
   let { id } = useParams();
   id = id ?? 0;
 
   useEffect(() => {
-    document.title = "Thêm/Cập nhật khoa"
+    document.title = "Thêm / Cập nhật khoa";
     GetDepartment();
     async function GetDepartment() {
       const data = await getDepartmentById(id);
@@ -32,13 +34,26 @@ const DepartmentEditAdmin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let data = new FormData(e.target);
-    addOrUpdateDepartment(data).then((data) => {
-      if (data) {
-        navigate(`/admin/khoa`);
-      } else {
-      }
-    });
+    if (e.currentTarget.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      let data = new FormData(e.target);
+      addOrUpdateDepartment(data).then((data) => {
+        if (data) {
+          enqueueSnackbar("Đã lưu thành công", {
+            variant: "success",
+            autoHideDuration: 2000,
+          });
+          navigate(`/admin/khoa`);
+        } else {
+          enqueueSnackbar("Đã xảy ra lỗi khi lưu", {
+            variant: "error",
+            autoHideDuration: 2000,
+          });
+        }
+      });
+    }
   };
 
   return (
@@ -50,6 +65,8 @@ const DepartmentEditAdmin = () => {
             method="post"
             encType=""
             onSubmit={handleSubmit}
+            noValidate
+            validated={validated}
           >
             <Form.Control type="hidden" name="id" value={department.id} />
             <div className="row mb-3">
@@ -67,6 +84,9 @@ const DepartmentEditAdmin = () => {
                     setDepartment({ ...department, name: e.target.value })
                   }
                 />
+                <Form.Control.Feedback type="invalid">
+                  Tên khoa không được bỏ trống
+                </Form.Control.Feedback>
               </div>
             </div>
 

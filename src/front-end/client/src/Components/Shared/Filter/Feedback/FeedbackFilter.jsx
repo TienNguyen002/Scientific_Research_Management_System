@@ -56,7 +56,7 @@ const FeedbackFilter = () => {
         <Form.Label className="visually-hidden">Year</Form.Label>
         <Form.Control
           type="number"
-          placeholder="Lọc theo năm đăng ký..."
+          placeholder="Lọc theo năm gửi.."
           name="year"
           value={feedbackFilter.year}
           max={feedbackFilter.year}
@@ -71,7 +71,7 @@ const FeedbackFilter = () => {
           onChange={(e) => dispatch(updateMonth(e.target.value))}
           title="Month"
         >
-          <option value="">-- Lọc theo tháng đăng ký --</option>
+          <option value="">-- Lọc theo tháng gửi --</option>
           {filter.monthList.length > 0 &&
             filter.monthList.map((item, index) => (
               <option key={index} value={item.value}>
