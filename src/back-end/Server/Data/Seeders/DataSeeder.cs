@@ -97,8 +97,8 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    Name = "Khoa Ngoại ngữ",
-                    UrlSlug = "ngoai-ngu",
+                    Name = "Khoa Quốc tế học",
+                    UrlSlug = "quoc-te-hoc",
                 },
                 new()
                 {
@@ -154,7 +154,7 @@ namespace Data.Seeders
                 new()
                 {
                     Username = "Nguyễn Ngọc Minh Tiến",
-                    Content = "."
+                    Content = "Em gặp lỗi trong quá trình đăng ký đề tài"
                 },
             };
             _context.AddRange(feedbacks);
@@ -398,13 +398,13 @@ namespace Data.Seeders
             {
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - CNTT",
-                    UrlSlug = "nckh-cntt",
-                    Description = "Nghiên cứu khoa học - CNTT",
+                    Title = "Triển khai hệ thống cân bằng tải cho hệ thống mã nguồn mở Moodle",
+                    UrlSlug = "he-thong-ma-nguon-mo-moodle",
+                    Description = "Moodle là một hệ thống quản lý học tập - LMS (Learning Management System) mã nguồn mở phù hợp cho các trường đại học cho việc tổ chức học tập trực tuyến. Việc thay đổi hình thức học tập truyền thống sang hình thức trực tuyến đang được chú trọng hơn trong thời gian mà dịch COVID 19 đang diễn ra",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 3,
-                    Price = "1,000,000 VNĐ",
+                    Price = 1000000,
                     Students = new List<Student>()
                     {
                         students[0],
@@ -417,65 +417,65 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Luật",
-                    UrlSlug = "nckh-luat",
-                    Description = "Nghiên cứu khoa học - Luật",
+                    Title = "Pháp luật về phí trong bảo hiểm tài sản",
+                    UrlSlug = "phap-luat-ve-phi-trong-bao-hiem-tai-san",
+                    Description = "Pháp luật về phí trong bảo hiểm tài sản",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[1],
                     Department = departments[1],
                     Status = status[0],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Sư phạm",
-                    UrlSlug = "nckh-su-pham",
-                    Description = "Nghiên cứu khoa học - Sư phạm",
+                    Title = "Sơ đồ hóa kiến thức một số phần chương sinh sản lớp 11 nhằm nâng cao kết quả học tập",
+                    UrlSlug = "kien-thuc-11",
+                    Description = "Sơ đồ hóa kiến thức một số phần chương sinh sản lớp 11 nhằm nâng cao kết quả học tập",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[2],
                     Department = departments[2],
                     Status = status[0],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Du lịch",
-                    UrlSlug = "nckh-du-lich",
-                    Description = "Nghiên cứu khoa học - Du lịch",
+                    Title = "Tìm hiểu về kinh doanh du lịch bền vững tại hình mẫu làng văn hóa du lịch Sa Đéc",
+                    UrlSlug = "du-lich-sa-dec",
+                    Description = "Bài viết tập trung mô tả tổng quan nghiên cứu lý thuyết về kinh doanh du lịch bền vững, và đi vào nghiên cứu kinh doanh du lịch bền vững tại Làng văn hóa du lịch Sa Đéc, Đồng Tháp. Các vấn đề được đề cập bao gồm tổng quan về khái niệm, nguyên tắc đối với kinh doanh du lịch bền vững, những lợi ích cũng như rào cản đối với kinh doanh bền vững tại Làng văn hóa du lịch Sa Đéc. Từ đó, đề xuất những kiến nghị giải pháp phát triển kinh doanh du lịch bền vững tại đây.",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[3],
                     Department = departments[3],
                     Status = status[0],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Ngoại ngữ",
-                    UrlSlug = "nckh-ngoai-ngu",
-                    Description = "Nghiên cứu khoa học - Ngoại ngữ",
+                    Title = "Tính cách người Nhật qua một số truyện cổ tích Nhật bản đã dịch ở Việt Nam",
+                    UrlSlug = "tinh-cach-nguoi-nhat",
+                    Description = "Tính cách người Nhật qua một số truyện cổ tích Nhật bản",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[4],
                     Department = departments[4],
                     Status = status[0],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Nông lâm",
-                    UrlSlug = "nckh-nong-lam",
-                    Description = "Nghiên cứu khoa học - Nông lâm",
+                    Title = "Thiết kế và thực hiện chính sách và dự án Các bon rừng ngập mặn hiệu quả, hiệu ích và công bằng",
+                    UrlSlug = "du-an-rung-ngap-man",
+                    Description = "Thiết kế và thực hiện chính sách và dự án Các bon rừng ngập mặn hiệu quả, hiệu ích và công bằng",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[5],
                     Department = departments[5],
                     Status = status[0],

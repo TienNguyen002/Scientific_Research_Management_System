@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(WebDbContext))]
-    [Migration("20230615072043_InitialCreate")]
+    [Migration("20230615085552_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -230,8 +230,8 @@ namespace Data.Migrations
                     b.Property<int>("Point")
                         .HasColumnType("int");
 
-                    b.Property<string>("Price")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
