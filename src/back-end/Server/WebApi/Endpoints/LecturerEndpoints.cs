@@ -8,6 +8,8 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Services.Apps.Departments;
 using Services.Apps.Lecturers;
+using Services.Apps.Students;
+using Services.Media;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
@@ -61,6 +63,11 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
                 .WithName("GetLecturerFilter")
                 .Produces<ApiResponse<LecturerFilterModel>>();
+
+            routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
+              .WithName("SetLecturerImage")
+              .Accepts<IFormFile>("multipart/form-data")
+              .Produces<ApiResponse<string>>();
         }
 
         private static async Task<IResult> GetAllLecturers(
@@ -200,6 +207,23 @@ namespace WebApi.Endpoints
                 })
             };
             return Results.Ok(ApiResponse.Success(model));
+        }
+
+        private static async Task<IResult> SetImage(
+            string slug,
+            IFormFile imageFile,
+            ILecturerRepository lecturerRepository,
+            IMediaManager mediaManager)
+        {
+            var imageUrl = await mediaManager.SaveImgFileAsync(
+                imageFile.OpenReadStream(),
+                imageFile.FileName, imageFile.ContentType);
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
+            }
+            await lecturerRepository.SetImageAsync(slug, imageUrl);
+            return Results.Ok(ApiResponse.Success(imageUrl));
         }
     } 
 }

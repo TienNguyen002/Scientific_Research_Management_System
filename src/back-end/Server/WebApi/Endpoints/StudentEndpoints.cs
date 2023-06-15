@@ -16,6 +16,8 @@ using Services.Apps.Others;
 using Services.Apps.Departments;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApi.Models.Account;
+using Services.Apps.Topics;
+using Services.Media;
 
 namespace WebApi.Endpoints
 {
@@ -63,6 +65,11 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
                 .WithName("GetStudentFilter")
                 .Produces<ApiResponse<StudentFilterModel>>();
+
+            routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
+              .WithName("SetStudentImage")
+              .Accepts<IFormFile>("multipart/form-data")
+              .Produces<ApiResponse<string>>();
         }
 
         private static async Task<IResult> GetStudent(
@@ -152,7 +159,7 @@ namespace WebApi.Endpoints
             }
             var student = mapper.Map<Student>(model);
             student.RoleId = 1;
-            await studentRepository.CreateStudentAccountAsync(student);
+            await studentRepository.Register(student);
             return Results.Ok(ApiResponse.Success(mapper.Map<AccountDto>(student), HttpStatusCode.Created));
         }
 
@@ -203,6 +210,23 @@ namespace WebApi.Endpoints
                 })
             };
             return Results.Ok(ApiResponse.Success(model));
+        }
+
+        private static async Task<IResult> SetImage(
+            string slug,
+            IFormFile imageFile,
+            IStudentRepository studentRepository,
+            IMediaManager mediaManager)
+        {
+            var imageUrl = await mediaManager.SaveImgFileAsync(
+                imageFile.OpenReadStream(),
+                imageFile.FileName, imageFile.ContentType);
+            if (string.IsNullOrWhiteSpace(imageUrl))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
+            }
+            await studentRepository.SetImageAsync(slug, imageUrl);
+            return Results.Ok(ApiResponse.Success(imageUrl));
         }
     }
 }

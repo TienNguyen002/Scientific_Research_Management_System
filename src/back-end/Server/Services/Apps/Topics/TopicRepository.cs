@@ -235,6 +235,10 @@ namespace Services.Apps.Topics
             }
 
             topic.Students = topic.Students.Where(t => validStudents.ContainsKey(t.UrlSlug)).ToList();
+            if(topic.Students.Count == topic.StudentNumbers)
+            {
+                topic.StatusId = 2;
+            }
             _context.Update(topic);
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
@@ -245,6 +249,28 @@ namespace Services.Apps.Topics
                 .Include(x => x.Topics)
                 .Where(x => x.UrlSlug == slug)
                 .FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<bool> SetOutlineUrlAsync(string slug, string outlineUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.OutlineUrl, outlineUrl), cancellationToken) > 0;
+        }
+
+        public async Task<bool> SetResultUrlAsync(string slug, string resultUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.ResultUrl, resultUrl), cancellationToken) > 0;
+        }
+
+        public async Task IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            await _context.Set<Topic>()
+                .Where(x => x.UrlSlug == slug)
+                .ExecuteUpdateAsync(p =>
+                    p.SetProperty(x => x.ViewCount, x => x.ViewCount + 1), cancellationToken);
         }
     }
 }

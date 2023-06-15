@@ -143,7 +143,7 @@ namespace Services.Apps.Students
                 .AnyAsync(c => c.Id == id && c.FullName == fullName, cancellationToken);
         }
 
-        public async Task<bool> CreateStudentAccountAsync(Student student, CancellationToken cancellationToken = default)
+        public async Task<bool> Register(Student student, CancellationToken cancellationToken = default)
         {
             student.UrlSlug = student.FullName.GenerateSlug();
             _context.Add(student);
@@ -154,6 +154,13 @@ namespace Services.Apps.Students
         {
             return await _context.Set<Student>()
                 .AnyAsync(x => x.UrlSlug == slug && x.Password != password, cancellationToken);
+        }
+
+        public async Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.ImageUrl, imageUrl), cancellationToken) > 0;
         }
     }
 }

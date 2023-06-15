@@ -30,8 +30,10 @@ namespace Services.Apps.Students
 
         Task<bool> IsStudentExistByFullNameAsync(int id, string fullName, CancellationToken cancellationToken = default);
 
-        Task<bool> CreateStudentAccountAsync(Student student, CancellationToken cancellationToken = default);
+        Task<bool> Register(Student student, CancellationToken cancellationToken = default);
 
         Task<bool> GetStudentPasswordBySlugAsync(string slug, string password, CancellationToken cancellationToken = default);
+
+        Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default);
     }
 }

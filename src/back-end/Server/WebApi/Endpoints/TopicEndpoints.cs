@@ -61,10 +61,29 @@ namespace WebApi.Endpoints
                 .WithName("GetTopicFilter")
                 .Produces<ApiResponse<TopicFilterModel>>();
 
-            routeGroupBuilder.MapPut("/register/id:int", RegisterTopic)
+            routeGroupBuilder.MapPut("/register/{slug:regex(^[a-z0-9_-]+$)}", RegisterTopic)
                   .WithName("RegisterTopic")
                   .AddEndpointFilter<ValidatorFilter<TopicAddStudent>>()
                   .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapPut("/assignment/{id:int}", SetTopicLecturer)
+                  .WithName("SetTopicLecturer")
+                  .AddEndpointFilter<ValidatorFilter<TopicAddLecturer>>()
+                  .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapPost("/outlineFile/{slug:regex(^[a-z0-9_-]+$)}", SetTopicOutline)
+              .WithName("SetTopicOutline")
+              .Accepts<IFormFile>("multipart/form-data")
+              .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapPost("/resultFile/{slug:regex(^[a-z0-9_-]+$)}", SetTopicResult)
+              .WithName("SetTopicResult")
+              .Accepts<IFormFile>("multipart/form-data")
+              .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapPost("/view/{slug:regex(^[a-z0-9_-]+$)}", IncreaseView)
+              .WithName("IncreaseView")
+              .Produces<ApiResponse<string>>();
         }
 
         private static async Task<IResult> GetAllTopic(
@@ -206,25 +225,91 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> RegisterTopic(
-            int id,
+            string slug,
             TopicAddStudent model,
             IMapper mapper,
             ITopicRepository topicRepository,
             IStudentRepository studentRepository,
             IMediaManager mediaManager)
         {
-            var topic = await topicRepository.GetTopicByIdAsync(id, true);
+            var topic = await topicRepository.GetTopicBySlugAsync(slug, true);
             if (topic == null)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                        $"Không tìm thấy đề tài có slug {id}"));
+                        $"Không tìm thấy đề tài có slug {slug}"));
+            }
+            mapper.Map(model, topic);
+            return await topicRepository.RegisterTopic(topic, model.GetSelectedStudents())
+                ? Results.Ok(ApiResponse.Success($"Đăng ký thành công"))
+               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có slug {slug}"));
+        }
+
+        private static async Task<IResult> SetTopicOutline(
+            string slug,
+            IFormFile outlineFile,
+            ITopicRepository topicRepository,
+            IMediaManager mediaManager)
+        {
+            var outlineUrl = await mediaManager.SaveFileAsync(
+                outlineFile.OpenReadStream(),
+                outlineFile.FileName, outlineFile.ContentType);
+            if (string.IsNullOrWhiteSpace(outlineUrl))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
+            }
+            await topicRepository.SetOutlineUrlAsync(slug, outlineUrl);
+            return Results.Ok(ApiResponse.Success(outlineUrl));
+        }
+
+        private static async Task<IResult> SetTopicResult(
+            string slug,
+            IFormFile resultFile,
+            ITopicRepository topicRepository,
+            IMediaManager mediaManager)
+        {
+            var resultUrl = await mediaManager.SaveFileAsync(
+                resultFile.OpenReadStream(),
+                resultFile.FileName, resultFile.ContentType);
+            if (string.IsNullOrWhiteSpace(resultUrl))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
+            }
+            await topicRepository.SetResultUrlAsync(slug, resultUrl);
+            return Results.Ok(ApiResponse.Success(resultFile));
+        }
+
+        private static async Task<IResult> SetTopicLecturer(
+            int id,
+            [AsParameters] TopicAddLecturer model,
+            IMapper mapper,
+            ITopicRepository topicRepository,
+            ILecturerRepository lecturerRepository,
+            IAppRepository appRepository,
+            IMediaManager mediaManager)
+        {
+            var topic = await topicRepository.GetTopicByIdAsync(id);
+            if (topic == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                    $"Không tìm thấy đề tài có id {id}"));
+            }
+            if (await lecturerRepository.GetLecturerByIdAsync(model.LecturerId) == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy giảng viên có id = '{model.LecturerId}' "));
             }
             mapper.Map(model, topic);
             topic.Id = id;
+            return await topicRepository.AddOrUpdateTopicAsync(topic)
+               ? Results.Ok(ApiResponse.Success($"Phân công giảng viên cho đề tài có id = {id} thành công"))
+               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có id = {id}"));
+        }
 
-            return await topicRepository.RegisterTopic(topic, model.GetSelectedStudents())
-                ? Results.Ok(ApiResponse.Success($"Đăng ký thành công"))
-               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có slug {id}"));
+        private static async Task<IResult> IncreaseView(
+            string slug,
+            ITopicRepository topicRepository)
+        {
+            await topicRepository.IncreaseViewCountAsync(slug);
+            return Results.Ok(ApiResponse.Success($"Đề tài có id = {slug} đã tăng view thành công"));
         }
     }
 }

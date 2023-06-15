@@ -144,5 +144,12 @@ namespace Services.Apps.Lecturers
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }
+
+        public async Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.ImageUrl, imageUrl), cancellationToken) > 0;
+        }
     }
 }

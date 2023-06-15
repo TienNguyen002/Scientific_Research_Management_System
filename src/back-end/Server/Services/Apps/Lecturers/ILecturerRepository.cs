@@ -33,5 +33,7 @@ namespace Services.Apps.Lecturers
         Task<bool> GetLecturerPasswordBySlugAsync(string slug, string password, CancellationToken cancellationToken = default);
 
         Task<bool> DeleteLecturerByIdAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default);
     }
 }
