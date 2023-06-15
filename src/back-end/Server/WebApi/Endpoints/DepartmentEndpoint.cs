@@ -8,6 +8,7 @@ using Mapster;
 using MapsterMapper;
 using Services.Apps.Departments;
 using Services.Apps.Topics;
+using SlugGenerator;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
@@ -40,7 +41,8 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapPost("/", AddDepartment)
                 .WithName("AddDepartment")
-                .AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
+                .Accepts<DepartmentEditModel>("multipart/form-data")
+                .Produces(401)
                 .Produces<ApiResponse<DepartmentItems>>();
 
             routeGroupBuilder.MapPut("/{id:int}", UpdateDepartment)
@@ -93,16 +95,26 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> AddDepartment (
-            DepartmentEditModel model,
+            HttpContext context,
             IDepartmentRepository departmentRepository,
             IMapper mapper)
         {
-            if (await departmentRepository.IsDepartmentExistBySlugAsync(0, model.UrlSlug))
+            var model = await DepartmentEditModel.BindAsync(context);
+            var slug = model.Name.GenerateSlug();
+            if(await departmentRepository.IsDepartmentExistBySlugAsync(model.Id, slug))
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
-                    $"Slug '{model.UrlSlug}' đã được sử dụng"));
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug '{slug}' đã tồn tại"));
             }
-            var depart = mapper.Map<Department>(model);
+            var depart = model.Id > 0 ? await departmentRepository.GetDepartmentByIdAsync(model.Id) : null;
+            if(depart == null)
+            {
+                depart = new Department()
+                {
+
+                };
+            }
+            depart.Name = model.Name;
+            depart.UrlSlug = model.Name.GenerateSlug();
             await departmentRepository.AddOrUpdateDepartmentAsync(depart);
 
             return Results.Ok(ApiResponse.Success(
@@ -119,11 +131,6 @@ namespace WebApi.Endpoints
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
                     $"Không tìm thấy khoa có id {id}"));
-            }
-            if (await departmentRepository.IsDepartmentExistBySlugAsync(0, model.UrlSlug))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict,
-                    $"Slug '{model.UrlSlug}' đã được sử dụng"));
             }
 
             mapper.Map(model, depart);

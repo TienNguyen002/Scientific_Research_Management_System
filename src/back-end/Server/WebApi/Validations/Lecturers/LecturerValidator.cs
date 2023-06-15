@@ -13,10 +13,6 @@ namespace WebApi.Validations.Lecturers
                 .MaximumLength(1000)
                 .WithMessage("Họ và tên chỉ tối đa 1000 ký tự");
 
-            RuleFor(l => l.UrlSlug)
-                .MaximumLength(1000)
-                .WithMessage("UrlSlug chỉ tối đa 1000 ký tự");
-
             RuleFor(l => l.Qualification)
                 .NotEmpty()
                 .WithMessage("Trình độ không được để trống")

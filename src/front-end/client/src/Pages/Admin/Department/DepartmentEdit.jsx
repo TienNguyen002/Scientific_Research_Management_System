@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   getDepartmentById,
-  updateDepartment,
+  addOrUpdateDepartment,
 } from "../../../Services/DepartmentService";
 import { isEmptyOrSpaces, isInteger } from "../../../Utils/Utils";
 import { Button, Form } from "react-bootstrap";
@@ -10,17 +10,17 @@ import { useSnackbar } from "notistack";
 
 const DepartmentEditAdmin = () => {
   const initialState = {
+      id: 0,
       name: "",
     },
-    params = useParams(),
     [department, setDepartment] = useState(initialState),
-    { enqueueSnackbar, closeSnackbar } = useSnackbar(),
     navigate = useNavigate();;
 
-  let { id } = params;
+  let { id } = useParams();
   id = id ?? 0;
 
   useEffect(() => {
+    document.title = "Thêm/Cập nhật khoa"
     GetDepartment();
     async function GetDepartment() {
       const data = await getDepartmentById(id);
@@ -33,16 +33,10 @@ const DepartmentEditAdmin = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     let data = new FormData(e.target);
-    updateDepartment(id, data).then((data) => {
+    addOrUpdateDepartment(data).then((data) => {
       if (data) {
-        enqueueSnackbar("Đã lưu thành công", {
-          variant: "success",
-        });
         navigate(`/admin/khoa`);
       } else {
-        enqueueSnackbar("Đã xảy ra lỗi khi lưu", {
-          variant: "error",
-        });
       }
     });
   };

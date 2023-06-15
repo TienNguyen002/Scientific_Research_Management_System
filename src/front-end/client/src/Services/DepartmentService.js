@@ -30,7 +30,7 @@ export function getDepartmentsFilter(
     return get_api(url.href);
   }
 
-export function addDepartment(formData){
+export function addOrUpdateDepartment(formData){
   return post_api(`https://localhost:7129/api/departments`, formData)
 }
 

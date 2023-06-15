@@ -53,12 +53,10 @@ namespace Services.Apps.Departments
         {
             if (depart.Id > 0)
             {
-                depart.UrlSlug = depart.Name.GenerateSlug();
                 _context.Update(depart);   
             }
             else
             {
-                depart.UrlSlug = depart.Name.GenerateSlug();
                 _context.Add(depart);
             }
             return await _context.SaveChangesAsync(cancellationToken) > 0;
