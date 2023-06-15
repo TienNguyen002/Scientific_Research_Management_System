@@ -201,41 +201,62 @@ namespace Services.Apps.Topics
             return true;
         }
 
-        public async Task<bool> RegisterTopic(Topic topic, IEnumerable<string> students, CancellationToken cancellationToken = default)
+        public async Task<bool> RegisterTopic(int topicId, string studentSlug, CancellationToken cancellationToken = default)
         {
-            if(topic.Id > 0)
+            //if(topic.Id > 0)
+            //{
+            //    await _context.Entry(topic).Collection(t => t.Students).LoadAsync(cancellationToken);
+            //}
+            //else
+            //{
+            //    topic.Students = new List<Student>();
+            //}
+            //var validStudents = students.Where(x => !string.IsNullOrWhiteSpace(x))
+            //    .Select(x => new
+            //    {
+            //        Name = x,
+            //        Slug = x.GenerateSlug()
+            //    })
+            //    .GroupBy(x => x.Slug)
+            //    .ToDictionary(g => g.Key, g => g.First().Name);
+
+
+            //foreach (var kv in validStudents)
+            //{
+            //    if (topic.Students.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
+
+            //    var student = await GetStudentBySlugAsync(kv.Key, cancellationToken) ?? new Student()
+            //    {
+            //        FullName = kv.Value,
+            //        UrlSlug = kv.Key
+            //    };
+            //    if(student == null) { return false; }
+            //    topic.Students.Add(student);
+            //}
+
+            //topic.Students = topic.Students.Where(t => validStudents.ContainsKey(t.UrlSlug)).ToList();
+
+            //if(topic.Students.Count == topic.StudentNumbers)
+            //{
+            //    topic.StatusId = 2;
+            //}
+            //_context.Update(topic);
+            var topic = await _context.Set<Topic>()
+                .Include(t => t.Department)
+                .Include(t => t.Lecturer)
+                .Include(t => t.Students)
+                .Include(t => t.Status)
+                .Where(t => t.Id == topicId)
+                .FirstOrDefaultAsync(cancellationToken);
+            if(topic == null)
             {
-                await _context.Entry(topic).Collection(t => t.Students).LoadAsync(cancellationToken);
+                return false;
             }
-            else
-            {
-                topic.Students = new List<Student>();
-            }
-            var validStudents = students.Where(x => !string.IsNullOrWhiteSpace(x))
-                .Select(x => new
-                {
-                    Name = x,
-                    Slug = x.GenerateSlug()
-                })
-                .GroupBy(x => x.Slug)
-                .ToDictionary(g => g.Key, g => g.First().Name);
-
-
-            foreach (var kv in validStudents)
-            {
-                if (topic.Students.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
-
-                var student = await GetStudentBySlugAsync(kv.Key, cancellationToken) ?? new Student()
-                {
-                    FullName = kv.Value,
-                    UrlSlug = kv.Key
-                };
-                if(student == null) { return false; }
-                topic.Students.Add(student);
-            }
-
-            topic.Students = topic.Students.Where(t => validStudents.ContainsKey(t.UrlSlug)).ToList();
-            if(topic.Students.Count == topic.StudentNumbers)
+            var student = await _context.Set<Student>()
+                .Where(s => s.UrlSlug == studentSlug)
+                .FirstOrDefaultAsync(cancellationToken);
+            topic.Students.Add(student);
+            if (topic.Students.Count == topic.StudentNumbers)
             {
                 topic.StatusId = 2;
             }

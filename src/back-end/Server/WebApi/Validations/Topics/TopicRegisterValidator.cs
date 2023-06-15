@@ -7,14 +7,12 @@ namespace WebApi.Validations.Topics
     {
         public TopicRegisterValidator()
         {
-            RuleFor(s => s.SelectedStudents)
-                .Must(HasAtLeastOneStudent)
-                .WithMessage("Bạn phải nhập ít nhất một sinh viên");
+            RuleFor(t => t.StudentSlug)
+                .NotEmpty()
+                .WithMessage("Sinh viên không được để trống")
+                .MaximumLength(1000)
+                .WithMessage("Sinh viên chỉ tối đa 1000 ký tự");
         }
 
-        private bool HasAtLeastOneStudent(TopicAddStudent model, string selectedStudents)
-        {
-            return model.GetSelectedStudents().Any();
-        }
     }
 }

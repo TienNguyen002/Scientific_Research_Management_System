@@ -61,7 +61,7 @@ namespace WebApi.Endpoints
                 .WithName("GetTopicFilter")
                 .Produces<ApiResponse<TopicFilterModel>>();
 
-            routeGroupBuilder.MapPut("/register/{slug:regex(^[a-z0-9_-]+$)}", RegisterTopic)
+            routeGroupBuilder.MapPut("/register/{id:int}", RegisterTopic)
                   .WithName("RegisterTopic")
                   .AddEndpointFilter<ValidatorFilter<TopicAddStudent>>()
                   .Produces<ApiResponse<string>>();
@@ -225,23 +225,26 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> RegisterTopic(
-            string slug,
-            TopicAddStudent model,
+            int id,
+            [AsParameters] TopicAddStudent model,
             IMapper mapper,
             ITopicRepository topicRepository,
             IStudentRepository studentRepository,
             IMediaManager mediaManager)
         {
-            var topic = await topicRepository.GetTopicBySlugAsync(slug, true);
-            if (topic == null)
+            if (await topicRepository.GetTopicByIdAsync(id) == null)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                        $"Không tìm thấy đề tài có slug {slug}"));
+                        $"Không tìm thấy đề tài có id {id}"));
             }
-            mapper.Map(model, topic);
-            return await topicRepository.RegisterTopic(topic, model.GetSelectedStudents())
+            if (await studentRepository.GetStudentBySlugAsync(model.StudentSlug) == null)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                        $"Không tìm thấy sinh viên có slug {model.StudentSlug}"));
+            }
+            return await topicRepository.RegisterTopic(id, model.StudentSlug)
                 ? Results.Ok(ApiResponse.Success($"Đăng ký thành công"))
-               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có slug {slug}"));
+               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có id {id}"));
         }
 
         private static async Task<IResult> SetTopicOutline(

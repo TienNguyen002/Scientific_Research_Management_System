@@ -264,7 +264,7 @@ namespace Data.Seeders
                     FullName = "Trần Thái Linh",
                     Email = "2011925@dlu.edu.vn",
                     Password = "password",
-                    UrlSlug = "test-4",
+                    UrlSlug = "tran-thai-linh",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Ngoại ngữ",

@@ -120,11 +120,10 @@ const ManageTopic = () => {
                       <p className="regis">Đã đăng ký</p>
                     ) : item.status?.id == 3 ? (
                       <p className="done">Đã nghiệm thu</p>
-                    ) : item.status?.id == 4 ? (
+                    ) : item.status?.id == 4 (
                       <p className="stop">Tạm dừng</p>
-                    ) : (
-                      <p className="not-regis">Chưa có người thực hiện</p>
-                    )}
+                    )
+                    }
                   </td>
                   <td className="text-center">
                     <Link to={`/admin/de-tai/edit/${item.id}`}>

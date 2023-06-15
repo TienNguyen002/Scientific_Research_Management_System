@@ -28,7 +28,7 @@ namespace Services.Apps.Topics
 
         Task<bool> RemoveTopicAsync(int id, CancellationToken cancellationToken = default);
 
-        Task<bool> RegisterTopic(Topic topic, IEnumerable<string> students, CancellationToken cancellationToken = default);
+        Task<bool> RegisterTopic(int topicId, string studentSlug, CancellationToken cancellationToken = default);
 
         Task<bool> SetOutlineUrlAsync(string slug, string outlineUrl, CancellationToken cancellationToken = default);
 
