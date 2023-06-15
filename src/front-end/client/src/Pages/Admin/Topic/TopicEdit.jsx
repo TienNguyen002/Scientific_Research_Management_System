@@ -66,8 +66,9 @@ const TopicEditAdmin = () => {
       setValidated(true);
     } else {
       let data = new FormData(e.target);
+      data.forEach((x) => console.log(x))
+    ;
       addOrUpdateTopic(data).then((data) => {
-        
         if (data) {
           console.log(data);
           enqueueSnackbar("Đã lưu thành công", {
@@ -201,8 +202,8 @@ const TopicEditAdmin = () => {
               <div className="col-sm-10">
                 <Form.Control
                   type="text"
-                  name="studentNumbers"
-                  title="Student Numbers"
+                  name="price"
+                  title="Price"
                   value={topic.price || ""}
                   onChange={(e) =>
                     setTopic({ ...topic, price: e.target.value })
@@ -211,63 +212,45 @@ const TopicEditAdmin = () => {
               </div>
             </div>
             <div className="row mb-3">
-                <Form.Label className="col-sm-2 col-form-label">
-                  Khoa
-                </Form.Label>
-                <div className="col-sm-10">
-                  <Form.Select
-                    name="departmentId"
-                    title="department Id"
-                    value={topic.department?.id}
-                    required
-                    onChange={(e) =>
-                      setTopic({
-                        ...topic,
-                        departmentId: e.target.value,
-                      })
-                    }
-                  >
-                    {filter.departmentList.length > 0 &&
-                      filter.departmentList.map((item, index) => (
-                        <option key={index} value={item.value}>
-                          {item.text}
-                        </option>
-                      ))}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    Khoa không được bỏ trống.
-                  </Form.Control.Feedback>
-                </div>
+              <Form.Label className="col-sm-2 col-form-label">Khoa</Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  name="departmentId"
+                  title="department Id"
+                  value={topic.department?.id}
+                  required
+                  onChange={(e) =>
+                    setTopic({
+                      ...topic,
+                      departmentId: e.target.value,
+                    })
+                  }
+                ></Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  Khoa không được bỏ trống.
+                </Form.Control.Feedback>
               </div>
-              <div className="row mb-3">
-                <Form.Label className="col-sm-2 col-form-label">
-                  Khoa
-                </Form.Label>
-                <div className="col-sm-10">
-                  <Form.Select
-                    name="statusId"
-                    title="Status Id"
-                    value={topic.status?.id}
-                    required
-                    onChange={(e) =>
-                      setTopic({
-                        ...topic,
-                        statusId: e.target.value,
-                      })
-                    }
-                  >
-                    {filter.statusList.length > 0 &&
-                      filter.statusList.map((item, index) => (
-                        <option key={index} value={item.value}>
-                          {item.text}
-                        </option>
-                      ))}
-                  </Form.Select>
-                  <Form.Control.Feedback type="invalid">
-                    Khoa không được bỏ trống.
-                  </Form.Control.Feedback>
-                </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">Khoa</Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  name="statusId"
+                  title="Status Id"
+                  value={topic.status?.id}
+                  required
+                  onChange={(e) =>
+                    setTopic({
+                      ...topic,
+                      statusId: e.target.value,
+                    })
+                  }
+                ></Form.Control>
+                <Form.Control.Feedback type="invalid">
+                  Khoa không được bỏ trống.
+                </Form.Control.Feedback>
               </div>
+            </div>
             <div className="text-center">
               <Button variant="success" type="submit">
                 Lưu các thay đổi

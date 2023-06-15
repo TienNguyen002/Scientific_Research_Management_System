@@ -160,8 +160,8 @@ const AssignmentTopic = () => {
               <div className="col-sm-10">
                 <Form.Control
                   type="text"
-                  name="studentNumbers"
-                  title="Student Numbers"
+                  name="price"
+                  title="Price"
                   disabled
                   value={topic.price}
                 />
@@ -171,8 +171,8 @@ const AssignmentTopic = () => {
               <Form.Label className="col-sm-2 col-form-label">Khoa</Form.Label>
               <div className="col-sm-10">
                 <Form.Control
-                  name="departmentName"
-                  title="department Name"
+                  name="departmentId"
+                  title="department Id"
                   disabled
                   value={topic.department?.name}
                 ></Form.Control>
@@ -183,7 +183,7 @@ const AssignmentTopic = () => {
                   Giảng viên
                 </Form.Label>
             <div className="col-sm-10">
-              <Form.Select
+              <Form.Control
                 name="lecturerId"
                 title="lecturer Id"
                 value={topic.lecturer?.id}
@@ -195,14 +195,7 @@ const AssignmentTopic = () => {
                   })
                 }
               >
-                <option value=''>-- Chọn giảng viên -- </option>
-                {filter.lecturerList.length > 0 &&
-                  filter.lecturerList.map((item, index) => (
-                    <option key={index} value={item.value}>
-                      {item.text}
-                    </option>
-                  ))}
-              </Form.Select>
+              </Form.Control>
               <Form.Control.Feedback type="invalid">
                 Vui lòng chọn giảng viên
               </Form.Control.Feedback>
