@@ -76,10 +76,10 @@ const AdminSidebar = () => {
           </Link>
         </ul>
       </div>
-      <div className="sidebar-bottom">
+      {/* <div className="sidebar-bottom">
         <div className="sidebar-bottom-colorOption"></div>
         <div className="sidebar-bottom-colorOption"></div>
-      </div>
+      </div> */}
     </div>
   );
 };

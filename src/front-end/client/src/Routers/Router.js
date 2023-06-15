@@ -18,6 +18,7 @@ import ManageLecturer from "../Pages/Admin/ManageLecturer";
 import ManageFeedback from "../Pages/Admin/ManageFeedback";
 import AdminProfile from "../Pages/Admin/AdminProfile"
 import DepartmentEditAdmin from "../Pages/Admin/Department/DepartmentEdit";
+import Feedback from "../Pages/User/Feedback";
 
 const Router = () => {
     return(
@@ -33,6 +34,7 @@ const Router = () => {
                     <Route path="/sinh-vien-nghien-cuu/:slug" element={<StudentDetails/>}/>
                     <Route path="/giang-vien/:slug" element={<LecturerDetails/>}/>
                     <Route path="/khoa/:slug" element={<DepartmentDetails/>}/>
+                    <Route path="/lien-he" element={<Feedback/>}/>
                 </Route>
                 <Route path="/admin" element={<AdminLayout/>}>
                     <Route path="/admin" element={<Dashboard/>}/>

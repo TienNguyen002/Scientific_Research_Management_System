@@ -31,5 +31,7 @@ namespace Services.Apps.Departments
         Task<bool> AddOrUpdateDepartmentAsync(Department depart, CancellationToken cancellationToken = default);
 
         Task<bool> DeleteDepartmentByIdAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<int> CountDepartmentAsync(CancellationToken cancellationToken = default);
     }
 }

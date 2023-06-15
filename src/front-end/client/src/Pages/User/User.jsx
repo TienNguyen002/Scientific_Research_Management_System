@@ -4,7 +4,7 @@ import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import "./style/user.scss";
-import StudentFilter from "../../Components/User/Filter/Student/StudentFilter";
+import StudentFilter from "../../Components/Shared/Filter/Student/StudentFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { faUser } from "@fortawesome/free-solid-svg-icons";

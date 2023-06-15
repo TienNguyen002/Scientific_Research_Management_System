@@ -4,7 +4,7 @@ import { getStudentsFilterByDepartmentSlug } from "../../../Services/StudentServ
 import { Link, useParams } from "react-router-dom";
 import {Button} from "react-bootstrap";
 import StudentList from "../../../Components/Shared/StudentList";
-import FilterSearch from "../../../Components/User/Filter/Student/StudentFilterSearch";
+import FilterSearch from "../../../Components/Shared/Filter/Student/StudentFilterSearch";
 import Loading from "../../../Components/Shared/Loading";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

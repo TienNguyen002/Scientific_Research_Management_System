@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import "./style/admin-page.scss";
 import format from "date-fns/format";
 import { Button } from "react-bootstrap";
-import TopicFilter from "../../Components/User/Filter/Topic/TopicFilter";
+import TopicFilter from "../../Components/Shared/Filter/Topic/TopicFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
@@ -70,7 +70,7 @@ const ManageTopic = () => {
         <Table striped responsive bordered className="small-table">
           <thead className="table text-center">
             <tr className="">
-              <th>Tên đề tài</th>
+              <th className="w-25">Tên đề tài</th>
               <th className="width">Ngày thực hiện</th>
               <th className="width">Ngày nghiệm thu</th>
               <th>Khoa</th>
@@ -141,7 +141,7 @@ const ManageTopic = () => {
               ))
             ) : (
               <tr>
-                <td>
+                <td colSpan={8}>
                   <h4>Không tìm thấy khóa học nào</h4>
                 </td>
               </tr>

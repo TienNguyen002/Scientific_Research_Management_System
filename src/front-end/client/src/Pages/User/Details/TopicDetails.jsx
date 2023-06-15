@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { isEmptyOrSpaces } from "../../../Utils/Utils";
-import { getTopicBySlug } from "../../../Services/TopicService";
+import { getTopicBySlug, increaseView } from "../../../Services/TopicService";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import format from "date-fns/format";
@@ -22,7 +22,8 @@ const TopicDetails = () => {
         setTopic(data);
       } else setTopic({});
     });
-  }, [slug]);
+    increaseView(slug)
+  }, []);
 
   return (
     <>

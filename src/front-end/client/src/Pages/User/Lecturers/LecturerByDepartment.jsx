@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getLecturersFilterByDepartmentSlug } from "../../../Services/LecturerService";
 import { Link, useParams } from "react-router-dom";
-import LecturerFilterSearch from "../../../Components/User/Filter/Lecturer/LecturerFilterSearch";
+import LecturerFilterSearch from "../../../Components/Shared/Filter/Lecturer/LecturerFilterSearch";
 import Loading from "../../../Components/Shared/Loading";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

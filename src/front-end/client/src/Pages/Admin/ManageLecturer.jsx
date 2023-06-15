@@ -7,7 +7,7 @@ import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import "./style/admin-page.scss";
-import LecturerFilter from "../../Components/User/Filter/Lecturer/LecturerFilter";
+import LecturerFilter from "../../Components/Shared/Filter/Lecturer/LecturerFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
@@ -102,7 +102,7 @@ const ManageLecturer = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={3}>
+                    <td colSpan={5}>
                       <h4 className="text-danger text-center">
                         Không tìm thấy khoa nào
                       </h4>

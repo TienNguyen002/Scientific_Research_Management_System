@@ -4,7 +4,7 @@ import { getLecturersFilter } from "../../Services/LecturerService";
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import "./style/user.scss";
-import LecturerFilter from "../../Components/User/Filter/Lecturer/LecturerFilter";
+import LecturerFilter from "../../Components/Shared/Filter/Lecturer/LecturerFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { faUser } from "@fortawesome/free-solid-svg-icons";

@@ -129,5 +129,10 @@ namespace Services.Apps.Departments
             IQueryable<T> result = mapper(departmentResults);
             return await result.ToPagedListAsync(pagingParams, cancellationToken);
         }
+
+        public async Task<int> CountDepartmentAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Department>().CountAsync(cancellationToken);
+        }
     }
 }

@@ -8,15 +8,15 @@ const Footer = () => {
     return(
         <div className="footer">
             <div className="row">
-                <div className="col-4">
+                <div className="col-6">
                     <About/>
                 </div>
-                <div className="col-4">
+                <div className="col-6">
                     <Other/>
                 </div>
-                <div className="col-4">
+                {/* <div className="col-4">
                     <Social/>
-                </div>
+                </div> */}
                 <div className="container-fluid text-center footer-bottom">
                     &copy; 2023 - HỆ THỐNG QUẢN LÝ HỒ SƠ KHOA HỌC TRƯỜNG ĐẠI HỌC ĐÀ LẠT
                 </div>

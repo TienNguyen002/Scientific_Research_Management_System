@@ -35,5 +35,7 @@ namespace Services.Apps.Students
         Task<bool> GetStudentPasswordBySlugAsync(string slug, string password, CancellationToken cancellationToken = default);
 
         Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default);
+
+        Task<int> CountStudentAsync(CancellationToken cancellationToken = default);
     }
 }

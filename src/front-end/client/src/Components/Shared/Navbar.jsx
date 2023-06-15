@@ -42,6 +42,11 @@ const Navbar = () => {
                             </Link>
                         </NavItem>
                         <NavItem>
+                            <Link to='/lien-he' className="navitem">
+                                LIÊN HỆ
+                            </Link>
+                        </NavItem>
+                        <NavItem>
                             <Link to='/dang-ky-de-tai' className="navitem">
                                 ĐĂNG KÝ ĐỀ TÀI
                             </Link>

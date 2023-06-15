@@ -1,4 +1,4 @@
-import { get_api, delete_api } from "./Method";
+import { get_api, delete_api, post_api, put_api } from "./Method";
 
 export function getTopics(pageNumber = 1, pageSize = 5) {
   return get_api(
@@ -64,6 +64,24 @@ export function getTopicsFilterNotRegis(
   return get_api(url.href);
 }
 
+export function getDoneTopicsFilter(
+  keyword = "",
+  departmentId = "",
+  pageSize = 11,
+  pageNumber = 1,
+  sortColumn = "",
+  sortOrder = ""
+) {
+  let url = new URL(`https://localhost:7129/api/topics/done`);
+  keyword !== "" && url.searchParams.append("Keyword", keyword);
+  departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
+  sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
+  sortOrder !== "" && url.searchParams.append("SortOrder", sortOrder);
+  url.searchParams.append("PageSize", pageSize);
+  url.searchParams.append("PageNumber", pageNumber);
+  return get_api(url.href);
+}
+
 export function getTopicsFilter(
   keyword = "",
   departmentId = "",
@@ -108,4 +126,8 @@ export function getAdminTopicsFilter(
 
 export function deleteTopic(id) {
   return delete_api(`https://localhost:7129/api/topics/${id}`);
+}
+
+export function increaseView(slug){
+  return put_api(`https://localhost:7129/api/topics/view/${slug}`)
 }

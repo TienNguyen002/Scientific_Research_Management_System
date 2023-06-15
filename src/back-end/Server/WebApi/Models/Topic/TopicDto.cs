@@ -20,6 +20,7 @@ namespace WebApi.Models.Topic
         public string OutlineUrl { get; set; }
         public string ResultUrl { get; set; }
         public int Point { get; set; }
+        public int ViewCount { get; set; }
         public DepartmentDto Department { get; set; }
         public LecturerDto Lecturer { get; set; }
         public IList<StudentDto> Students { get; set; }

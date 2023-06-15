@@ -7,7 +7,7 @@ import {
 import { Link, useParams } from "react-router-dom";
 import "../style/admin-page.scss";
 import Loading from "../../../Components/Shared/Loading";
-import DepartmentFilter from "../../../Components/User/Filter/Department/DepartmentFilter";
+import DepartmentFilter from "../../../Components/Shared/Filter/Department/DepartmentFilter";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";

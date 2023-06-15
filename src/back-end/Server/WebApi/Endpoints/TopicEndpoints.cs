@@ -33,6 +33,10 @@ namespace WebApi.Endpoints
                 .WithName("GetAllTopic")
                 .Produces<ApiResponse<PaginationResult<TopicDto>>>();
 
+            routeGroupBuilder.MapGet("/done", GetDoneTopics)
+                .WithName("GetDoneTopics")
+                .Produces<ApiResponse<PaginationResult<TopicDto>>>();
+
             routeGroupBuilder.MapGet("/{id:int}", GetTopicById)
                   .WithName("GetTopicById")
                   .Produces<ApiResponse<TopicDto>>();
@@ -79,7 +83,7 @@ namespace WebApi.Endpoints
               .Accepts<IFormFile>("multipart/form-data")
               .Produces<ApiResponse<string>>();
 
-            routeGroupBuilder.MapPost("/view/{slug:regex(^[a-z0-9_-]+$)}", IncreaseView)
+            routeGroupBuilder.MapPut("/view/{slug:regex(^[a-z0-9_-]+$)}", IncreaseView)
               .WithName("IncreaseView")
               .Produces<ApiResponse<string>>();
         }
@@ -98,6 +102,18 @@ namespace WebApi.Endpoints
         {
             var query = mapper.Map<TopicQuery>(model);
             var topics = await topicRepository.GetPagedTopicsAsync<TopicDto>(query, model,
+                topics => topics.ProjectToType<TopicDto>());
+            var paginationResult = new PaginationResult<TopicDto>(topics);
+            return Results.Ok(ApiResponse.Success(paginationResult));
+        }
+
+        private static async Task<IResult> GetDoneTopics(
+            [AsParameters] TopicFilterModel model,
+            ITopicRepository topicRepository,
+            IMapper mapper)
+        {
+            var query = mapper.Map<TopicQuery>(model);
+            var topics = await topicRepository.GetPagedDoneTopicsAsync<TopicDto>(query, model,
                 topics => topics.ProjectToType<TopicDto>());
             var paginationResult = new PaginationResult<TopicDto>(topics);
             return Results.Ok(ApiResponse.Success(paginationResult));
@@ -152,7 +168,7 @@ namespace WebApi.Endpoints
 
         private static async Task<IResult> UpdateTopic(
             int id,
-            TopicEditModel model,
+            [AsParameters]TopicEditModel model,
             IMapper mapper,
             ITopicRepository topicRepository,
             IDepartmentRepository departmentRepository,
@@ -310,7 +326,7 @@ namespace WebApi.Endpoints
             ITopicRepository topicRepository)
         {
             await topicRepository.IncreaseViewCountAsync(slug);
-            return Results.Ok(ApiResponse.Success($"Đề tài có id = {slug} đã tăng view thành công"));
+            return Results.Ok(ApiResponse.Success($"Đề tài có slug = {slug} đã tăng view thành công"));
         }
     }
 }

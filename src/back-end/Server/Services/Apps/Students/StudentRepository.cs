@@ -162,5 +162,10 @@ namespace Services.Apps.Students
                 .Where(t => t.UrlSlug == slug)
                 .ExecuteUpdateAsync(s => s.SetProperty(s => s.ImageUrl, imageUrl), cancellationToken) > 0;
         }
+
+        public async Task<int> CountStudentAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>().CountAsync(cancellationToken);
+        }
     }
 }

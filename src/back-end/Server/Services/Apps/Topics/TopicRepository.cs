@@ -293,5 +293,25 @@ namespace Services.Apps.Topics
                 .ExecuteUpdateAsync(p =>
                     p.SetProperty(x => x.ViewCount, x => x.ViewCount + 1), cancellationToken);
         }
+
+        public async Task<int> CountTopicAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>().CountAsync(cancellationToken);
+        }
+
+        public async Task<int> CountTopicDoneAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>()
+                .Where(t => t.StatusId == 3)
+                .CountAsync(cancellationToken);
+        }
+
+        public async Task<IPagedList<T>> GetPagedDoneTopicsAsync<T>(TopicQuery query, IPagingParams pagingParams, Func<IQueryable<Topic>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+        {
+            IQueryable<Topic> topicsResult = FindTopicByQueryable(query)
+                .Where(t => t.StatusId == 3);
+            IQueryable<T> result = mapper(topicsResult);
+            return await result.ToPagedListAsync(pagingParams, cancellationToken);
+        }
     }
 }

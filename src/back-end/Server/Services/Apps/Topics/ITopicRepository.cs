@@ -24,6 +24,11 @@ namespace Services.Apps.Topics
             Func<IQueryable<Topic>, IQueryable<T>> mapper,
             CancellationToken cancellationToken = default);
 
+        Task<IPagedList<T>> GetPagedDoneTopicsAsync<T>(TopicQuery query,
+            IPagingParams pagingParams,
+            Func<IQueryable<Topic>, IQueryable<T>> mapper,
+            CancellationToken cancellationToken = default);
+
         Task<bool> AddOrUpdateTopicAsync(Topic topic, CancellationToken cancellationToken = default);
 
         Task<bool> RemoveTopicAsync(int id, CancellationToken cancellationToken = default);
@@ -35,5 +40,9 @@ namespace Services.Apps.Topics
         Task<bool> SetResultUrlAsync(string slug, string resultUrl, CancellationToken cancellationToken = default);
 
         Task IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default);
+
+        Task<int> CountTopicAsync(CancellationToken cancellationToken = default);
+        
+        Task<int> CountTopicDoneAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -151,5 +151,10 @@ namespace Services.Apps.Lecturers
                 .Where(t => t.UrlSlug == slug)
                 .ExecuteUpdateAsync(s => s.SetProperty(s => s.ImageUrl, imageUrl), cancellationToken) > 0;
         }
+
+        public async Task<int> CountLecturerAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>().CountAsync(cancellationToken);
+        }
     }
 }

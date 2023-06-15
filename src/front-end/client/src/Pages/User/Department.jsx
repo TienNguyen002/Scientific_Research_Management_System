@@ -1,31 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
-import { getDepartments } from "../../Services/DepartmentService";
+import { getDepartmentsFilter } from "../../Services/DepartmentService";
 import { Link } from "react-router-dom";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./style/user.scss";
+import Loading from "../../Components/Shared/Loading";
+import DepartmentFilter from "../../Components/Shared/Filter/Department/DepartmentFilter";
+import { useSelector } from "react-redux";
 
 const Department = () => {
-  const [departments, setDepartments] = useState([]);
+  const [departments, setDepartments] = useState([]),
+  [isVisibleLoading, setIsVisibleLoading] = useState(true),
+  departmentFilter = useSelector((state) => state.departmentFilter);;
+
+  let p = 1,
+    ps = 10;
 
   useEffect(() => {
     document.title = "Danh sách Khoa";
-    getDepartments().then((data) => {
+    getDepartmentsFilter(departmentFilter.keyword).then((data) => {
       if (data) {
-        setDepartments(data);
+        setDepartments(data.items);
       } else {
         setDepartments([]);
       }
+      setIsVisibleLoading(false);
     });
-  }, []);
+  }, [departmentFilter, ps, p]);
 
   return (
     <>
-      <div className="department">
-        <h1 className="text danger text-center department">Danh sách Khoa</h1>
-      </div>
       <div>
+      <div className="d-flex">
+        <DepartmentFilter />
+      </div>
         <div className="row department-item">
           {departments.length > 0 ? (
             departments.map((item, index) => (

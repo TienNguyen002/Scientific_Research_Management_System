@@ -35,5 +35,7 @@ namespace Services.Apps.Lecturers
         Task<bool> DeleteLecturerByIdAsync(int id, CancellationToken cancellationToken = default);
 
         Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default);
+
+        Task<int> CountLecturerAsync(CancellationToken cancellationToken = default);
     }
 }
