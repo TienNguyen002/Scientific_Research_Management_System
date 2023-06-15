@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getTopicsFilterNotRegis } from "../../Services/TopicService";
+import { getTopicsFilter } from "../../Services/TopicService";
 import { Link } from "react-router-dom";
 import "./style/user.scss";
 import format from "date-fns/format";
@@ -20,11 +20,11 @@ const Topic = () => {
 
   useEffect(() => {
     document.title = "Đăng ký đề tài";
-    getTopicsFilterNotRegis(
+    getTopicsFilter(
       topicFilter.keyword,
       topicFilter.departmentId,
       topicFilter.lecturerId,
-      statusId,
+      1,
       topicFilter.year,
       topicFilter.month,
       ps,

@@ -39,6 +39,8 @@ const Router = () => {
                 <Route path="/admin" element={<AdminLayout/>}>
                     <Route path="/admin" element={<Dashboard/>}/>
                     <Route path="/admin/khoa" element={<ManageDepartment/>}/>
+                    <Route path="/admin/khoa/edit" element={<DepartmentEditAdmin/>}/>
+                    <Route path="/admin/khoa/edit/:id" element={<DepartmentEditAdmin/>}/>
                     <Route path="/admin/de-tai" element={<ManageTopic/>}/>
                     <Route path="/admin/sinh-vien" element={<ManageStudent/>}/>
                     <Route path="/admin/giang-vien" element={<ManageLecturer/>}/>

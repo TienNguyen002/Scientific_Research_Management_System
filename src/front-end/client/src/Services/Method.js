@@ -14,39 +14,45 @@ export async function get_api(your_api) {
 
 export async function post_api(your_api, formData) {
   try {
-    const response = await axios({
-      method: 'post',
-      url: your_api,
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log(response);
+    const response = await axios.post(your_api, formData);
     const data = response.data;
-    if (data.isSuccess) return data.result;
-    else return null;
+    console.log("postdata", data);
+    if (data.isSuccess)
+      return data.result;
+    else
+      return null;
   } catch (error) {
     console.log('Error', error.message);
     return null;
   }
 }
+
 export async function put_api(your_api, formData){
+ 
   try {
+    let formDataObject = Object.fromEntries(formData.entries());
+    // Format the plain form data as JSON
+    let formDataJsonString = JSON.stringify(formDataObject);
+
     const response = await axios({
       method: 'put',
       url: your_api,
-      data: formData,
+      data: formDataJsonString,
       headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log(response);
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+
     const data = response.data;
-    if (data.isSuccess) return data.result;
-    else return null;
+    if (data.isSuccess){
+      return data.result;
+    }
+    else{
+      return null;
+    }
   } catch (error) {
-    console.log('Error', error.message);
+    console.log("Error ", error.message);
     return null;
   }
 }

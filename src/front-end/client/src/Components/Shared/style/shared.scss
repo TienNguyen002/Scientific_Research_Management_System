@@ -22,7 +22,14 @@
 
 .login{
     display: flex;
+    justify-content: space-between;
     .register{
         margin-right: 10px;
+    }
+    &-button{
+        color: white;
+    }
+    &-button:hover{
+        color: white
     }
 }

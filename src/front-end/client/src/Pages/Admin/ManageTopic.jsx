@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getAdminTopicsFilter, deleteTopic } from "../../Services/TopicService";
+import { getTopicsFilter, deleteTopic } from "../../Services/TopicService";
 import { Link } from "react-router-dom";
 import "./style/admin-page.scss";
 import format from "date-fns/format";
 import { Button } from "react-bootstrap";
-import TopicFilter from "../../Components/Shared/Filter/Topic/TopicFilter";
+import AdminTopicFilter from "../../Components/Shared/Filter/Topic/AdminTopicFiler";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
@@ -22,10 +22,11 @@ const ManageTopic = () => {
   let p = 1,
     ps = 11;
   useEffect(() => {
-    getAdminTopicsFilter(
+    getTopicsFilter(
       topicFilter.keyword,
       topicFilter.departmentId,
       topicFilter.lecturerId,
+      topicFilter.statusId,
       topicFilter.year,
       topicFilter.month,
       ps,
@@ -33,6 +34,7 @@ const ManageTopic = () => {
     ).then((data) => {
       if (data) {
         setTopicsList(data.items);
+        console.log(data.items)
       } else setTopicsList([]);
       setIsVisibleLoading(false);
     });
@@ -56,7 +58,7 @@ const ManageTopic = () => {
     <>
       <h1 className="topics">Danh sách kết quả nghiên cứu</h1>
       <div className="d-flex">
-        <TopicFilter />
+        <AdminTopicFilter />
         <Link className="text-decoration-none" to={`/admin/de-tai/edit`}>
           <Fab color="primary" aria-label="add">
             <AddIcon />
@@ -142,7 +144,7 @@ const ManageTopic = () => {
             ) : (
               <tr>
                 <td colSpan={8}>
-                  <h4>Không tìm thấy khóa học nào</h4>
+                  <h4 className="text-danger text-center">Không tìm thấy đề tài nào</h4>
                 </td>
               </tr>
             )}

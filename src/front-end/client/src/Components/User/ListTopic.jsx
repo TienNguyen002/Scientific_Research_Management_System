@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getDoneTopicsFilter, increaseView } from "../../Services/TopicService";
+import { getTopicsFilter, increaseView } from "../../Services/TopicService";
 import { Link } from "react-router-dom";
 import "./style/user.scss";
 import StudentList from "../Shared/StudentList";
@@ -17,9 +17,13 @@ const ListTopic = () => {
   let p = 1,
     ps = 11;
   useEffect(() => {
-    getDoneTopicsFilter(
+    getTopicsFilter(
       topicFilter.keyword,
       topicFilter.departmentId,
+      topicFilter.lecturerId,
+      3,
+      topicFilter.year,
+      topicFilter.month,
       ps,
       p
     ).then((data) => {
@@ -32,7 +36,7 @@ const ListTopic = () => {
 
   return (
     <>
-      <h1 className="topics">Danh sách kết quả nghiên cứu</h1>
+      <h1 className="topics">Danh sách kết quả nghiên cứu đã nghiệm thu</h1>
       <TopicFilterSearch />
       {isVisibleLoading ? (
         <Loading />

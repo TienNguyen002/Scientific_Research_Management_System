@@ -1,62 +1,50 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   getDepartmentById,
-  addDepartment,
   updateDepartment,
 } from "../../../Services/DepartmentService";
 import { isEmptyOrSpaces, isInteger } from "../../../Utils/Utils";
 import { Button, Form } from "react-bootstrap";
+import { useSnackbar } from "notistack";
 
 const DepartmentEditAdmin = () => {
   const initialState = {
       name: "",
     },
     params = useParams(),
-    [department, setDepartment] = useState(initialState);
+    [department, setDepartment] = useState(initialState),
+    { enqueueSnackbar, closeSnackbar } = useSnackbar(),
+    navigate = useNavigate();;
 
   let { id } = params;
   id = id ?? 0;
 
   useEffect(() => {
     GetDepartment();
-    async function GetDepartment(){
-        const data = await getDepartmentById(id);
-        if(data){
-            setDepartment(data);
-        } else setDepartment([]);
+    async function GetDepartment() {
+      const data = await getDepartmentById(id);
+      if (data) {
+        setDepartment(data);
+      } else setDepartment([]);
     }
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      name: department.name,
-    };
-
-    if (id > 0) {
-      Update(data);
-    } else {
-      Add(data);
-    }
-
-    async function Update(data) {
-      const responsive = await updateDepartment(id, data);
-      if (responsive) {
-        alert("Cập nhật thành công");
+    let data = new FormData(e.target);
+    updateDepartment(id, data).then((data) => {
+      if (data) {
+        enqueueSnackbar("Đã lưu thành công", {
+          variant: "success",
+        });
+        navigate(`/admin/khoa`);
       } else {
-        alert("Cập nhật thất bại");
+        enqueueSnackbar("Đã xảy ra lỗi khi lưu", {
+          variant: "error",
+        });
       }
-    }
-
-    async function Add(data) {
-      const responsive = await addDepartment(data);
-      if (responsive) {
-        alert("Cập nhật thành công");
-      } else {
-        alert("Cập nhật thất bại");
-      }
-    }
+    });
   };
 
   return (
@@ -65,8 +53,8 @@ const DepartmentEditAdmin = () => {
         <div className="department-wrapper">
           <h3 className="text-success py-3">Thêm/cập nhật phòng khoa</h3>
           <Form
-            method={isInteger(id) ? "put" : "post"}
-            encType="multipart/form-data"
+            method="post"
+            encType=""
             onSubmit={handleSubmit}
           >
             <Form.Control type="hidden" name="id" value={department.id} />

@@ -38,72 +38,11 @@ export function getFilter() {
   return get_api(`https://localhost:7129/api/topics/get-filter`);
 }
 
-export function getTopicsFilterNotRegis(
-  keyword = "",
-  departmentId = "",
-  lecturerId = "",
-  statusId = 1,
-  year = "",
-  month = "",
-  pageSize = 11,
-  pageNumber = 1,
-  sortColumn = "",
-  sortOrder = ""
-) {
-  let url = new URL(`https://localhost:7129/api/topics`);
-  keyword !== "" && url.searchParams.append("Keyword", keyword);
-  departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
-  lecturerId !== "" && url.searchParams.append("LecturerId", lecturerId);
-  url.searchParams.append("StatusId", statusId);
-  month !== "" && url.searchParams.append("RegistrationMonth", month);
-  year !== "" && url.searchParams.append("RegistrationYear", year);
-  sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
-  sortOrder !== "" && url.searchParams.append("SortOrder", sortOrder);
-  url.searchParams.append("PageSize", pageSize);
-  url.searchParams.append("PageNumber", pageNumber);
-  return get_api(url.href);
-}
-
-export function getDoneTopicsFilter(
-  keyword = "",
-  departmentId = "",
-  pageSize = 11,
-  pageNumber = 1,
-  sortColumn = "",
-  sortOrder = ""
-) {
-  let url = new URL(`https://localhost:7129/api/topics/done`);
-  keyword !== "" && url.searchParams.append("Keyword", keyword);
-  departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
-  sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
-  sortOrder !== "" && url.searchParams.append("SortOrder", sortOrder);
-  url.searchParams.append("PageSize", pageSize);
-  url.searchParams.append("PageNumber", pageNumber);
-  return get_api(url.href);
-}
-
 export function getTopicsFilter(
   keyword = "",
   departmentId = "",
-  pageSize = 11,
-  pageNumber = 1,
-  sortColumn = "",
-  sortOrder = "ASC"
-) {
-  let url = new URL(`https://localhost:7129/api/topics`);
-  keyword !== "" && url.searchParams.append("Keyword", keyword);
-  departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
-  sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
-  sortOrder !== "" && url.searchParams.append("SortOrder", sortOrder);
-  url.searchParams.append("PageSize", pageSize);
-  url.searchParams.append("PageNumber", pageNumber);
-  return get_api(url.href);
-}
-
-export function getAdminTopicsFilter(
-  keyword = "",
-  departmentId = "",
   lecturerId = "",
+  statusId = "",
   year = "",
   month = "",
   pageSize = 11,
@@ -115,6 +54,7 @@ export function getAdminTopicsFilter(
   keyword !== "" && url.searchParams.append("Keyword", keyword);
   departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
   lecturerId !== "" && url.searchParams.append("LecturerId", lecturerId);
+  statusId !== "" && url.searchParams.append("StatusId", statusId);
   month !== "" && url.searchParams.append("RegistrationMonth", month);
   year !== "" && url.searchParams.append("RegistrationYear", year);
   sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);

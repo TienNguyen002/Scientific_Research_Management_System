@@ -11,7 +11,6 @@ namespace WebApi.Models.Topic
         public int? LecturerId { get; set; }
         public string LecturerSlug { get; set; }
         public int? StatusId { get; set; }
-        public int? ProcessId { get; set; }
         public int? RegistrationMonth { get; set; }
         public int? RegistrationYear { get; set; }
         public int? StudentNumbers { get; set; }

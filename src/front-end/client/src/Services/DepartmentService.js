@@ -1,4 +1,4 @@
-import { get_api, delete_api, post_api } from "./Method"
+import { get_api, delete_api, post_api, put_api } from "./Method"
 
 export function getDepartments(){
     return get_api(`https://localhost:7129/api/departments/all`)
@@ -35,7 +35,7 @@ export function addDepartment(formData){
 }
 
 export function updateDepartment(id, formData){
-  return post_api(`https://localhost:7129/api/departments/${id}`, formData)
+  return put_api(`https://localhost:7129/api/departments/${id}`, formData)
 }
 
 export function deleteDepartment(id){

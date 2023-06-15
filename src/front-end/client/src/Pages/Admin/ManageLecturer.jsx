@@ -104,7 +104,7 @@ const ManageLecturer = () => {
                   <tr>
                     <td colSpan={5}>
                       <h4 className="text-danger text-center">
-                        Không tìm thấy khoa nào
+                        Không tìm thấy giảng viên nào
                       </h4>
                     </td>
                   </tr>
