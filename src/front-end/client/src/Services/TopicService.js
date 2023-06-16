@@ -74,6 +74,6 @@ export function addOrUpdateTopic(formData){
   return post_api(`https://localhost:7129/api/topics`, formData)
 }
 
-export function assignmentTopic(id, formData){
-  return put_api(`https://localhost:7129/api/topics/assignment/${id}`, formData)
+export function assignmentTopic(formData){
+  return post_api(`https://localhost:7129/api/topics/assignment`, formData)
 }

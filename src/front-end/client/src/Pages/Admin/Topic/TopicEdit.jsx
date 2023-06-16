@@ -214,10 +214,10 @@ const TopicEditAdmin = () => {
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">Khoa</Form.Label>
               <div className="col-sm-10">
-                <Form.Control
+                <Form.Select
                   name="departmentId"
-                  title="department Id"
-                  value={topic.department?.id}
+                  title="Department Id"
+                  value={topic.departmentId || topic.department?.id}
                   required
                   onChange={(e) =>
                     setTopic({
@@ -225,19 +225,24 @@ const TopicEditAdmin = () => {
                       departmentId: e.target.value,
                     })
                   }
-                ></Form.Control>
+                >
+                  <option value=''>-- Chọn khoa --</option>
+                  {filter.departmentList.length > 0 &&
+                  filter.departmentList.map((item, index) => 
+                  <option key={index} value={item.value}>{item.text}</option>)}
+                </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   Khoa không được bỏ trống.
                 </Form.Control.Feedback>
               </div>
             </div>
             <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">Khoa</Form.Label>
+              <Form.Label className="col-sm-2 col-form-label">Trạng thái</Form.Label>
               <div className="col-sm-10">
-                <Form.Control
+                <Form.Select
                   name="statusId"
                   title="Status Id"
-                  value={topic.status?.id}
+                  value={topic.statusId || topic.status?.id}
                   required
                   onChange={(e) =>
                     setTopic({
@@ -245,9 +250,14 @@ const TopicEditAdmin = () => {
                       statusId: e.target.value,
                     })
                   }
-                ></Form.Control>
+                >
+                  <option value=''>-- Chọn trạng thái --</option>
+                  {filter.statusList.length > 0 &&
+                  filter.statusList.map((item, index) => 
+                  <option key={index} value={item.value}>{item.text}</option>)}
+                </Form.Select>
                 <Form.Control.Feedback type="invalid">
-                  Khoa không được bỏ trống.
+                  Trạng thái không được bỏ trống.
                 </Form.Control.Feedback>
               </div>
             </div>

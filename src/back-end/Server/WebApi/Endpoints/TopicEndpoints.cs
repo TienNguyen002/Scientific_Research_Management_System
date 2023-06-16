@@ -70,10 +70,11 @@ namespace WebApi.Endpoints
                   .AddEndpointFilter<ValidatorFilter<TopicAddStudent>>()
                   .Produces<ApiResponse<string>>();
 
-            routeGroupBuilder.MapPut("/assignment/{id:int}", SetTopicLecturer)
+            routeGroupBuilder.MapPost("/assignment", SetTopicLecturer)
                   .WithName("SetTopicLecturer")
-                  .AddEndpointFilter<ValidatorFilter<TopicAddLecturer>>()
-                  .Produces<ApiResponse<string>>();
+                  .Accepts<TopicAddLecturer>("multipart/form-data")
+                  .Produces(401)
+                  .Produces<ApiResponse<TopicItem>>();
 
             routeGroupBuilder.MapPost("/outlineFile/{slug:regex(^[a-z0-9_-]+$)}", SetTopicOutline)
               .WithName("SetTopicOutline")
@@ -305,29 +306,16 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> SetTopicLecturer(
-            int id,
-            [AsParameters] TopicAddLecturer model,
+            HttpContext context,
             IMapper mapper,
             ITopicRepository topicRepository,
-            ILecturerRepository lecturerRepository,
-            IAppRepository appRepository,
             IMediaManager mediaManager)
         {
-            var topic = await topicRepository.GetTopicByIdAsync(id);
-            if (topic == null)
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                    $"Không tìm thấy đề tài có id {id}"));
-            }
-            if (await lecturerRepository.GetLecturerByIdAsync(model.LecturerId) == null)
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy giảng viên có id = '{model.LecturerId}' "));
-            }
-            mapper.Map(model, topic);
-            topic.Id = id;
-            return await topicRepository.AddOrUpdateTopicAsync(topic)
-               ? Results.Ok(ApiResponse.Success($"Phân công giảng viên cho đề tài có id = {id} thành công"))
-               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có id = {id}"));
+            var model = await TopicAddLecturer.BindAsync(context);
+            var topic = model.Id > 0 ? await topicRepository.GetTopicByIdAsync(model.Id) : null;
+            topic.LecturerId = model.LecturerId;
+            await topicRepository.AddOrUpdateTopicAsync(topic);
+            return Results.Ok(ApiResponse.Success(mapper.Map<TopicItem>(topic), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> IncreaseView(

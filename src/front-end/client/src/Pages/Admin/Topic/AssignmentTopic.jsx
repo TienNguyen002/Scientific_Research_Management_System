@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   getTopicById,
-  addOrUpdateTopic,
+  assignmentTopic,
   getFilter,
 } from "../../../Services/TopicService";
 import { isEmptyOrSpaces, isInteger } from "../../../Utils/Utils";
@@ -51,7 +51,7 @@ const AssignmentTopic = () => {
       setValidated(true);
     } else {
       let data = new FormData(e.target);
-      addOrUpdateTopic(data).then((data) => {
+      assignmentTopic(data).then((data) => {
         if (data) {
           enqueueSnackbar("Phân công thành công", {
             variant: "success",
@@ -74,7 +74,7 @@ const AssignmentTopic = () => {
         <div className="department-wrapper">
           <h3 className="text-success py-3">Phân công đề tài</h3>
           <Form
-            method="put"
+            method="post"
             encType=""
             onSubmit={handleSubmit}
             noValidate
@@ -96,36 +96,6 @@ const AssignmentTopic = () => {
               </div>
             </div>
             <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">Mô tả</Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  as="textarea"
-                  rows={7}
-                  type="text"
-                  name="description"
-                  title="Description"
-                  disabled
-                  value={topic.description}
-                />
-              </div>
-            </div>
-            <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Ghi chú
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  as="textarea"
-                  rows={5}
-                  type="text"
-                  name="note"
-                  title="Note"
-                  disabled
-                  value={topic.note}
-                />
-              </div>
-            </div>
-            <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
                 Ngày nghiệm thu
               </Form.Label>
@@ -139,34 +109,7 @@ const AssignmentTopic = () => {
                 />
               </div>
             </div>
-            <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Số sinh viên thực hiện
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  type="text"
-                  name="studentNumbers"
-                  title="Student Numbers"
-                  disabled
-                  value={topic.studentNumbers}
-                />
-              </div>
-            </div>
-            <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Kinh phí
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  type="text"
-                  name="price"
-                  title="Price"
-                  disabled
-                  value={topic.price}
-                />
-              </div>
-            </div>
+            
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">Khoa</Form.Label>
               <div className="col-sm-10">
@@ -183,10 +126,10 @@ const AssignmentTopic = () => {
                   Giảng viên
                 </Form.Label>
             <div className="col-sm-10">
-              <Form.Control
+              <Form.Select
                 name="lecturerId"
                 title="lecturer Id"
-                value={topic.lecturer?.id}
+                value={topic.lecturerId || topic.lecturer?.id}
                 required
                 onChange={(e) =>
                   setTopic({
@@ -195,7 +138,11 @@ const AssignmentTopic = () => {
                   })
                 }
               >
-              </Form.Control>
+                <option value=''>-- Chọn giảng viên --</option>
+                  {filter.lecturerList.length > 0 &&
+                  filter.lecturerList.map((item, index) => 
+                  <option key={index} value={item.value}>{item.text}</option>)}
+              </Form.Select>
               <Form.Control.Feedback type="invalid">
                 Vui lòng chọn giảng viên
               </Form.Control.Feedback>
