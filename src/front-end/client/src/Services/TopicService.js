@@ -77,3 +77,7 @@ export function addOrUpdateTopic(formData){
 export function assignmentTopic(formData){
   return post_api(`https://localhost:7129/api/topics/assignment`, formData)
 }
+
+export function registerTopic(id, slug){
+  return post_api(`https://localhost:7129/api/topics/register/${id}?StudentSlug=${slug}`)
+}

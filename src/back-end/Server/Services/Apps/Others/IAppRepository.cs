@@ -1,4 +1,5 @@
-﻿using Core.DTO.Others;
+﻿using Core.Contracts;
+using Core.DTO.Others;
 using Core.DTO.Roles;
 using Core.Entities;
 using System;

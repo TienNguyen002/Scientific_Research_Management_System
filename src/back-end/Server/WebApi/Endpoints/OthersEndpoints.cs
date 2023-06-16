@@ -2,8 +2,17 @@
 using Core.Collections;
 using Core.DTO.Others;
 using Core.DTO.Roles;
+using Core.DTO.Topic;
+using Mapster;
+using MapsterMapper;
+using Services.Apps.Departments;
+using Services.Apps.Lecturers;
 using Services.Apps.Others;
+using Services.Apps.Students;
+using Services.Apps.Topics;
 using WebApi.Models;
+using WebApi.Models.Others;
+using WebApi.Models.Topic;
 
 namespace WebApi.Endpoints
 {

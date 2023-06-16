@@ -61,7 +61,7 @@ const TopicByStudents = () => {
                 <td>
                   <Link
                     className="table-content"
-                    to={`/giang-vien/${item.lecturer.urlSlug}`}
+                    to={`/giang-vien/${item.lecturer?.urlSlug}`}
                   >
                     {item.lecturer?.fullName}
                   </Link>

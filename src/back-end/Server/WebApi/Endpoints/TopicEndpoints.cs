@@ -65,7 +65,7 @@ namespace WebApi.Endpoints
                 .WithName("GetTopicFilter")
                 .Produces<ApiResponse<TopicFilterModel>>();
 
-            routeGroupBuilder.MapPut("/register/{id:int}", RegisterTopic)
+            routeGroupBuilder.MapPost("/register/{id:int}", RegisterTopic)
                   .WithName("RegisterTopic")
                   .AddEndpointFilter<ValidatorFilter<TopicAddStudent>>()
                   .Produces<ApiResponse<string>>();

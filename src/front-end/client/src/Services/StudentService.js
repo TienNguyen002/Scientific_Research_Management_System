@@ -53,3 +53,5 @@ export function getStudentsFilterByDepartmentSlug(
 export function deleteStudent(id) {
   return delete_api(`https://localhost:7129/api/students/${id}`);
 }
+
+
