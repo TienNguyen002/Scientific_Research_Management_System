@@ -1,8 +1,8 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { getStudentsFilterByDepartmentSlug } from "../../../Services/StudentService";
 import { Link, useParams } from "react-router-dom";
-import {Button} from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import StudentList from "../../../Components/Shared/StudentList";
 import FilterSearch from "../../../Components/Shared/Filter/Student/StudentFilterSearch";
 import Loading from "../../../Components/Shared/Loading";
@@ -11,32 +11,34 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 
 const StudentByDepartment = () => {
-    const [studentsList, setStudentsList] = useState([]),
+  const [studentsList, setStudentsList] = useState([]),
     params = useParams(),
-    {slug} = params,
+    { slug } = params,
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     studentFilter = useSelector((state) => state.studentFilter);
 
-    let departmentSlug = slug, p = 1, ps = 5;
+  let departmentSlug = slug,
+    p = 1,
+    ps = 5;
 
-    useEffect(() => {
-        document.title = "Danh sách Sinh viên";
-        getStudentsFilterByDepartmentSlug(
-          studentFilter.keyword,
-          departmentSlug,
-          ps,
-          p
-        ).then((data) => {
-          if (data) {
-            setStudentsList(data.items);
-          } else setStudentsList([]);
-          setIsVisibleLoading(false);
-        });
-      }, [studentFilter, ps, p]);
+  useEffect(() => {
+    document.title = "Danh sách Sinh viên";
+    getStudentsFilterByDepartmentSlug(
+      studentFilter.keyword,
+      departmentSlug,
+      ps,
+      p
+    ).then((data) => {
+      if (data) {
+        setStudentsList(data.items);
+      } else setStudentsList([]);
+      setIsVisibleLoading(false);
+    });
+  }, [studentFilter, ps, p]);
 
-    return(
-        <>
-            <FilterSearch />
+  return (
+    <>
+      <FilterSearch />
       {isVisibleLoading ? (
         <Loading />
       ) : (
@@ -44,7 +46,7 @@ const StudentByDepartment = () => {
           {studentsList.length > 0 ? (
             studentsList.map((item, index) => (
               <div className="col-6" key={index}>
-                <div className="card mt-3">
+                <div className="item-card mt-3">
                   <div className="d-flex card-content">
                     <FontAwesomeIcon
                       icon={faUser}
@@ -73,11 +75,16 @@ const StudentByDepartment = () => {
                       )}
                       <Link
                         className="text-decoration-none"
-                        to={`/khoa/${item.department.urlSlug}`}
+                        to={`/khoa/${item.department?.urlSlug}`}
                       >
-                        Khoa: {item.department.name}
+                        Khoa: {item.department?.name}
                       </Link>
                     </div>
+                  </div>
+                  <div>
+                    <Link to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}>
+                      <Button>Xem chi tiết</Button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -89,8 +96,8 @@ const StudentByDepartment = () => {
           )}
         </div>
       )}
-        </>
-    )
-}
+    </>
+  );
+};
 
 export default StudentByDepartment;

@@ -11,7 +11,6 @@ using Services.Apps.Feedbacks;
 using WebApi.Models.Feedback;
 using Core.DTO.Feedback;
 using Mapster;
-using Services.Apps.Topics;
 
 namespace WebApi.Endpoints
 {
@@ -35,12 +34,17 @@ namespace WebApi.Endpoints
 
             routeGroupBuilder.MapPost("/", AddFeedback)
                 .WithName("AddFeedback")
-                .AddEndpointFilter<ValidatorFilter<FeedbackEditModel>>()
-                .Produces<ApiResponse<FeedbackDto>>();
+                .Accepts<FeedbackEditModel>("multipart/form-data")
+                .Produces(401)
+                .Produces<ApiResponse<FeedbackItem>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteFeedback)
                 .WithName("DeleteFeedback")
                 .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapGet("/{id:int}", GetFeedbackById)
+                  .WithName("GetFeedbackById")
+                  .Produces<ApiResponse<FeedbackDto>>();
         }
 
         private static async Task<IResult> GetAllFeedback(
@@ -63,13 +67,22 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> AddFeedback(
-            [AsParameters] FeedbackEditModel model,
+            HttpContext context,
             IMapper mapper,
             IFeedbackRepository feedbackRepository,
             IMediaManager mediaManager)
         {
-            var feedback = mapper.Map<Feedback>(model);
-            feedback.CreateDate = DateTime.Now;
+            var model = await FeedbackEditModel.BindAsync(context);
+            var feedback = model.Id > 0 ? await feedbackRepository.GetFeedbackByIdAsync(model.Id) : null;
+            if (feedback == null)
+            {
+                feedback = new Feedback()
+                {
+                    CreateDate = DateTime.Now,
+                };
+            }
+            feedback.Username = model.Username;
+            feedback.Content = model.Content;
             await feedbackRepository.AddFeedbackAsync(feedback);
             return Results.Ok(ApiResponse.Success(mapper.Map<FeedbackDto>(feedback), HttpStatusCode.Created));
         }
@@ -89,6 +102,16 @@ namespace WebApi.Endpoints
             return await feedbackRepository.RemoveFeedbackAsync(id)
                 ? Results.Ok(ApiResponse.Success("Xóa feedback thành công", HttpStatusCode.NoContent))
                 : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy feedback có id = {id}"));
+        }
+
+        private static async Task<IResult> GetFeedbackById(int id,
+            IFeedbackRepository feedbackRepository,
+            IMapper mapper)
+        {
+            var feedback = await feedbackRepository.GetFeedbackByIdAsync(id);
+            return feedback == null
+                ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy feedback có id {id}"))
+                : Results.Ok(ApiResponse.Success(mapper.Map<FeedbackDto>(feedback)));
         }
     }
 }

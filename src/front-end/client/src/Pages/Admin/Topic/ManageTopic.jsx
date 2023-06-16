@@ -9,9 +9,13 @@ import AdminTopicFilter from "../../../Components/Shared/Filter/Topic/AdminTopic
 import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { IconButton, Fab } from "@mui/material";
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import EditIcon from "@mui/icons-material/Edit";
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from "@mui/icons-material/Delete";
+import CancelIcon from '@mui/icons-material/Cancel';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AddIcon from "@mui/icons-material/Add";
 import Swal from "sweetalert2";
 
@@ -110,13 +114,15 @@ const ManageTopic = () => {
                   <td>{item.lecturer?.fullName}</td>
                   <td>
                     {item.status?.id == 1 ? (
-                      <p className="not">Chưa đăng ký</p>
+                      <CloseIcon className="not"/>
                     ) : item.status?.id == 2 ? (
-                      <p className="regis">Đã đăng ký</p>
+                      <AppRegistrationIcon className="regis"/>
                     ) : item.status?.id == 3 ? (
-                      <p className="done">Đã nghiệm thu</p>
+                      <CheckCircleIcon className="done"/>
                     ) : (
-                      item.status?.id == 4(<p className="stop">Tạm dừng</p>)
+                      item.status?.id == 4 ?(
+                        <CancelIcon className="stop"/>
+                    ) : (<p></p>)
                     )}
                   </td>
                   <td className="text-center">
@@ -128,7 +134,7 @@ const ManageTopic = () => {
                   </td>
                   <td className="text-center">
                     <Link to={`/admin/de-tai/phan-cong/${item.id}`}>
-                      <IconButton aria-label="edit" color="primary">
+                      <IconButton aria-label="edit" color="warning">
                         <AssignmentIcon />
                       </IconButton>
                     </Link>
@@ -152,6 +158,12 @@ const ManageTopic = () => {
           </tbody>
         </Table>
       )}
+      <p>Ghi chú: 
+        <AppRegistrationIcon className="regis"/>: Đã đăng ký |
+        <CloseIcon className="not"/>: Chưa đăng ký |
+        <CheckCircleIcon className="done"/>: Đã nghiệm thu |
+        <CancelIcon className="stop"/>: Tạm dừng
+      </p>
     </>
   );
 };

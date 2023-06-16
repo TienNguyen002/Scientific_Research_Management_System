@@ -64,7 +64,14 @@ namespace Services.Apps.Feedbacks
 
         public async Task<bool> AddFeedbackAsync(Feedback feedback, CancellationToken cancellationToken = default)
         {
-            _context.Add(feedback);
+            if (feedback.Id > 0)
+            {
+                _context.Update(feedback);
+            }
+            else
+            {
+                _context.Add(feedback);
+            }
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
@@ -80,6 +87,13 @@ namespace Services.Apps.Feedbacks
             _context.Remove(feedbackToDelete);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        public async Task<Feedback> GetFeedbackByIdAsync(int id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Feedback>()
+                .Where(f => f.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

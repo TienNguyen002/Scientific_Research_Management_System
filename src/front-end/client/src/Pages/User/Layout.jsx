@@ -1,15 +1,18 @@
 import Navbar from "../../Components/Shared/Navbar";
 import { Outlet } from "react-router-dom";
 import Footer from "../../Components/Shared/Footer/Footer";
+import { SnackbarProvider } from "notistack";
 
 const Layout = () => {
   return (
     <>
-      <Navbar />
-      <div>
-        <Outlet />
-      </div>
-      <Footer />
+      <SnackbarProvider>
+        <Navbar />
+        <div>
+          <Outlet />
+        </div>
+        <Footer />
+      </SnackbarProvider>
     </>
   );
 };

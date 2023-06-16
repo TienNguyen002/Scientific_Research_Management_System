@@ -21,5 +21,7 @@ namespace Services.Apps.Feedbacks
         Task<bool> AddFeedbackAsync(Feedback feedback, CancellationToken cancellationToken = default);
 
         Task<bool> RemoveFeedbackAsync(int id, CancellationToken cancellationToken = default);
+
+        Task<Feedback> GetFeedbackByIdAsync(int id, CancellationToken cancellationToken = default);
     }
 }

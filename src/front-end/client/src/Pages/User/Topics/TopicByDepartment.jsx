@@ -71,7 +71,7 @@ const TopicByDepartment = () => {
             ))
           ) : (
             <tr>
-              <td>
+              <td colSpan={9}>
                 <h4>Không tìm thấy đề tài nào</h4>
               </td>
             </tr>

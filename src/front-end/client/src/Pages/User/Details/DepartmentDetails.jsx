@@ -51,7 +51,7 @@ const DepartmentDetails = () => {
           <TopicByDepartment />
         </Tab>
       </Tabs>
-      <hr/>
+      <hr />
       <Button onClick={() => navigate(-1)} className="btn-danger white-text">
         Quay lại
       </Button>

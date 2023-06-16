@@ -71,7 +71,7 @@ const TopicByStudents = () => {
             ))
           ) : (
             <tr>
-              <td>
+              <td colSpan={7}>
                 <h4>Không tìm thấy đề tài nào</h4>
               </td>
             </tr>

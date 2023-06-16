@@ -79,7 +79,7 @@ const User = () => {
                     </div>
                   </div>
                   <div>
-                  <Link to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}>
+                    <Link to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}>
                       <Button>Xem chi tiết</Button>
                     </Link>
                   </div>

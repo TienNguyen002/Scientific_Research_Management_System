@@ -414,7 +414,7 @@ namespace Data.Seeders
                     },
                     Lecturer = lecturers[0],
                     Department = departments[0],
-                    Status = status[1],
+                    Status = status[2],
                 },
                 new()
                 {
@@ -425,9 +425,13 @@ namespace Data.Seeders
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
                     Price = 500000,
+                    Students = new List<Student>()
+                    {
+                        students[3]
+                    },
                     Lecturer = lecturers[1],
                     Department = departments[1],
-                    Status = status[0],
+                    Status = status[1],
                 },
                 new()
                 {
