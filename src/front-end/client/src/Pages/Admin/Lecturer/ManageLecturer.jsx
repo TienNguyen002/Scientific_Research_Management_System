@@ -43,6 +43,7 @@ const ManageLecturer = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
+    window.location.reload(false);
     RemoveLecturer(id);
     async function RemoveLecturer(id) {
       Swal.fire({

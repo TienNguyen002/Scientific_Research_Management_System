@@ -48,6 +48,7 @@ const ManageTopic = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
+    window.location.reload(false);
     RemoveTopic(id);
     async function RemoveTopic(id) {
       Swal.fire({

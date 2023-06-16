@@ -39,6 +39,7 @@ const ManageDepartment = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
+    window.location.reload(false);
     RemoveDepartment(id);
     async function RemoveDepartment(id) {
       Swal.fire({

@@ -43,6 +43,7 @@ const ManageStudent = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
+    window.location.reload(false);
     RemoveStudent(id);
     async function RemoveStudent(id) {
       Swal.fire({
