@@ -21,6 +21,17 @@ import DepartmentEditAdmin from "../Pages/Admin/Department/DepartmentEdit";
 import Contact from "../Pages/User/Contact";
 import TopicEditAdmin from "../Pages/Admin/Topic/TopicEdit";
 import AssignmentTopic from "../Pages/Admin/Topic/AssignmentTopic";
+import StudentLayout from "../Pages/Student/StudentLayout";
+import StudentPage from "../Pages/Student/StudentPage";
+import StudentProfile from "../Pages/Student/StudentProfile";
+import StudentRegister from "../Pages/Student/StudentRegister";
+import StudentPassword from "../Pages/Student/StudentPassword";
+import LoginPage from "../Pages/Login/LoginPage";
+import RegisterPage from "../Pages/Login/RegisterPage";
+import AdminLoginPage from "../Pages/Login/AdminLoginPage";
+import StudentManageTopic from "../Pages/Student/StudentManageTopic";
+import LecturerEditAdmin from "../Pages/Admin/Lecturer/LecturerEdit";
+import LecturerAddAdmin from "../Pages/Admin/Lecturer/LecturerAdd";
 
 const Router = () => {
     return(
@@ -50,9 +61,25 @@ const Router = () => {
                     <Route path="/admin/de-tai/edit/:id" element={<TopicEditAdmin/>}/>
                     <Route path="/admin/sinh-vien" element={<ManageStudent/>}/>
                     <Route path="/admin/giang-vien" element={<ManageLecturer/>}/>
+                    <Route path="/admin/giang-vien/edit/" element={<LecturerAddAdmin/>}/>
+                    <Route path="/admin/giang-vien/edit/:id" element={<LecturerEditAdmin/>}/>
                     <Route path="/admin/feedback" element={<ManageFeedback/>}/>
                     <Route path="/admin/thong-tin" element={<AdminProfile/>}/>
                 </Route>
+                <Route path="/sinh-vien" element={<StudentLayout/>}>
+                    <Route path="/sinh-vien/:slug" element={<StudentPage/>}/>
+                    <Route path="/sinh-vien/thong-tin" element={<StudentProfile/>}/>
+                    <Route path="/sinh-vien/:slug/thong-tin" element={<StudentProfile/>}/>
+                    <Route path="/sinh-vien/dang-ky-de-tai" element={<StudentRegister/>}/>
+                    <Route path="/sinh-vien/:slug/dang-ky-de-tai" element={<StudentRegister/>}/>
+                    <Route path="/sinh-vien/quan-ly-de-tai" element={<StudentManageTopic/>}/>
+                    <Route path="/sinh-vien/:slug/quan-ly-de-tai" element={<StudentManageTopic/>}/>
+                    <Route path="/sinh-vien/doi-mat-khau" element={<StudentPassword/>}/>
+                    <Route path="/sinh-vien/:slug/doi-mat-khau" element={<StudentPassword/>}/>
+                </Route>
+                <Route path="/dang-nhap" element={<LoginPage/>}/>
+                <Route path="/dang-ky" element={<RegisterPage/>}/>
+                <Route path="/dang-nhap-admin" element={<AdminLoginPage/>}/>
             </Routes>
         </BrowserRouter>
     )

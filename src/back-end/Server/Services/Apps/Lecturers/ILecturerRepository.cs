@@ -20,6 +20,8 @@ namespace Services.Apps.Lecturers
 
         Task<bool> IsLecturerEmailExitedAsync(int id, string email, CancellationToken cancellationToken = default);
 
+        Task<bool> IsLecturerSlugExitedAsync(int id, string slug, CancellationToken cancellationToken = default);
+        
         Task<IPagedList<T>> GetPagedLecturesAsync<T>(
             LecturerQuery query,
             IPagingParams pagingParams,
@@ -37,5 +39,7 @@ namespace Services.Apps.Lecturers
         Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default);
 
         Task<int> CountLecturerAsync(CancellationToken cancellationToken = default);
+
+        Task<bool> AddOrUpdateLecturerAsync(Lecturer lecturer, CancellationToken cancellationToken = default);
     }
 }

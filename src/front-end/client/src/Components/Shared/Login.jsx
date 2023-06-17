@@ -6,8 +6,8 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 
 const Login = () => {
   return (
-    <div className="login">
-      <Link to={`/admin`} className="text-decoration-none login-button">
+    <div className="loginnn">
+      <Link to={`/dang-nhap`} className="text-decoration-none login-button">
         <FontAwesomeIcon icon={faUser} />
         Đăng nhập
       </Link>

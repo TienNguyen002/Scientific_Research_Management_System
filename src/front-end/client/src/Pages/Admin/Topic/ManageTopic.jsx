@@ -8,15 +8,8 @@ import { Button } from "react-bootstrap";
 import AdminTopicFilter from "../../../Components/Shared/Filter/Topic/AdminTopicFiler";
 import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
-import { IconButton, Fab } from "@mui/material";
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import EditIcon from "@mui/icons-material/Edit";
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteIcon from "@mui/icons-material/Delete";
-import CancelIcon from '@mui/icons-material/Cancel';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import AddIcon from "@mui/icons-material/Add";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrash, faUserEdit, faCheck, faX, faCheckSquare, faHand } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
 const ManageTopic = () => {
@@ -78,9 +71,7 @@ const ManageTopic = () => {
       <div className="d-flex">
         <AdminTopicFilter />
         <Link className="text-decoration-none" to={`/admin/de-tai/edit`}>
-          <Fab color="primary" aria-label="add">
-            <AddIcon />
-          </Fab>
+          <Button>Thêm mới</Button>
         </Link>
       </div>
 
@@ -115,34 +106,30 @@ const ManageTopic = () => {
                   <td>{item.lecturer?.fullName}</td>
                   <td>
                     {item.status?.id == 1 ? (
-                      <CloseIcon className="not"/>
+                      <FontAwesomeIcon icon={faX} className="not" />
                     ) : item.status?.id == 2 ? (
-                      <AppRegistrationIcon className="regis"/>
+                      <FontAwesomeIcon icon={faCheck} className="regis" />
                     ) : item.status?.id == 3 ? (
-                      <CheckCircleIcon className="done"/>
+                      <FontAwesomeIcon icon={faCheckSquare} className="done" />
                     ) : (
-                      item.status?.id == 4 ?(
-                        <CancelIcon className="stop"/>
+                    item.status?.id == 4 ? (
+                      <FontAwesomeIcon icon={faHand} className="stop" />
                     ) : (<p></p>)
                     )}
                   </td>
                   <td className="text-center">
                     <Link to={`/admin/de-tai/edit/${item.id}`}>
-                      <IconButton aria-label="edit" color="primary">
-                        <EditIcon />
-                      </IconButton>
+                      <FontAwesomeIcon icon={faPenToSquare} />
                     </Link>
                   </td>
                   <td className="text-center">
                     <Link to={`/admin/de-tai/phan-cong/${item.id}`}>
-                      <IconButton aria-label="edit" color="warning">
-                        <AssignmentIcon />
-                      </IconButton>
+                      <FontAwesomeIcon icon={faUserEdit} />
                     </Link>
                   </td>
                   <td className="text-center">
                     <div onClick={(e) => handleDelete(e, item.id)}>
-                      <DeleteIcon color="secondary" />
+                      <FontAwesomeIcon icon={faTrash} />
                     </div>
                   </td>
                 </tr>
@@ -159,11 +146,11 @@ const ManageTopic = () => {
           </tbody>
         </Table>
       )}
-      <p>Ghi chú: 
-        <AppRegistrationIcon className="regis"/>: Đã đăng ký |
-        <CloseIcon className="not"/>: Chưa đăng ký |
-        <CheckCircleIcon className="done"/>: Đã nghiệm thu |
-        <CancelIcon className="stop"/>: Tạm dừng
+      <p>Ghi chú:
+        <FontAwesomeIcon icon={faCheck} className="regis" />: Đã đăng ký |
+        <FontAwesomeIcon icon={faX} className="not" />: Chưa đăng ký |
+        <FontAwesomeIcon icon={faCheckSquare} className="done" />: Đã nghiệm thu |
+        <FontAwesomeIcon icon={faHand} className="stop" />: Tạm dừng
       </p>
     </>
   );

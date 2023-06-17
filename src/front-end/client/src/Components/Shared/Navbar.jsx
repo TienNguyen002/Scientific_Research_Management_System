@@ -46,11 +46,6 @@ const Navbar = () => {
                                 LIÊN HỆ
                             </Link>
                         </NavItem>
-                        <NavItem>
-                            <Link to='/dang-ky-de-tai' className="navitem">
-                                ĐĂNG KÝ ĐỀ TÀI
-                            </Link>
-                        </NavItem>
                     </Nav>
                 </Nb.Collapse>
                 <Login/>

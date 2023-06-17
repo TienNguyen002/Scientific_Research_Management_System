@@ -1,0 +1,165 @@
+.sidebar {
+  flex: 1;
+  border-right: 0.5px solid rgb(190, 190, 190);
+  min-height: 100vh;
+  background-color: white;
+
+  &-top {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-logo {
+      height: 50px;
+      width: 50px;
+    }
+  }
+
+  hr {
+    height: 0;
+    border: 0.5px solid rgb(190, 190, 190);
+  }
+
+  &-center {
+    padding-left: 10px;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    &-title {
+      font-size: 10px;
+      font-weight: bold;
+      color: #999;
+      margin-top: 15px;
+      margin-bottom: 15px;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      padding: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(106, 248, 106);
+      }
+    }
+
+    &-icon {
+      font-size: 18px;
+      color: #7451f8;
+    }
+
+    span {
+      font-size: 13px;
+      font-weight: 600;
+      color: #888;
+      margin-left: 10px;
+    }
+  }
+
+  &-bottom {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+
+    &-colorOption {
+      width: 20px;
+      height: 20px;
+      border-radius: 5px;
+      border: 1px solid #7451f8;
+      cursor: pointer;
+      margin: 5px;
+
+      &:nth-child(1) {
+        background-color: whitesmoke;
+      }
+      &:nth-child(2) {
+        background-color: #333;
+      }
+      &:nth-child(3) {
+        background-color: rgb(106, 248, 106);
+      }
+    }
+  }
+}
+
+.student-navbar {
+  height: 50px;
+  border-bottom: 0.5px solid rgb(231, 228, 228);
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #555;
+
+  &-wrapper {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-items {
+    display: flex;
+    align-items: center;
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+
+    &-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+  }
+}
+
+.chart {
+  flex: 4;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  padding: 10px;
+  color: gray;
+}
+
+.featured {
+  flex: 2;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+  padding: 10px;
+
+  &-top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: gray;
+    &-grid{
+      stroke: rgb(228, 225, 225);
+    }
+  }
+  
+  &-title{
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  &-bottom{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  &-chart{
+    width: 200px;
+    height: 200px;
+  }
+}

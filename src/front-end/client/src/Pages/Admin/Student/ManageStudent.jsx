@@ -10,10 +10,8 @@ import "../style/admin-page.scss";
 import StudentFilter from "../../../Components/Shared/Filter/Student/StudentFilter";
 import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
-import { IconButton, Fab } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
 const ManageStudent = () => {
@@ -55,7 +53,7 @@ const ManageStudent = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: "XÓA"
       }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
           deleteStudent(id);
           setRender(true);
           Swal.fire({
@@ -101,7 +99,7 @@ const ManageStudent = () => {
                         <div
                           onClick={(e) => handleDelete(e, item.id)}
                         >
-                          <DeleteIcon color="secondary" />
+                          <FontAwesomeIcon icon={faTrash} />
                         </div>
                       </td>
                     </tr>

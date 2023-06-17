@@ -10,11 +10,10 @@ import "../style/admin-page.scss";
 import LecturerFilter from "../../../Components/Shared/Filter/Lecturer/LecturerFilter";
 import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
-import { IconButton, Fab } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
-import AddIcon from "@mui/icons-material/Add";
+
 
 const ManageLecturer = () => {
   const [lecturersList, setLecturersList] = useState([]),
@@ -27,7 +26,7 @@ const ManageLecturer = () => {
     p = 1;
 
   useEffect(() => {
-    document.title = "Danh sách Sinh viên";
+    document.title = "Danh sách Giảng viên";
     getLecturersFilter(
       lecturerFilter.keyword,
       lecturerFilter.departmentId,
@@ -55,7 +54,7 @@ const ManageLecturer = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: "XÓA"
       }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
           deleteLecturer(id);
           setRender(true);
           Swal.fire({
@@ -77,6 +76,9 @@ const ManageLecturer = () => {
         <div className="row department-item">
           <div className="item-filter-admin">
             <LecturerFilter />
+            <Link className="text-decoration-none" to={`/admin/giang-vien/edit`}>
+              <Button>Thêm mới</Button>
+            </Link>
           </div>
           {isVisibleLoading ? (
             <Loading />
@@ -87,6 +89,7 @@ const ManageLecturer = () => {
                   <th>Họ và tên</th>
                   <th>Email</th>
                   <th>Khoa</th>
+                  <th>Sửa</th>
                   <th>Xoá</th>
                 </tr>
               </thead>
@@ -98,10 +101,15 @@ const ManageLecturer = () => {
                       <td>{item.email}</td>
                       <td>{item.department?.name}</td>
                       <td className="text-center">
+                        <Link to={`/admin/giang-vien/edit/${item.id}`}>
+                          <FontAwesomeIcon icon={faPenToSquare} />
+                        </Link>
+                      </td>
+                      <td className="text-center">
                         <div
                           onClick={(e) => handleDelete(e, item.id)}
                         >
-                          <DeleteIcon color="secondary" />
+                          <FontAwesomeIcon icon={faTrash} />
                         </div>
                       </td>
                     </tr>

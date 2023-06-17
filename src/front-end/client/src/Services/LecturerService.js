@@ -1,4 +1,4 @@
-import { get_api, delete_api } from "./Method";
+import { get_api, delete_api, post_api } from "./Method";
 
 export function getLecturers(pageSize = 10, pageNumber = 1) {
   return get_api(
@@ -54,4 +54,16 @@ export function getLecturersFilterByDepartmentSlug(
 
 export function deleteLecturer(id) {
   return delete_api(`https://localhost:7129/api/lecturers/${id}`);
+}
+
+export function getLecturerById(id) {
+  return get_api(`https://localhost:7129/api/lecturers/${id}`);
+}
+
+export function addLecturer(formData){
+  return post_api(`https://localhost:7129/api/lecturers`, formData)
+}
+
+export function updateLecturer(formData){
+  return post_api(`https://localhost:7129/api/lecturers/update`, formData)
 }

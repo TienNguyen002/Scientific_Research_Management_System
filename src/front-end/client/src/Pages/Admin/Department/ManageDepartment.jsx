@@ -9,10 +9,8 @@ import "../style/admin-page.scss";
 import Loading from "../../../Components/Shared/Loading";
 import DepartmentFilter from "../../../Components/Shared/Filter/Department/DepartmentFilter";
 import { useSelector } from "react-redux";
-import { IconButton, Fab } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
 
 const ManageDepartment = () => {
@@ -51,7 +49,7 @@ const ManageDepartment = () => {
         cancelButtonColor: "#d33",
         confirmButtonText: "XÓA"
       }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
           deleteDepartment(id);
           setRender(true);
           Swal.fire({
@@ -70,13 +68,11 @@ const ManageDepartment = () => {
         <h1 className="text danger text-center department">Quản lý Khoa</h1>
       </div>
       <div>
-        <div className="row department-item">
+        <div className="row department-item d-flex">
           <div className="item-filter-admin">
             <DepartmentFilter />
             <Link className="text-decoration-none" to={`/admin/khoa/edit`}>
-              <Fab color="primary" aria-label="add">
-                <AddIcon />
-              </Fab>
+              <Button>Thêm mới</Button>
             </Link>
           </div>
           {isVisibleLoading ? (
@@ -97,16 +93,14 @@ const ManageDepartment = () => {
                       <td>{item.name}</td>
                       <td className="text-center">
                         <Link to={`/admin/khoa/edit/${item.id}`}>
-                          <IconButton aria-label="edit" color="primary">
-                            <EditIcon />
-                          </IconButton>
+                          <FontAwesomeIcon icon={faPenToSquare} />
                         </Link>
                       </td>
                       <td className="text-center">
                         <div
                           onClick={(e) => handleDelete(e, item.id)}
                         >
-                          <DeleteIcon color="secondary" />
+                          <FontAwesomeIcon icon={faTrash} />
                         </div>
                       </td>
                     </tr>

@@ -76,6 +76,12 @@ namespace Services.Apps.Lecturers
                 .AnyAsync(l => l.Id != id && l.Email == email, cancellationToken);
         }
 
+        public async Task<bool> IsLecturerSlugExitedAsync(int id, string slug, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>()
+                .AnyAsync(t => t.Id != id && t.UrlSlug == slug, cancellationToken);
+        }
+
         private IQueryable<Lecturer> GetLecturerByQueryable(LecturerQuery query)
         {
             IQueryable<Lecturer> lecturerQuery = _context.Set<Lecturer>()
@@ -155,6 +161,21 @@ namespace Services.Apps.Lecturers
         public async Task<int> CountLecturerAsync(CancellationToken cancellationToken = default)
         {
             return await _context.Set<Lecturer>().CountAsync(cancellationToken);
+        }
+
+        public async Task<bool> AddOrUpdateLecturerAsync(Lecturer lecturer, CancellationToken cancellationToken = default)
+        {
+            if (lecturer.Id > 0)
+            {
+                lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
+                _context.Update(lecturer);
+            }
+            else
+            {
+                lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
+                _context.Add(lecturer);
+            } 
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
     }
 }

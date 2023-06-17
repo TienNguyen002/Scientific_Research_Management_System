@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import "./style/admin-component.scss"
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import "react-circular-progressbar/dist/styles.css"
 import { getInfoDashboard } from "../../../Services/AdminService"
@@ -20,7 +20,6 @@ const Featured = () => {
     <div className='featured'>
         <div className="featured-top">
             <div className="featured-title">Tổng đề tài được nghiệm thu</div>
-            <MoreVertIcon/>
         </div>
         <div className="featured-bottom">
             <div className="featured-chart">

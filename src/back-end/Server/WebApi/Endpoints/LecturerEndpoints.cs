@@ -41,7 +41,7 @@ namespace WebApi.Endpoints
                 .WithName("GetLecturerBySlug")
                 .Produces<ApiResponse<LecturerDto>>();
 
-            routeGroupBuilder.MapPost("/", CreateAccount)
+            routeGroupBuilder.MapPost("/create", CreateAccount)
                 .WithName("CreateAccount")
                 .AddEndpointFilter<ValidatorFilter<RegisterRequest>>()
                 .Produces<ApiResponse<AccountDto>>();
@@ -68,6 +68,18 @@ namespace WebApi.Endpoints
               .WithName("SetLecturerImage")
               .Accepts<IFormFile>("multipart/form-data")
               .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapPost("/", AddLecturer)
+                .WithName("AddLecturer")
+                .Accepts<LecturerAddModel>("multipart/form-data")
+                .Produces(401)
+                .Produces<ApiResponse<LecturerItem>>();
+
+            routeGroupBuilder.MapPost("/update", UpdateLecturer)
+                .WithName("UpdateLecturer")
+                .Accepts<LecturerEditModel>("multipart/form-data")
+                .Produces(401)
+                .Produces<ApiResponse<LecturerItem>>();
         }
 
         private static async Task<IResult> GetAllLecturers(
@@ -224,6 +236,53 @@ namespace WebApi.Endpoints
             }
             await lecturerRepository.SetImageAsync(slug, imageUrl);
             return Results.Ok(ApiResponse.Success(imageUrl));
+        }
+
+        private static async Task<IResult> AddLecturer(
+            HttpContext context,
+            IMapper mapper,
+            ILecturerRepository lecturerRepository,
+            IMediaManager mediaManager)
+        {
+            var model = await LecturerAddModel.BindAsync(context);
+            var slug = model.FullName.GenerateSlug();
+            if (await lecturerRepository.IsLecturerSlugExitedAsync(model.Id, slug))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug '{slug}' đã được sử dụng"));
+            }
+            var lecturer = model.Id > 0 ? await lecturerRepository.GetLecturerByIdAsync(model.Id) : null;
+            lecturer.FullName = model.FullName;
+            lecturer.Email = model.Email;
+            lecturer.Password = model.Password;
+            lecturer.UrlSlug = model.FullName.GenerateSlug();
+            
+            await lecturerRepository.AddOrUpdateLecturerAsync(lecturer);
+            return Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer), HttpStatusCode.Created));
+        }
+
+        private static async Task<IResult> UpdateLecturer(
+            HttpContext context,
+            IMapper mapper,
+            ILecturerRepository lecturerRepository,
+            IMediaManager mediaManager)
+        {
+            var model = await LecturerEditModel.BindAsync(context);
+            var slug = model.FullName.GenerateSlug();
+            if (await lecturerRepository.IsLecturerSlugExitedAsync(model.Id, slug))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug '{slug}' đã được sử dụng"));
+            }
+            var lecturer = model.Id > 0 ? await lecturerRepository.GetLecturerByIdAsync(model.Id) : null;
+            lecturer.FullName = model.FullName;
+            lecturer.Email = model.Email;
+            lecturer.Password = model.Password;
+            lecturer.Qualification = model.Qualification;
+            lecturer.DoB = model.DoB;
+            lecturer.DepartmentId = model.DepartmentId;
+            lecturer.UrlSlug = model.FullName.GenerateSlug();
+            
+            await lecturerRepository.AddOrUpdateLecturerAsync(lecturer);
+            return Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer), HttpStatusCode.Created));
         }
     } 
 }

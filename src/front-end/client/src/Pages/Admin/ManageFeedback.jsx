@@ -10,8 +10,8 @@ import "./style/admin-page.scss";
 import FeedbackFilter from "../../Components/Shared/Filter/Feedback/FeedbackFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
-import { IconButton, Fab } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
 
@@ -98,7 +98,7 @@ const ManageFeedback = () => {
                         <div
                           onClick={(e) => handleDelete(e, item.id)}
                         >
-                          <DeleteIcon color="secondary" />
+                          <FontAwesomeIcon icon={faTrash} />
                         </div>
                       </td>
                     </tr>
