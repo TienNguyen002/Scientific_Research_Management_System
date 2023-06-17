@@ -44,6 +44,9 @@ namespace Data.Mappings
             builder.Property(t => t.Price)
                 .IsRequired();
 
+            builder.Property(t => t.ViewCount)
+                .HasMaxLength(10);
+
             builder.Property(t => t.OutlineUrl)
                 .HasMaxLength(10000);
 
@@ -59,12 +62,6 @@ namespace Data.Mappings
                 .HasConstraintName("FK_Topics_Departments")
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(g => g.Group)
-                .WithMany(t => t.Topics)
-                .HasForeignKey(t => t.GroupId)
-                .HasConstraintName("FK_Topics_Groups")
-                .OnDelete(DeleteBehavior.NoAction);
-
             builder.HasOne(l => l.Lecturer)
                 .WithMany(t => t.Topics)
                 .HasForeignKey(l => l.LecturerId)
@@ -77,11 +74,9 @@ namespace Data.Mappings
                 .HasConstraintName("FK_Topics_Status")
                 .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasOne(p => p.Process)
+            builder.HasMany(s => s.Students)
                 .WithMany(t => t.Topics)
-                .HasForeignKey(p => p.Process)
-                .HasConstraintName("FK_Topics_Processes")
-                .OnDelete(DeleteBehavior.Cascade);
+                .UsingEntity(pt => pt.ToTable("TopicStudents"));
         }
     }
 }

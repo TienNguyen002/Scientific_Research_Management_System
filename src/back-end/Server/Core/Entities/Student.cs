@@ -21,11 +21,10 @@ namespace Core.Entities
         public string Class { get; set; }
         public string Year { get; set; }
         public string Address { get; set; }
-        public int DepartmentId { get; set; }
+        public int? DepartmentId { get; set; }
         public Department Department { get; set; }
-        public int? GroupId { get; set; }
-        public Group Group { get; set; }
-        public int RoleId { get; set; }
+        public IList<Topic> Topics { get; set; }
+        public int? RoleId { get; set; }
         public Role Role { get; set; }
     }
 }

@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.item{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    &-user{
+        text-decoration: none;
+        text-align: center;
+        padding-right: 20px;
+        color: green
+    }
+    &-department{
+        text-decoration: none;
+        text-align: center;
+        padding-right: 20px;
+        color: green
+    }
+    &-topic{
+        text-decoration: none;
+        text-align: center;
+        color: green
+    }
+    .img{
+        height: 80px;
+        width: 80px;
+    }
+}
+
+.table{
+    &-title{
+        background-color: green;
+        color: white;
+    }
+    &-content{
+        text-align: center;
+        text-decoration: none;
+        color: black;
+    }
+    .description{
+        color: rgba(61, 61, 61, 0.582)
+    }
+    .student-list{
+        text-decoration: none;
+    }
+}
+
+.not{
+    color: red
+}
+.regis{
+    color: green
+}
+.stop{
+    color: red
+}
+.done{
+    color: rgb(0, 60, 255)
+}
+
+.width{
+    width: 100px;
+}
+
+.small-table{
+    border: 2px solid forestgreen;
+    width: 800px;
+    height: 200px;
+}
+
+.topics{
+    color: rgb(253, 147, 147);
+}

@@ -41,7 +41,7 @@ namespace Data.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("Core.Entities.Group", b =>
+            modelBuilder.Entity("Core.Entities.Feedback", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -49,15 +49,18 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UrlSlug")
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("Core.Entities.Lecturer", b =>
@@ -68,7 +71,7 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DoB")
@@ -89,7 +92,7 @@ namespace Data.Migrations
                     b.Property<string>("Qualification")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("UrlSlug")
@@ -102,25 +105,6 @@ namespace Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Lecturers");
-                });
-
-            modelBuilder.Entity("Core.Entities.Process", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UrlSlug")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Processes");
                 });
 
             modelBuilder.Entity("Core.Entities.Role", b =>
@@ -175,7 +159,7 @@ namespace Data.Migrations
                     b.Property<string>("Class")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DoB")
@@ -187,9 +171,6 @@ namespace Data.Migrations
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -199,7 +180,7 @@ namespace Data.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RoleId")
+                    b.Property<int?>("RoleId")
                         .HasColumnType("int");
 
                     b.Property<string>("StudentId")
@@ -214,8 +195,6 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("GroupId");
 
                     b.HasIndex("RoleId");
 
@@ -236,11 +215,8 @@ namespace Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("EndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("LecturerId")
                         .HasColumnType("int");
@@ -254,10 +230,7 @@ namespace Data.Migrations
                     b.Property<int>("Point")
                         .HasColumnType("int");
 
-                    b.Property<string>("Price")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProcessId")
+                    b.Property<int>("Price")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RegistrationDate")
@@ -278,34 +251,44 @@ namespace Data.Migrations
                     b.Property<string>("UrlSlug")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("GroupId");
-
                     b.HasIndex("LecturerId");
-
-                    b.HasIndex("ProcessId");
 
                     b.HasIndex("StatusId");
 
                     b.ToTable("Topics");
                 });
 
+            modelBuilder.Entity("StudentTopic", b =>
+                {
+                    b.Property<int>("StudentsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TopicsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StudentsId", "TopicsId");
+
+                    b.HasIndex("TopicsId");
+
+                    b.ToTable("StudentTopic");
+                });
+
             modelBuilder.Entity("Core.Entities.Lecturer", b =>
                 {
                     b.HasOne("Core.Entities.Department", "Department")
                         .WithMany("Lecturers")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Core.Entities.Role", "Role")
                         .WithMany("Lecturers")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
 
@@ -316,23 +299,13 @@ namespace Data.Migrations
                 {
                     b.HasOne("Core.Entities.Department", "Department")
                         .WithMany("Students")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Core.Entities.Group", "Group")
-                        .WithMany("Students")
-                        .HasForeignKey("GroupId");
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Core.Entities.Role", "Role")
                         .WithMany("Students")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.Navigation("Department");
-
-                    b.Navigation("Group");
 
                     b.Navigation("Role");
                 });
@@ -345,17 +318,9 @@ namespace Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Group", "Group")
-                        .WithMany("Topics")
-                        .HasForeignKey("GroupId");
-
                     b.HasOne("Core.Entities.Lecturer", "Lecturer")
                         .WithMany("Topics")
                         .HasForeignKey("LecturerId");
-
-                    b.HasOne("Core.Entities.Process", "Process")
-                        .WithMany("Topics")
-                        .HasForeignKey("ProcessId");
 
                     b.HasOne("Core.Entities.Status", "Status")
                         .WithMany("Topics")
@@ -365,13 +330,24 @@ namespace Data.Migrations
 
                     b.Navigation("Department");
 
-                    b.Navigation("Group");
-
                     b.Navigation("Lecturer");
 
-                    b.Navigation("Process");
-
                     b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("StudentTopic", b =>
+                {
+                    b.HasOne("Core.Entities.Student", null)
+                        .WithMany()
+                        .HasForeignKey("StudentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Core.Entities.Topic", null)
+                        .WithMany()
+                        .HasForeignKey("TopicsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Core.Entities.Department", b =>
@@ -383,19 +359,7 @@ namespace Data.Migrations
                     b.Navigation("Topics");
                 });
 
-            modelBuilder.Entity("Core.Entities.Group", b =>
-                {
-                    b.Navigation("Students");
-
-                    b.Navigation("Topics");
-                });
-
             modelBuilder.Entity("Core.Entities.Lecturer", b =>
-                {
-                    b.Navigation("Topics");
-                });
-
-            modelBuilder.Entity("Core.Entities.Process", b =>
                 {
                     b.Navigation("Topics");
                 });
