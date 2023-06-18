@@ -16,7 +16,7 @@ const LecturerEditAdmin = () => {
       email: "",
       password: "",
       qualification : "",
-      dOB : "",
+      doB : "",
       departmentId: 0,
     },
     [lecturer, setLecturer] = useState(initialState),
@@ -171,9 +171,9 @@ const LecturerEditAdmin = () => {
                   type="text"
                   name="dOB"
                   title="Day Of Birth"
-                  value={lecturer.dOB || ""}
+                  value={lecturer.doB  || ""}
                   onChange={(e) =>
-                    setLecturer({ ...lecturer, dOB: e.target.value })
+                    setLecturer({ ...lecturer, doB: e.target.value })
                   }
                 />
               </div>

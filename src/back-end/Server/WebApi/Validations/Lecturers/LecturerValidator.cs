@@ -26,10 +26,6 @@ namespace WebApi.Validations.Lecturers
             RuleFor(l => l.DepartmentId)
                 .NotEmpty()
                 .WithMessage("Khoa không được để trống");
-
-            RuleFor(l => l.RoleId)
-                .NotEmpty()
-                .WithMessage("Role không được để trống");
         }
     }
 }

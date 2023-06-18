@@ -1,4 +1,8 @@
-﻿namespace WebApi.Models.Lecturer
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApi.Models.Lecturer
 {
     public class LecturerEditModel
     {

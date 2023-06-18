@@ -1,4 +1,8 @@
-﻿namespace WebApi.Models.Lecturer
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
+namespace WebApi.Models.Lecturer
 {
     public class LecturerAddModel
     {
@@ -8,7 +12,7 @@
         [Required]
         public string FullName { get; set; }
 
-         [DisplayName("Email")]
+        [DisplayName("Email")]
         [Required]
         public string Email { get; set; }
 

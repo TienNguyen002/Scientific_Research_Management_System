@@ -42,7 +42,6 @@ const ManageLecturer = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
-    window.location.reload(false);
     RemoveLecturer(id);
     async function RemoveLecturer(id) {
       Swal.fire({
@@ -56,7 +55,8 @@ const ManageLecturer = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           deleteLecturer(id);
-          setRender(true);
+          setRender(true);	
+     	  window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",

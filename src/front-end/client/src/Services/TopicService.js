@@ -81,3 +81,11 @@ export function assignmentTopic(formData){
 export function registerTopic(id, slug){
   return post_api(`https://localhost:7129/api/topics/register/${id}?StudentSlug=${slug}`)
 }
+
+export function getTopTopic(){
+  return get_api(`https://localhost:7129/api/topics/top/3`)
+}
+
+export function getNewTopic(){
+  return get_api(`https://localhost:7129/api/topics/new/3`)
+}

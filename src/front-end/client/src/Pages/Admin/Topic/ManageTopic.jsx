@@ -41,7 +41,7 @@ const ManageTopic = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
-    window.location.reload(false);
+    
     RemoveTopic(id);
     async function RemoveTopic(id) {
       Swal.fire({
@@ -56,6 +56,7 @@ const ManageTopic = () => {
         if (result.isConfirmed) {
           deleteTopic(id);
           setRender(true);
+	window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",

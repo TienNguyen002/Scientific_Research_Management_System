@@ -6,7 +6,7 @@ const LoginPage = () => {
     return(
         <div className="login">
             <div className="login-mainp">
-                <h1 className="login-header">Đăng nhập Sinh viên</h1>
+                <h1 className="login-header">Đăng nhập</h1>
                 <form action="#">
                     <input type="text" placeholder="Email" className="login-form"/>
                     <input type="password" placeholder="Mật khẩu" className="login-form"/>

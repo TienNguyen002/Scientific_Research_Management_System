@@ -37,7 +37,7 @@ const ManageDepartment = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
-    window.location.reload(false);
+    
     RemoveDepartment(id);
     async function RemoveDepartment(id) {
       Swal.fire({
@@ -52,6 +52,7 @@ const ManageDepartment = () => {
         if (result.isConfirmed) {
           deleteDepartment(id);
           setRender(true);
+	window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",

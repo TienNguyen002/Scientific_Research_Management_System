@@ -313,5 +313,25 @@ namespace Services.Apps.Topics
             IQueryable<T> result = mapper(topicsResult);
             return await result.ToPagedListAsync(pagingParams, cancellationToken);
         }
+
+        public async Task<IList<T>> GetNTopViewAsync<T>(int n, Func<IQueryable<Topic>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+        {
+            var topView = _context.Set<Topic>()
+                .Include(t => t.Department)
+                .Where(t => t.StatusId == 3)
+                .OrderByDescending(t => t.ViewCount)
+                .Take(n);
+            return await mapper(topView).ToListAsync(cancellationToken);
+        }
+
+        public async Task<IList<T>> GetNNewAsync<T>(int n, Func<IQueryable<Topic>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+        {
+            var newTopic = _context.Set<Topic>()
+                .Include(t => t.Department)
+                .Where(t => t.StatusId == 3)
+                .OrderByDescending(t => t.Id)
+                .Take(n);
+            return await mapper(newTopic).ToListAsync(cancellationToken);
+        }
     }
 }

@@ -89,6 +89,14 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapPut("/view/{slug:regex(^[a-z0-9_-]+$)}", IncreaseView)
               .WithName("IncreaseView")
               .Produces<ApiResponse<string>>();
+
+            routeGroupBuilder.MapGet("top/{limit:int}", GetNTopView)
+            .WithName("GetNTopView")
+            .Produces<ApiResponse<IList<TopicDto>>>();
+
+            routeGroupBuilder.MapGet("new/{limit:int}", GetNNew)
+            .WithName("GetNNew")
+            .Produces<ApiResponse<IList<TopicDto>>>();
         }
 
         private static async Task<IResult> GetAllTopic(
@@ -324,6 +332,22 @@ namespace WebApi.Endpoints
         {
             await topicRepository.IncreaseViewCountAsync(slug);
             return Results.Ok(ApiResponse.Success($"Đề tài có slug = {slug} đã tăng view thành công"));
+        }
+
+        private static async Task<IResult> GetNTopView(int limit,
+            ITopicRepository topicRepository)
+        {
+            var topView = await topicRepository.GetNTopViewAsync(limit,
+                t => t.ProjectToType<TopicDto>());
+            return Results.Ok(ApiResponse.Success(topView));
+        }
+
+        private static async Task<IResult> GetNNew(int limit,
+            ITopicRepository topicRepository)
+        {
+            var newTopic = await topicRepository.GetNNewAsync(limit,
+                t => t.ProjectToType<TopicDto>());
+            return Results.Ok(ApiResponse.Success(newTopic));
         }
     }
 }

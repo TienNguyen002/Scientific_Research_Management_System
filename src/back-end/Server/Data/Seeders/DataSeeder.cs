@@ -406,6 +406,7 @@ namespace Data.Seeders
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 3,
                     Price = 1000000,
+                    ViewCount = 20,
                     Students = new List<Student>()
                     {
                         students[0],

@@ -6,14 +6,14 @@ const AdminLoginPage = () => {
     return(
         <div className="login">
             <div className="login-mainp">
-                <h1 className="login-header">Đăng nhập Giảng viên</h1>
+                <h1 className="login-header">Đăng nhập Admin</h1>
                 <form action="#">
                     <input type="text" placeholder="Email" className="login-form"/>
                     <input type="password" placeholder="Mật khẩu" className="login-form"/>
                 </form>
                 <Button className="login-register">Đăng nhập</Button>
                 <div className="login-member">
-                    <Link to={`/dang-nhap`} className="text-decoration-none">Student</Link>
+                    <Link to={`/dang-nhap`} className="text-decoration-none">Sinh viên</Link>
                 </div>
                 <div className="login-member">
                     <Link to={`/`} className="text-decoration-none">QUAY LẠI</Link>

@@ -41,7 +41,7 @@ const ManageStudent = () => {
 
   const handleDelete = (e, id) => {
     e.preventDefault();
-    window.location.reload(false);
+    
     RemoveStudent(id);
     async function RemoveStudent(id) {
       Swal.fire({
@@ -56,6 +56,7 @@ const ManageStudent = () => {
         if (result.isConfirmed) {
           deleteStudent(id);
           setRender(true);
+window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",

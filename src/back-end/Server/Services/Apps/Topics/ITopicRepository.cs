@@ -44,5 +44,13 @@ namespace Services.Apps.Topics
         Task<int> CountTopicAsync(CancellationToken cancellationToken = default);
         
         Task<int> CountTopicDoneAsync(CancellationToken cancellationToken = default);
+
+        Task<IList<T>> GetNTopViewAsync<T>(int n,
+            Func<IQueryable<Topic>, IQueryable<T>> mapper,
+            CancellationToken cancellationToken = default);
+
+        Task<IList<T>> GetNNewAsync<T>(int n,
+           Func<IQueryable<Topic>, IQueryable<T>> mapper,
+           CancellationToken cancellationToken = default);
     }
 }

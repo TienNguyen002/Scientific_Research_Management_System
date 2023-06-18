@@ -8,14 +8,13 @@ using MapsterMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Services.Apps.Departments;
 using Services.Apps.Lecturers;
-using Services.Apps.Students;
 using Services.Media;
 using System.Net;
 using WebApi.Filters;
 using WebApi.Models;
 using WebApi.Models.Account;
 using WebApi.Models.Lecturer;
-using WebApi.Models.Student;
+using SlugGenerator;
 
 namespace WebApi.Endpoints
 {
