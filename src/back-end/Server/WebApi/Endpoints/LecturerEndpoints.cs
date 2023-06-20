@@ -58,10 +58,10 @@ namespace WebApi.Endpoints
                 .WithName("GetLecturerFilter")
                 .Produces<ApiResponse<LecturerFilterModel>>();
 
-            routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
-              .WithName("SetLecturerImage")
-              .Accepts<IFormFile>("multipart/form-data")
-              .Produces<ApiResponse<string>>();
+            //routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
+            //  .WithName("SetLecturerImage")
+            //  .Accepts<IFormFile>("multipart/form-data")
+            //  .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapPost("/", AddLecturer)
                 .WithName("AddLecturer")

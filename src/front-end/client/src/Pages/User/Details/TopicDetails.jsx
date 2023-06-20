@@ -85,7 +85,7 @@ const TopicDetails = () => {
             <th>Trạng thái</th>
             <td>
               {topic.status?.name == "Chưa đăng ký" ? (
-                <Link to={`/dang-ky-de-tai`}>{topic.status?.name}</Link>
+                <Link to={``} className="text-decoration-none">{topic.status?.name}</Link>
               ) : (
                 topic.status?.name
               )}

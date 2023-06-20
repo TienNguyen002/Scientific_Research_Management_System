@@ -55,12 +55,12 @@ const AdminSidebar = () => {
             </li>
           </Link>
           <p className="sidebar-center-title">Người dùng</p>
-          <Link className="text-decoration-none" to={`/admin/thong-tin`}>
+          {/* <Link className="text-decoration-none" to={`/admin/thong-tin`}>
             <li>
               <FontAwesomeIcon icon={faUserTie} className="sidebar-center-icon" />
               <span>Thông tin</span>
             </li>
-          </Link>
+          </Link> */}
           <Link className="text-decoration-none" to={`/`}>
             <li>
               <FontAwesomeIcon icon={faRightFromBracket} className="sidebar-center-icon" />

@@ -254,11 +254,22 @@ namespace Services.Apps.Topics
             }
             var student = await _context.Set<Student>()
                 .Where(s => s.UrlSlug == studentSlug)
-                .FirstOrDefaultAsync(cancellationToken);
-            topic.Students.Add(student);
-            if (topic.Students.Count >= topic.StudentNumbers)
+                .FirstOrDefaultAsync(cancellationToken); 
+            if(topic.DepartmentId != student.DepartmentId)
             {
-                topic.StatusId = 2;
+                return false;
+            }
+            if (topic.Students.Equals(student.FullName))
+            {
+                return false;
+            }
+            else
+            {
+                topic.Students.Add(student);
+                if (topic.Students.Count == topic.StudentNumbers)
+                {
+                    topic.StatusId = 2;
+                }
             }
             _context.Update(topic);
             return await _context.SaveChangesAsync(cancellationToken) > 0;

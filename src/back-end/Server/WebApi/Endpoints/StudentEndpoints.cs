@@ -69,10 +69,10 @@ namespace WebApi.Endpoints
                 .WithName("GetStudentFilter")
                 .Produces<ApiResponse<StudentFilterModel>>();
 
-            routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
-              .WithName("SetStudentImage")
-              .Accepts<IFormFile>("multipart/form-data")
-              .Produces<ApiResponse<string>>();
+            //routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
+            //  .WithName("SetStudentImage")
+            //  .Accepts<IFormFile>("multipart/form-data")
+            //  .Produces<ApiResponse<string>>();
         }
 
         private static async Task<IResult> GetStudent(

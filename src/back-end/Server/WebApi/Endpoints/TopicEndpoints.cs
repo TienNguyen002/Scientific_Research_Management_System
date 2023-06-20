@@ -52,10 +52,10 @@ namespace WebApi.Endpoints
                 .Produces(401)
                 .Produces<ApiResponse<TopicItem>>();
 
-            routeGroupBuilder.MapPut("/{id:int}", UpdateTopic)
-                .WithName("UpdateTopic")
-                .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
-                .Produces<ApiResponse<string>>();
+            //routeGroupBuilder.MapPut("/{id:int}", UpdateTopic)
+            //    .WithName("UpdateTopic")
+            //    .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
+            //    .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteTopic)
                 .WithName("DeleteTopic")

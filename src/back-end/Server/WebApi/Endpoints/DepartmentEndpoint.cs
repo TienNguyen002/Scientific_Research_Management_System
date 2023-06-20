@@ -45,10 +45,10 @@ namespace WebApi.Endpoints
                 .Produces(401)
                 .Produces<ApiResponse<DepartmentItems>>();
 
-            routeGroupBuilder.MapPut("/{id:int}", UpdateDepartment)
-                .WithName("UpdateDepartment")
-                .AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
-                .Produces<ApiResponse<string>>();
+            //routeGroupBuilder.MapPut("/{id:int}", UpdateDepartment)
+            //    .WithName("UpdateDepartment")
+            //    .AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
+            //    .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteDepartment)
                 .WithName("DeleteDepartment")

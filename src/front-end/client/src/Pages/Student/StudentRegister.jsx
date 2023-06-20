@@ -9,12 +9,14 @@ import { useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
 import { getTopicsFilter, registerTopic } from "../../Services/TopicService";
 import Swal from "sweetalert2";
+import { useSnackbar } from "notistack";
 
 const StudentRegister = () => {
   const params = useParams(),
     [topicsList, setTopicsList] = useState([]),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     topicFilter = useSelector((state) => state.topicFilter),
+    { enqueueSnackbar } = useSnackbar(),
     { slug } = params;
 
   let statusId = 1,
@@ -53,11 +55,20 @@ const StudentRegister = () => {
         confirmButtonText: "Đăng ký",
       }).then((result) => {
         if (result.isConfirmed) {
-          registerTopic(id, modelslug);
-          window.location.reload(false);
-          Swal.fire({
-            title: "Xóa thành công",
-            icon: "success",
+          registerTopic(id, modelslug).then((data) => {
+            if (data) {
+              console.log(data);
+              enqueueSnackbar("Đã đăng ký thành công", {
+                variant: "success",
+                autoHideDuration: 2000,
+              });
+              window.location.reload(false);
+            } else {
+              enqueueSnackbar("Đăng ký thất bại", {
+                variant: "error",
+                autoHideDuration: 2000,
+              });
+            }
           });
         }
       });
