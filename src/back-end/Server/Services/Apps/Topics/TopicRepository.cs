@@ -256,7 +256,7 @@ namespace Services.Apps.Topics
                 .Where(s => s.UrlSlug == studentSlug)
                 .FirstOrDefaultAsync(cancellationToken);
             topic.Students.Add(student);
-            if (topic.Students.Count == topic.StudentNumbers)
+            if (topic.Students.Count >= topic.StudentNumbers)
             {
                 topic.StatusId = 2;
             }

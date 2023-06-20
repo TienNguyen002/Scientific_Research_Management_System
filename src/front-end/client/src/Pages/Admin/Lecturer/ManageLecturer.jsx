@@ -55,8 +55,7 @@ const ManageLecturer = () => {
       }).then((result) => {
         if (result.isConfirmed) {
           deleteLecturer(id);
-          setRender(true);	
-     	  window.location.reload(false);
+     	    window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",
@@ -102,14 +101,14 @@ const ManageLecturer = () => {
                       <td>{item.department?.name}</td>
                       <td className="text-center">
                         <Link to={`/admin/giang-vien/edit/${item.id}`}>
-                          <FontAwesomeIcon icon={faPenToSquare} />
+                          <FontAwesomeIcon icon={faPenToSquare} className="text-warning"/>
                         </Link>
                       </td>
                       <td className="text-center">
                         <div
                           onClick={(e) => handleDelete(e, item.id)}
                         >
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faTrash} className="text-danger"/>
                         </div>
                       </td>
                     </tr>

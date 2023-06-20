@@ -57,6 +57,7 @@ const ManageFeedback = () => {
         if(result.isConfirmed){
           deleteFeedback(id);
           setRender(true);
+          window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",
@@ -98,7 +99,7 @@ const ManageFeedback = () => {
                         <div
                           onClick={(e) => handleDelete(e, item.id)}
                         >
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faTrash} className="text-danger"/>
                         </div>
                       </td>
                     </tr>

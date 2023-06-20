@@ -60,10 +60,6 @@ export function getLecturerById(id) {
   return get_api(`https://localhost:7129/api/lecturers/${id}`);
 }
 
-export function addLecturer(formData){
-  return post_api(`https://localhost:7129/api/lecturers`, formData)
-}
-
 export function updateLecturer(formData){
-  return post_api(`https://localhost:7129/api/lecturers/update`, formData)
+  return post_api(`https://localhost:7129/api/lecturers`, formData)
 }

@@ -56,7 +56,7 @@ const ManageStudent = () => {
         if (result.isConfirmed) {
           deleteStudent(id);
           setRender(true);
-window.location.reload(false);
+          window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",
@@ -100,7 +100,7 @@ window.location.reload(false);
                         <div
                           onClick={(e) => handleDelete(e, item.id)}
                         >
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faTrash} className="text-danger"/>
                         </div>
                       </td>
                     </tr>

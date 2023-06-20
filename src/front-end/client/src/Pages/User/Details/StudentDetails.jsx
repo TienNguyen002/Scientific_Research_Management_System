@@ -34,6 +34,10 @@ const StudentDetails = () => {
           <Table striped responsive bordered>
             <tbody className="table-content">
               <tr>
+                <th>Avatar</th>
+                <td><img src={`https://localhost:7129/${student.imageUrl}`} alt={student.fullName} className="img-thumbnail"/></td>
+              </tr>
+              <tr>
                 <th>MSSV</th>
                 <td>{student.studentId}</td>
               </tr>

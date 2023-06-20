@@ -31,7 +31,6 @@ import RegisterPage from "../Pages/Login/RegisterPage";
 import AdminLoginPage from "../Pages/Login/AdminLoginPage";
 import StudentManageTopic from "../Pages/Student/StudentManageTopic";
 import LecturerEditAdmin from "../Pages/Admin/Lecturer/LecturerEdit";
-import LecturerAddAdmin from "../Pages/Admin/Lecturer/LecturerAdd";
 
 const Router = () => {
     return(
@@ -61,7 +60,7 @@ const Router = () => {
                     <Route path="/admin/de-tai/edit/:id" element={<TopicEditAdmin/>}/>
                     <Route path="/admin/sinh-vien" element={<ManageStudent/>}/>
                     <Route path="/admin/giang-vien" element={<ManageLecturer/>}/>
-                    <Route path="/admin/giang-vien/edit/" element={<LecturerAddAdmin/>}/>
+                    <Route path="/admin/giang-vien/edit/" element={<LecturerEditAdmin/>}/>
                     <Route path="/admin/giang-vien/edit/:id" element={<LecturerEditAdmin/>}/>
                     <Route path="/admin/feedback" element={<ManageFeedback/>}/>
                     <Route path="/admin/thong-tin" element={<AdminProfile/>}/>

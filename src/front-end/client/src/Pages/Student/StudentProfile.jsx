@@ -1,12 +1,255 @@
-import { Button } from "react-bootstrap"
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { Button, Form } from "react-bootstrap";
+import { getStudentBySlug, updateStudent } from "../../Services/StudentService";
+import { useSnackbar } from "notistack";
+import format from "date-fns/format";
+import { isEmptyOrSpaces } from "../../Utils/Utils";
 
 const StudentProfile = () => {
-    return(
-        <>
-            <h1>Thông tin cá nhân</h1>
-            
-        </>
-    )
-}
+  const initialState = {
+      slug: "",
+      email: "",
+      doB: "",
+      phone: "",
+      year: "",
+      address: "",
+      imageUrl: "",
+    },
+    [student, setStudent] = useState(initialState),
+    navigate = useNavigate(),
+    { enqueueSnackbar } = useSnackbar(),
+    [validated, setValidated] = useState(false);
 
-export default StudentProfile
+  let { slug } = useParams();
+  slug = slug ?? null;
+
+  useEffect(() => {
+    document.title = "Cập nhật thông tin";
+    GetStudent();
+    async function GetStudent() {
+      const data = await getStudentBySlug(slug);
+      console.log(data);
+      if (data) {
+        setStudent(data);
+      } else setStudent([]);
+    }
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (e.currentTarget.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      let data = new FormData(e.target);
+      data.forEach((x) => console.log(x));
+      updateStudent(data).then((data) => {
+        if (data) {
+          console.log(data);
+          enqueueSnackbar("Đã thay đổi thông tin thành công", {
+            variant: "success",
+            autoHideDuration: 2000,
+          });
+          window.location.reload(false);
+        } else {
+          enqueueSnackbar("Đã xảy ra lỗi khi thay đổi", {
+            variant: "error",
+            autoHideDuration: 2000,
+          });
+        }
+      });
+    }
+  };
+  return (
+    <>
+      <div className="col-10">
+        <div className="department-wrapper">
+          <h3 className="text-success py-3">Thông tin cá nhân</h3>
+          <Form
+            method="post"
+            encType="multipart/form-data"
+            onSubmit={handleSubmit}
+            noValidate
+            validated={validated}
+          >
+            <Form.Control type="hidden" name="urlSlug" value={student.urlSlug} />
+            {!isEmptyOrSpaces(student.imageUrl) && <div className="row mb-3">
+            <Form.Label className="col-sm-2 col-form-label">
+                Avatar
+            </Form.Label>
+                <div className="col-sm-10">
+                    <img src={`https://localhost:7129/${student.imageUrl}`} alt={student.fullName} className="img-thumbnail"/>
+                </div>
+            </div>}
+            <div className="row mb-3">
+                <Form.Label className="col-sm-2 col-form-label">
+                    Chọn hình ảnh
+                </Form.Label>
+                <div className="col-sm-10">
+                    <Form.Control
+                        type="file"
+                        name="imageFile"
+                        accept="image/*"
+                        title="Image File"
+                        onChange={e => setStudent({
+                            ...student,
+                            imageFile: e.target.files[0]
+                        })}/>
+                </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                MSSV
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="studentId"
+                  title="Student ID"
+                  disabled
+                  value={student.studentId || ""}
+                />
+                <Form.Control.Feedback type="invalid">
+                  MSSV không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Họ và tên
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="fullName"
+                  title="Full Name"
+                  value={student.fullName || ""}
+                  disabled
+                />
+                <Form.Control.Feedback type="invalid">
+                  Họ và tên không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">Email</Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="email"
+                  title="Email"
+                  required
+                  value={student.email || ""}
+                  onChange={(e) =>
+                    setStudent({ ...student, email: e.target.value })
+                  }
+                />
+                <Form.Control.Feedback type="invalid">
+                    Email không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Ngày tháng năm sinh
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="dOB"
+                  title="Day Of Birth"
+                  value={student.doB}
+                  onChange={(e) =>
+                    setStudent({ ...student, doB: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Số điện thoại
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="phone"
+                  title="Phone"
+                  value={student.phone}
+                  onChange={(e) =>
+                    setStudent({ ...student, phone: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Lớp
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="class"
+                  title="Class"
+                  value={student.class}
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Năm học
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="year"
+                  title="Year"
+                  value={student.year}
+                  disabled
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Địa chỉ
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="address"
+                  title="Address"
+                  value={student.address}
+                  onChange={(e) =>
+                    setStudent({ ...student, address: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Khoa
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="departmentId"
+                  title="Department"
+                  disabled
+                  value={student.department?.name}
+                />
+              </div>
+            </div>
+            <div className="text-center">
+              <Button variant="success" type="submit">
+                Cập nhật thông tin
+              </Button>
+            </div>
+          </Form>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default StudentProfile;

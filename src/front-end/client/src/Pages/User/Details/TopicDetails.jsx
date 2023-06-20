@@ -82,10 +82,6 @@ const TopicDetails = () => {
             <td>{topic.outlineUrl}</td>
           </tr>
           <tr>
-            <th>Điểm</th>
-            <td>{topic.point == 0 ? "" : topic.point}</td>
-          </tr>
-          <tr>
             <th>Trạng thái</th>
             <td>
               {topic.status?.name == "Chưa đăng ký" ? (

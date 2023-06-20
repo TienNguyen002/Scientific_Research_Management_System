@@ -167,12 +167,10 @@ namespace Services.Apps.Lecturers
         {
             if (lecturer.Id > 0)
             {
-                lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
                 _context.Update(lecturer);
             }
             else
             {
-                lecturer.UrlSlug = lecturer.FullName.GenerateSlug();
                 _context.Add(lecturer);
             } 
             return await _context.SaveChangesAsync(cancellationToken) > 0;

@@ -3,7 +3,7 @@ using WebApi.Models.Account;
 
 namespace WebApi.Validations.Account
 {
-    public class PasswordValidator : AbstractValidator<PasswordRequest>
+    public class PasswordValidator : AbstractValidator<ResetPasswordRequest>
     {
         public PasswordValidator()
         {

@@ -47,7 +47,7 @@ const StudentSidebar = () => {
           <Link className="text-decoration-none" to={`/`}>
             <li>
               <FontAwesomeIcon icon={faRightFromBracket} className="sidebar-center-icon" />
-              <span>Đăng xuất</span>
+              <span>Quay lại</span>
             </li>
           </Link>
         </ul>

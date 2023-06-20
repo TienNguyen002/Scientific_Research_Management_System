@@ -56,7 +56,7 @@ const ManageTopic = () => {
         if (result.isConfirmed) {
           deleteTopic(id);
           setRender(true);
-	window.location.reload(false);
+	        window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",
@@ -120,7 +120,7 @@ const ManageTopic = () => {
                   </td>
                   <td className="text-center">
                     <Link to={`/admin/de-tai/edit/${item.id}`}>
-                      <FontAwesomeIcon icon={faPenToSquare} />
+                      <FontAwesomeIcon icon={faPenToSquare} className="text-warning"/>
                     </Link>
                   </td>
                   <td className="text-center">
@@ -130,7 +130,7 @@ const ManageTopic = () => {
                   </td>
                   <td className="text-center">
                     <div onClick={(e) => handleDelete(e, item.id)}>
-                      <FontAwesomeIcon icon={faTrash} />
+                      <FontAwesomeIcon icon={faTrash} className="text-danger"/>
                     </div>
                   </td>
                 </tr>

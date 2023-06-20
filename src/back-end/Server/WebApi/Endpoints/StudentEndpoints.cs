@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using WebApi.Models.Account;
 using Services.Apps.Topics;
 using Services.Media;
+using SlugGenerator;
 
 namespace WebApi.Endpoints
 {
@@ -47,19 +48,21 @@ namespace WebApi.Endpoints
                 .WithName("GetStudentBySlug")
                 .Produces<ApiResponse<StudentDto>>();
 
-            routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInformation)
+            routeGroupBuilder.MapPost("/", ChangeInformation)
                 .WithName("ChangeStudentInfomation")
-                .AddEndpointFilter<ValidatorFilter<StudentEditModel>>()
-                .Produces<ApiResponse<string>>();
+                .Accepts<StudentEditModel>("multipart/form-data")
+                .Produces(401)
+                .Produces<ApiResponse<StudentDto>>();
 
-            routeGroupBuilder.MapPost("/", CreateAccount)
-                .WithName("CreateStudentAccount")
-                .AddEndpointFilter<ValidatorFilter<RegisterRequest>>()
-                .Produces<ApiResponse<AccountDto>>();
+            //routeGroupBuilder.MapPost("/", CreateAccount)
+            //    .WithName("CreateStudentAccount")
+            //    .AddEndpointFilter<ValidatorFilter<RegisterRequest>>()
+            //    .Produces<ApiResponse<AccountDto>>();
 
-            routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/change-password", ChangePassword)
+            routeGroupBuilder.MapPost("/change-password", ChangePassword)
                 .WithName("ChangeStudentPassword")
-                .AddEndpointFilter<ValidatorFilter<PasswordRequest>>()
+                .Accepts<ResetPasswordRequest>("multipart/form-data")
+                .Produces(401)
                 .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
@@ -101,21 +104,31 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> ChangeInformation(
-            string slug,
-            [AsParameters] StudentEditModel model,
+            HttpContext context,
             IMapper mapper,
-            IStudentRepository studentRepository)
+            IStudentRepository studentRepository,
+            IMediaManager mediaManager)
         {
-            var student = await studentRepository.GetStudentBySlugAsync(slug);
-            if (student == null)
+            var model = await StudentEditModel.BindAsync(context);
+            var student = !string.IsNullOrWhiteSpace(model.UrlSlug) ? await studentRepository.GetStudentBySlugAsync(model.UrlSlug) : null;
+            student.Email = model.Email;
+            student.DoB = model.DoB;
+            student.Phone = model.Phone;
+            student.Address = model.Address;
+
+            if(model.ImageFile?.Length > 0)
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                    $"Không tìm thấy sinh viên có slug {slug}"));
+                string hostname = $"{context.Request.Scheme}://{context.Request.Host}{context.Request.PathBase}/",
+                    uploadPath = await mediaManager.SaveImgFileAsync(model.ImageFile.OpenReadStream(),
+                                                                     model.ImageFile.FileName,
+                                                                     model.ImageFile.ContentType);
+                if(!string.IsNullOrWhiteSpace(uploadPath))
+                {
+                    student.ImageUrl = uploadPath;
+                }
             }
-            mapper.Map(model, student);
-            return await studentRepository.UpdateStudentAsync(student)
-               ? Results.Ok(ApiResponse.Success($"Thay đổi sinh viên có slug = {slug} thành công"))
-               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy sinh viên có có slug = {slug}"));
+            await studentRepository.UpdateStudentAsync(student);
+            return Results.Ok(ApiResponse.Success(mapper.Map<StudentDto>(student), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> GetStudentById(
@@ -164,37 +177,27 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> ChangePassword(
-            string slug,
-            PasswordRequest model,
+            HttpContext context,
             IMapper mapper,
             IStudentRepository studentRepository)
         {
-            var student = await studentRepository.GetStudentBySlugAsync(slug);
-            if (student == null)
+            var model = await ResetPasswordRequest.BindAsync(context);
+            var student = !string.IsNullOrWhiteSpace(model.UrlSlug) ? await studentRepository.GetStudentBySlugAsync(model.UrlSlug) : null;
+            if(model.Password != student.Password)
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                    $"Không tìm thấy sinh viên có slug {slug}"));
-            }
-            if (await studentRepository.GetStudentPasswordBySlugAsync(slug, model.Password))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                    $"Mật khẩu hiện tại không đúng"));
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Mật khẩu sai"));
             }
             if (model.NewPassword == model.Password)
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                    $"Mật khẩu mới không được trùng với mật khẩu cũ"));
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Vui lòng nhập mật khẩu mới khác với mật khẩu cũ"));
             }
             if (model.ConfirmPassword != model.NewPassword)
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                    $"Mật khẩu xác nhận không trùng khớp"));
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Mật khẩu xác nhận không trùng khớp"));
             }
-            model.Password = model.NewPassword;
-            mapper.Map(model, student);
-            return await studentRepository.UpdateStudentAsync(student)
-               ? Results.Ok(ApiResponse.Success($"Đổi mật khẩu của sinh viên có slug {slug} thành công"))
-               : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy sinh viên có có slug = {slug}"));
+            student.Password = model.NewPassword;
+            await studentRepository.UpdateStudentAsync(student);
+            return Results.Ok(ApiResponse.Success(mapper.Map<StudentDto>(student), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> GetFilter(

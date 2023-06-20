@@ -1,4 +1,4 @@
-import { get_api, delete_api } from "./Method";
+import { get_api, delete_api, post_api } from "./Method";
 
 export function getStudents(pageSize = 11, pageNumber = 1) {
   return get_api(
@@ -52,6 +52,14 @@ export function getStudentsFilterByDepartmentSlug(
 
 export function deleteStudent(id) {
   return delete_api(`https://localhost:7129/api/students/${id}`);
+}
+
+export function updateStudent(formData){
+  return post_api(`https://localhost:7129/api/students`, formData);
+}
+
+export function changePassword(formData){
+  return post_api(`https://localhost:7129/api/students/change-password`, formData);
 }
 
 

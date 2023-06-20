@@ -169,7 +169,7 @@ const LecturerEditAdmin = () => {
               <div className="col-sm-10">
                 <Form.Control
                   type="text"
-                  name="dOB"
+                  name="doB"
                   title="Day Of Birth"
                   value={lecturer.doB  || ""}
                   onChange={(e) =>
@@ -207,7 +207,7 @@ const LecturerEditAdmin = () => {
               <Button variant="success" type="submit">
                 Lưu các thay đổi
               </Button>
-              <Link to="/admin/de-tai" className="btn btn-danger ms-2">
+              <Link to="/admin/giang-vien" className="btn btn-danger ms-2">
                 Hủy và quay lại
               </Link>
             </div>

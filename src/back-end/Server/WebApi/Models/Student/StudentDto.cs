@@ -15,5 +15,6 @@ namespace WebApi.Models.Student
         public string Class { get; set; }
         public string Year { get; set; }
         public string Address { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

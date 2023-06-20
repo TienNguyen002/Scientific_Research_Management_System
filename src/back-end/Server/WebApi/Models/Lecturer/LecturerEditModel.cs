@@ -9,15 +9,12 @@ namespace WebApi.Models.Lecturer
         public int Id { get; set; }
 
         [DisplayName("Họ và tên")]
-        [Required]
         public string FullName { get; set; }
 
         [DisplayName("Email")]
-        [Required]
         public string Email { get; set; }
 
         [DisplayName("Password")]
-        [Required]
         public string Password { get; set; }
 
         [DisplayName("Trình độ học vấn")]
@@ -25,6 +22,12 @@ namespace WebApi.Models.Lecturer
 
         [DisplayName("Ngày tháng năm sinh")]
         public DateTime DoB { get; set; }
+
+        [DisplayName("Chọn hình ảnh")]
+        public IFormFile ImageFile { get; set; }
+
+        [DisplayName("Hình hiện tại")]
+        public string ImageUrl { get; set; }
 
         [DisplayName("Khoa")]
         [Required]
@@ -37,6 +40,7 @@ namespace WebApi.Models.Lecturer
             var form = await context.Request.ReadFormAsync();
             return new LecturerEditModel()
             {
+                ImageFile = form.Files["ImageFile"],
                 Id = int.Parse(form["Id"]),
                 FullName = form["FullName"],
                 Email = form["Email"],
