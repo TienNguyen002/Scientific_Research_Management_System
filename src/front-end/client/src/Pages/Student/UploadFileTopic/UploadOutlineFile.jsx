@@ -114,11 +114,11 @@ const UploadOutlineFile = () => {
                   File thuyết minh hiện tại
                 </Form.Label>
                 <div className="col-sm-10">
-                  {topic.outlineUrl == null ? (
+                  {topic.outlineUrl === null ? (
                     <div>Chưa có file thuyết minh</div>
                   ) : (
                     <Link
-                      to={`https://localhost:7284/${topic.outlineUrl}`}
+                      to={`https://localhost:7129/${topic.outlineUrl}`}
                       className="text-decoration-none text-danger"
                     >
                       <FontAwesomeIcon
@@ -126,6 +126,7 @@ const UploadOutlineFile = () => {
                         fontSize={50}
                         className="text-danger px-2"
                       />
+                      Tải File
                     </Link>
                   )}
                 </div>
@@ -157,7 +158,10 @@ const UploadOutlineFile = () => {
               <Button variant="success" type="submit">
                 Đăng file
               </Button>
-              <Link to={`/sinh-vien/${slug}/quan-ly-de-tai`} className="btn btn-danger ms-2">
+              <Link
+                to={`/sinh-vien/${slug}/quan-ly-de-tai`}
+                className="btn btn-danger ms-2"
+              >
                 Hủy và quay lại
               </Link>
             </div>

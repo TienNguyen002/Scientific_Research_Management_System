@@ -8,6 +8,7 @@ import {
 import { isEmptyOrSpaces, isInteger } from "../../../Utils/Utils";
 import { Button, Form } from "react-bootstrap";
 import { useSnackbar } from "notistack";
+import PriceComponent from "../../../Components/Shared/PriceComponent";
 
 const TopicEditAdmin = () => {
   const initialState = {

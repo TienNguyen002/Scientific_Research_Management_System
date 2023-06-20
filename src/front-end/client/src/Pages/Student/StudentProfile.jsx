@@ -189,6 +189,7 @@ const StudentProfile = () => {
                     setStudent({ ...student, doB: e.target.value })
                   }
                 />
+                (Theo định dạng MM/dd/yyyy)
               </div>
             </div>
             <div className="row mb-3">

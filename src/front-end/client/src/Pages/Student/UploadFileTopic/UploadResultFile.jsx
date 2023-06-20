@@ -115,10 +115,10 @@ const UploadResultFile = () => {
                 </Form.Label>
                 <div className="col-sm-10">
                   {topic.resultUrl == null ? (
-                    <div>Chưa có file thuyết minh</div>
+                    <div>Chưa có file kết quả</div>
                   ) : (
                     <Link
-                      to={`https://localhost:7284/${topic.resultUrl}`}
+                      to={`https://localhost:7129/${topic.resultUrl}`}
                       className="text-decoration-none text-danger"
                     >
                       <FontAwesomeIcon
@@ -126,6 +126,7 @@ const UploadResultFile = () => {
                         fontSize={50}
                         className="text-danger px-2"
                       />
+                      Tải File
                     </Link>
                   )}
                 </div>
@@ -157,7 +158,10 @@ const UploadResultFile = () => {
               <Button variant="success" type="submit">
                 Đăng file
               </Button>
-              <Link to={`/sinh-vien/${slug}/quan-ly-de-tai`} className="btn btn-danger ms-2">
+              <Link
+                to={`/sinh-vien/${slug}/quan-ly-de-tai`}
+                className="btn btn-danger ms-2"
+              >
                 Hủy và quay lại
               </Link>
             </div>

@@ -178,6 +178,7 @@ const LecturerEditAdmin = () => {
                     setLecturer({ ...lecturer, doB: e.target.value })
                   }
                 />
+                (Theo định dạng MM/dd/yyyy)
               </div>
             </div>
             {!isEmptyOrSpaces(lecturer.imageUrl) && (

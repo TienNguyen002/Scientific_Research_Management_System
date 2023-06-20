@@ -419,6 +419,7 @@ namespace WebApi.Endpoints
                     topic.ResultUrl = uploadPath;
                 }
             }
+            topic.StatusId = 3;
             await topicRepository.AddOrUpdateTopicBySlugAsync(topic);
             return Results.Ok(ApiResponse.Success(mapper.Map<TopicDto>(topic), HttpStatusCode.Created));
         }
