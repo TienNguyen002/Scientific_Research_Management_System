@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import format from "date-fns/format";
 import { Button } from "react-bootstrap";
 import StudentList from "../../../Components/Shared/StudentList";
+import ShowMoreText from "../../../Components/Shared/ShowMoreText";
 
 const TopicByLecturers = () => {
   const [topicsList, setTopicsList] = useState([]);
@@ -53,7 +54,7 @@ const TopicByLecturers = () => {
                 </td>
                 <td>
                   <p className="shortDescription">
-                    {item.description.substring(0, 50)}...
+                    <ShowMoreText text={item.description} maxLength={50}/>
                   </p>
                 </td>
                 <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>

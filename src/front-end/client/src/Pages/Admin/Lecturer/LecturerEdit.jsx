@@ -15,8 +15,9 @@ const LecturerEditAdmin = () => {
       fullName: "",
       email: "",
       password: "",
-      qualification : "",
-      doB : "",
+      qualification: "",
+      doB: "",
+      imageUrl: "",
       departmentId: 0,
     },
     [lecturer, setLecturer] = useState(initialState),
@@ -61,9 +62,8 @@ const LecturerEditAdmin = () => {
       setValidated(true);
     } else {
       let data = new FormData(e.target);
-      data.forEach((x) => console.log(x))
-    ;
-    updateLecturer(data).then((data) => {
+      data.forEach((x) => console.log(x));
+      updateLecturer(data).then((data) => {
         if (data) {
           console.log(data);
           enqueueSnackbar("Đã lưu thành công", {
@@ -128,7 +128,7 @@ const LecturerEditAdmin = () => {
                   }
                 />
                 <Form.Control.Feedback type="invalid">
-                    Email không được bỏ trống
+                  Email không được bỏ trống
                 </Form.Control.Feedback>
               </div>
             </div>
@@ -142,13 +142,15 @@ const LecturerEditAdmin = () => {
                   name="password"
                   title="Password"
                   value={lecturer.password || ""}
-                  onChange={(e) => setLecturer({ ...lecturer, password: e.target.value })}
+                  onChange={(e) =>
+                    setLecturer({ ...lecturer, password: e.target.value })
+                  }
                 />
               </div>
             </div>
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
-                Cấp bậc 
+                Cấp bậc
               </Form.Label>
               <div className="col-sm-10">
                 <Form.Control
@@ -171,9 +173,46 @@ const LecturerEditAdmin = () => {
                   type="text"
                   name="doB"
                   title="Day Of Birth"
-                  value={lecturer.doB  || ""}
+                  value={lecturer.doB || ""}
                   onChange={(e) =>
                     setLecturer({ ...lecturer, doB: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+            {!isEmptyOrSpaces(lecturer.imageUrl) && (
+              <div className="row mb-3">
+                <Form.Label className="col-sm-2 col-form-label">
+                  Avatar
+                </Form.Label>
+                <div className="col-sm-10">
+                  {!isEmptyOrSpaces(lecturer.imageUrl) ? (
+                    <p></p>
+                  ) : (
+                    <img
+                      src={`https://localhost:7129/${lecturer.imageUrl}`}
+                      alt={lecturer.fullName}
+                      className="img-thumbnail"
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+            <div className="row mb-3">
+              <Form.Label className="col-sm-2 col-form-label">
+                Chọn hình ảnh
+              </Form.Label>
+              <div className="col-sm-10">
+                <Form.Control
+                  type="file"
+                  name="imageFile"
+                  accept="image/*"
+                  title="Image File"
+                  onChange={(e) =>
+                    setLecturer({
+                      ...lecturer,
+                      imageFile: e.target.files[0],
+                    })
                   }
                 />
               </div>
@@ -193,10 +232,13 @@ const LecturerEditAdmin = () => {
                     })
                   }
                 >
-                  <option value=''>-- Chọn khoa --</option>
+                  <option value="">-- Chọn khoa --</option>
                   {filter.departmentList.length > 0 &&
-                  filter.departmentList.map((item, index) => 
-                  <option key={index} value={item.value}>{item.text}</option>)}
+                    filter.departmentList.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.text}
+                      </option>
+                    ))}
                 </Form.Select>
                 <Form.Control.Feedback type="invalid">
                   Khoa không được bỏ trống.

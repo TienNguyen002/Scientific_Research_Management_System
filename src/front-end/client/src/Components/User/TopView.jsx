@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./style/user.scss";
 import { getTopTopic } from "../../Services/TopicService"
+import ShowMoreText from "../Shared/ShowMoreText";
 
 const TopView = () => {
     const [topic, setTopic] = useState([]);
@@ -25,7 +26,7 @@ const TopView = () => {
                             <Link className="text-decoration-none" to={`/de-tai/${item.urlSlug}`}>
                                 <h5>{item.title}</h5>
                             </Link>
-                            <div className="card-desc">{item.description.substring(0, 50)}...</div>
+                            <div className="card-desc"><ShowMoreText text={item.description} maxLength={50}/></div>
                             <div className="card-department row">
                                 <div className="card-department-name col">
                                     Khoa:

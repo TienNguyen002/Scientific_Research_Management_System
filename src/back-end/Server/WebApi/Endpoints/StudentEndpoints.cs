@@ -111,10 +111,22 @@ namespace WebApi.Endpoints
         {
             var model = await StudentEditModel.BindAsync(context);
             var student = !string.IsNullOrWhiteSpace(model.UrlSlug) ? await studentRepository.GetStudentBySlugAsync(model.UrlSlug) : null;
+            if(student == null)
+            {
+                student = new Student()
+                {
+
+                };
+            }
+            student.StudentId = model.StudentId;
+            student.FullName = model.FullName;
             student.Email = model.Email;
             student.DoB = model.DoB;
             student.Phone = model.Phone;
+            student.Class = model.Class;
+            student.Year = model.Year;
             student.Address = model.Address;
+            student.DepartmentId = model.DepartmentId;
 
             if(model.ImageFile?.Length > 0)
             {

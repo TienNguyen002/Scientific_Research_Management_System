@@ -4,6 +4,7 @@ import { getTopicsByStudentSlug } from "../../../Services/TopicService";
 import { Link, useParams } from "react-router-dom";
 import format from "date-fns/format";
 import { Button } from "react-bootstrap";
+import ShowMoreText from "../../../Components/Shared/ShowMoreText";
 
 const TopicByStudents = () => {
   const [topicsList, setTopicsList] = useState([]);
@@ -52,7 +53,7 @@ const TopicByStudents = () => {
                 </td>
                 <td>
                   <p className="shortDescription">
-                    {item.description.substring(0, 50)}...
+                    <ShowMoreText text={item.description} maxLength={50}/>
                   </p>
                 </td>
                 <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>

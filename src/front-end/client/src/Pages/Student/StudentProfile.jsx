@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import { getStudentBySlug, updateStudent } from "../../Services/StudentService";
+import { getStudentBySlug, updateStudent, getFilter } from "../../Services/StudentService";
 import { useSnackbar } from "notistack";
 import format from "date-fns/format";
 import { isEmptyOrSpaces } from "../../Utils/Utils";
@@ -9,14 +9,21 @@ import { isEmptyOrSpaces } from "../../Utils/Utils";
 const StudentProfile = () => {
   const initialState = {
       slug: "",
+      studentId: "",
+      fullName: "",
       email: "",
       doB: "",
       phone: "",
+      class: "",
       year: "",
       address: "",
       imageUrl: "",
+      departmentId: 0,
     },
     [student, setStudent] = useState(initialState),
+    [filter, setFilter] = useState({
+      departmentList: [],
+    }),
     navigate = useNavigate(),
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false);
@@ -34,6 +41,20 @@ const StudentProfile = () => {
         setStudent(data);
       } else setStudent([]);
     }
+
+    getFilter().then((data) => {
+      if (data) {
+        setFilter({
+          departmentList: data.departmentList,
+          statusList: data.statusList,
+        });
+      } else {
+        setFilter({
+          departmentList: [],
+          statusList: [],
+        });
+      }
+    });
   }, []);
 
   const handleSubmit = (e) => {
@@ -106,9 +127,11 @@ const StudentProfile = () => {
                 <Form.Control
                   type="text"
                   name="studentId"
-                  title="Student ID"
-                  disabled
+                  title="Student ID"                  
                   value={student.studentId || ""}
+                  onChange={(e) =>
+                    setStudent({ ...student, studentId: e.target.value })
+                  }
                 />
                 <Form.Control.Feedback type="invalid">
                   MSSV không được bỏ trống
@@ -125,7 +148,9 @@ const StudentProfile = () => {
                   name="fullName"
                   title="Full Name"
                   value={student.fullName || ""}
-                  disabled
+                  onChange={(e) =>
+                    setStudent({ ...student, fullName: e.target.value })
+                  }
                 />
                 <Form.Control.Feedback type="invalid">
                   Họ và tên không được bỏ trống
@@ -192,7 +217,9 @@ const StudentProfile = () => {
                   name="class"
                   title="Class"
                   value={student.class}
-                  disabled
+                  onChange={(e) =>
+                    setStudent({ ...student, class: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -206,7 +233,9 @@ const StudentProfile = () => {
                   name="year"
                   title="Year"
                   value={student.year}
-                  disabled
+                  onChange={(e) =>
+                    setStudent({ ...student, year: e.target.value })
+                  }
                 />
               </div>
             </div>
@@ -227,17 +256,28 @@ const StudentProfile = () => {
               </div>
             </div>
             <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Khoa
-              </Form.Label>
+              <Form.Label className="col-sm-2 col-form-label">Khoa</Form.Label>
               <div className="col-sm-10">
-                <Form.Control
-                  type="text"
+                <Form.Select
                   name="departmentId"
-                  title="Department"
-                  disabled
-                  value={student.department?.name}
-                />
+                  title="Department Id"
+                  value={student.departmentId || student.department?.id}
+                  required
+                  onChange={(e) =>
+                    setStudent({
+                      ...student,
+                      departmentId: e.target.value,
+                    })
+                  }
+                >
+                  <option value=''>-- Chọn khoa --</option>
+                  {filter.departmentList.length > 0 &&
+                  filter.departmentList.map((item, index) => 
+                  <option key={index} value={item.value}>{item.text}</option>)}
+                </Form.Select>
+                <Form.Control.Feedback type="invalid">
+                  Khoa không được bỏ trống.
+                </Form.Control.Feedback>
               </div>
             </div>
             <div className="text-center">

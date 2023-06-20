@@ -31,6 +31,8 @@ import RegisterPage from "../Pages/Login/RegisterPage";
 import AdminLoginPage from "../Pages/Login/AdminLoginPage";
 import StudentManageTopic from "../Pages/Student/StudentManageTopic";
 import LecturerEditAdmin from "../Pages/Admin/Lecturer/LecturerEdit";
+import UploadOutlineFile from "../Pages/Student/UploadFileTopic/UploadOutlineFile";
+import UploadResultFile from "../Pages/Student/UploadFileTopic/UploadResultFile";
 
 const Router = () => {
     return(
@@ -73,6 +75,8 @@ const Router = () => {
                     <Route path="/sinh-vien/:slug/dang-ky-de-tai" element={<StudentRegister/>}/>
                     <Route path="/sinh-vien/quan-ly-de-tai" element={<StudentManageTopic/>}/>
                     <Route path="/sinh-vien/:slug/quan-ly-de-tai" element={<StudentManageTopic/>}/>
+                    <Route path="/sinh-vien/:slug/dang-thuyet-minh/:slug2" element={<UploadOutlineFile/>}/>
+                    <Route path="/sinh-vien/:slug/dang-ket-qua/:slug2" element={<UploadResultFile/>}/>
                     <Route path="/sinh-vien/doi-mat-khau" element={<StudentPassword/>}/>
                     <Route path="/sinh-vien/:slug/doi-mat-khau" element={<StudentPassword/>}/>
                 </Route>

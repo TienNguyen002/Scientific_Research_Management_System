@@ -1,35 +1,40 @@
-*{
-    margin: 0;
-   padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.navbar{
-    background-color: rgb(22, 134, 22);
-    max-height: 70px;
+.navbar {
+  background-color: rgb(22, 134, 22);
+  max-height: 70px;
 }
 
-.navitem{
-    font-style: bold;
+.navitem {
+  font-style: bold;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  margin-right: 20px;
+}
+
+.navitem:hover {
+  color: lightgreen;
+}
+
+.login {
+  display: flex;
+  justify-content: space-between;
+  .register {
+    margin-right: 10px;
+  }
+  &-button {
     color: white;
-    text-decoration: none;
-    text-align: center;
-    margin-right: 20px;
+  }
+  &-button:hover {
+    color: white;
+  }
 }
 
-.navitem:hover{
-    color: lightgreen;
-}
-
-.login{
-    display: flex;
-    justify-content: space-between;
-    .register{
-        margin-right: 10px;
-    }
-    &-button{
-        color: white;
-    }
-    &-button:hover{
-        color: white
-    }
+.custom-button {
+  border: none;
+  background-color: transparent;
 }

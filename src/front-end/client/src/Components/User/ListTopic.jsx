@@ -8,6 +8,7 @@ import format from "date-fns/format";
 import TopicFilterSearch from "../../Components/Shared/Filter/Topic/TopicFilterSearch";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
+import ShowMoreText from "../Shared/ShowMoreText";
 
 const ListTopic = () => {
   const [topicsList, setTopicsList] = useState([]),
@@ -64,8 +65,8 @@ const ListTopic = () => {
                     </Link>
                   </td>
                   <td>
-                    <p className="shortDescription">
-                      {item.description.substring(0, 50)}...
+                    <p className="sdescription">
+                      <ShowMoreText text={item.description} maxLength={50}/>
                     </p>
                   </td>
                   <td>

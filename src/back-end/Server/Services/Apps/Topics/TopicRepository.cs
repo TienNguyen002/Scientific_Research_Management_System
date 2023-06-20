@@ -183,6 +183,19 @@ namespace Services.Apps.Topics
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
+        public async Task<bool> AddOrUpdateTopicBySlugAsync(Topic topic, CancellationToken cancellationToken = default)
+        {
+            if (!string.IsNullOrWhiteSpace(topic.UrlSlug))
+            {
+                _context.Update(topic);
+            }
+            else
+            {
+                _context.Add(topic);
+            }
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
         public async Task<bool> RemoveTopicAsync(int id, CancellationToken cancellationToken = default)
         {
             var topicToDelete = await _context.Set<Topic>()
@@ -297,12 +310,14 @@ namespace Services.Apps.Topics
                 .ExecuteUpdateAsync(s => s.SetProperty(s => s.ResultUrl, resultUrl), cancellationToken) > 0;
         }
 
-        public async Task IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default)
+        public async Task<bool> IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default)
         {
-            await _context.Set<Topic>()
+            var topic = await _context.Set<Topic>()
                 .Where(x => x.UrlSlug == slug)
-                .ExecuteUpdateAsync(p =>
-                    p.SetProperty(x => x.ViewCount, x => x.ViewCount + 1), cancellationToken);
+                .FirstOrDefaultAsync(cancellationToken);
+            topic.ViewCount = topic.ViewCount + 1;
+            _context.Update(topic);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
         public async Task<int> CountTopicAsync(CancellationToken cancellationToken = default)

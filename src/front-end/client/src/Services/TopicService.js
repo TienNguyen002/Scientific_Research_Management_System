@@ -63,7 +63,7 @@ export function deleteTopic(id) {
 }
 
 export function increaseView(slug){
-  return put_api(`https://localhost:7129/api/topics/view/${slug}`)
+  return post_api(`https://localhost:7129/api/topics/view/${slug}`)
 }
 
 export function getTopicById(id) {
@@ -88,4 +88,12 @@ export function getTopTopic(){
 
 export function getNewTopic(){
   return get_api(`https://localhost:7129/api/topics/new/3`)
+}
+
+export function uploadOutlineFile(formData){
+  return post_api(`https://localhost:7129/api/topics/outlineFile`, formData)
+}
+
+export function uploadResultFile(formData){
+  return post_api(`https://localhost:7129/api/topics/resultFile`, formData)
 }

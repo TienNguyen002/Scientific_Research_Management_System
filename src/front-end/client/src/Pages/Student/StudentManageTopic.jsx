@@ -6,6 +6,7 @@ import format from "date-fns/format";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import ShowMoreText from "../../Components/Shared/ShowMoreText";
 
 const StudentManageTopic = () => {
   const [topicsList, setTopicsList] = useState([]);
@@ -55,7 +56,7 @@ const StudentManageTopic = () => {
                 </td>
                 <td>
                   <p className="shortDescription">
-                    {item.description.substring(0, 50)}...
+                    <ShowMoreText text={item.description} maxLength={50} />
                   </p>
                 </td>
                 <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>
@@ -69,10 +70,18 @@ const StudentManageTopic = () => {
                   </Link>
                 </td>
                 <td>
-                  <FontAwesomeIcon icon={faUpload} className="text-primary"/>
+                  <Link
+                    to={`/sinh-vien/${slug}/dang-thuyet-minh/${item.urlSlug}`}
+                  >
+                    <FontAwesomeIcon icon={faUpload} className="text-primary" />
+                  </Link>
                 </td>
                 <td>
-                  <FontAwesomeIcon icon={faUpload} className="text-success"/>
+                  <Link
+                    to={`/sinh-vien/${slug}/dang-ket-qua/${item.urlSlug}`}
+                  >
+                    <FontAwesomeIcon icon={faUpload} className="text-success" />
+                  </Link>
                 </td>
               </tr>
             ))

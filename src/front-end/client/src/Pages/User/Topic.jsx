@@ -8,6 +8,7 @@ import { Button } from "react-bootstrap";
 import TopicFilter from "../../Components/Shared/Filter/Topic/TopicFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
+import ShowMoreText from "../../Components/Shared/ShowMoreText";
 
 const Topic = () => {
   const [topicsList, setTopicsList] = useState([]),
@@ -71,7 +72,7 @@ const Topic = () => {
                   </td>
                   <td>
                     <p className="shortDescription">
-                      {item.description.substring(0, 50)}...
+                      <ShowMoreText text={item.description} maxLength={50}/>
                     </p>
                   </td>
                   <td>

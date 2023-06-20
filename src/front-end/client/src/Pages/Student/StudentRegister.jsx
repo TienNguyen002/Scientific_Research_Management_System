@@ -10,6 +10,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getTopicsFilter, registerTopic } from "../../Services/TopicService";
 import Swal from "sweetalert2";
 import { useSnackbar } from "notistack";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencil } from "@fortawesome/free-solid-svg-icons";
+import ShowMoreText from "../../Components/Shared/ShowMoreText";
 
 const StudentRegister = () => {
   const params = useParams(),
@@ -109,7 +112,7 @@ const StudentRegister = () => {
                   </td>
                   <td>
                     <p className="shortDescription">
-                      {item.description.substring(0, 50)}...
+                      <ShowMoreText text={item.description} maxLength={50}/>
                     </p>
                   </td>
                   <td>
@@ -125,12 +128,11 @@ const StudentRegister = () => {
                   </td>
                   <td>{item.status.name}</td>
                   <td>
-                    <Button
-                      type="submit"
+                    <FontAwesomeIcon
+                      icon={faPencil}
                       onClick={(e) => handleRegister(e, item.id, slug)}
-                    >
-                      Đăng ký đề tài
-                    </Button>
+                      className="text-primary"
+                    />
                   </td>
                 </tr>
               ))
