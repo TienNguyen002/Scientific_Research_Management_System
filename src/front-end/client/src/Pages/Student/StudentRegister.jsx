@@ -13,18 +13,28 @@ import { useSnackbar } from "notistack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import ShowMoreText from "../../Components/Shared/ShowMoreText";
+import Pager from "../../Components/Shared/Pager";
 
 const StudentRegister = () => {
   const params = useParams(),
-    [topicsList, setTopicsList] = useState([]),
+    [topicsList, setTopicsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
     topicFilter = useSelector((state) => state.topicFilter),
     { enqueueSnackbar } = useSnackbar(),
     { slug } = params;
 
-  let statusId = 1,
-    p = 1,
-    ps = 10;
+  let p = 1,
+    ps = 5;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
 
   useEffect(() => {
     document.title = "Đăng ký đề tài";
@@ -36,14 +46,19 @@ const StudentRegister = () => {
       topicFilter.year,
       topicFilter.month,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setTopicsList(data.items);
+        setData(data);
       } else setTopicsList([]);
       setIsVisibleLoading(false);
     });
-  }, [topicFilter, ps, p, slug]);
+
+    function setData(props) {
+      setTopicsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [topicFilter, ps, pageNumber, slug]);
 
   const handleRegister = (e, id, modelslug) => {
     Register(id, modelslug);
@@ -112,7 +127,7 @@ const StudentRegister = () => {
                   </td>
                   <td>
                     <p className="shortDescription">
-                      <ShowMoreText text={item.description} maxLength={50}/>
+                      <ShowMoreText text={item.description} maxLength={50} />
                     </p>
                   </td>
                   <td>
@@ -146,6 +161,7 @@ const StudentRegister = () => {
           </tbody>
         </Table>
       )}
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };

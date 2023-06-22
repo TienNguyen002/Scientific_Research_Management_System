@@ -8,33 +8,51 @@ import "./style/user.scss";
 import Loading from "../../Components/Shared/Loading";
 import DepartmentFilter from "../../Components/Shared/Filter/Department/DepartmentFilter";
 import { useSelector } from "react-redux";
+import Pager from "../../Components/Shared/Pager";
 
 const Department = () => {
-  const [departments, setDepartments] = useState([]),
-  [isVisibleLoading, setIsVisibleLoading] = useState(true),
-  departmentFilter = useSelector((state) => state.departmentFilter);;
+  const [departments, setDepartments] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    [isVisibleLoading, setIsVisibleLoading] = useState(true),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
+    departmentFilter = useSelector((state) => state.departmentFilter);
 
   let p = 1,
-    ps = 10;
+    ps = 6;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
 
   useEffect(() => {
     document.title = "Danh sách Khoa";
-    getDepartmentsFilter(departmentFilter.keyword).then((data) => {
-      if (data) {
-        setDepartments(data.items);
-      } else {
-        setDepartments([]);
+    getDepartmentsFilter(departmentFilter.keyword, ps, pageNumber).then(
+      (data) => {
+        if (data) {
+          setData(data);
+        } else {
+          setDepartments([]);
+        }
+        setIsVisibleLoading(false);
       }
-      setIsVisibleLoading(false);
-    });
-  }, [departmentFilter, ps, p]);
+    );
+
+    function setData(props) {
+      setDepartments(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [departmentFilter, ps, pageNumber]);
 
   return (
     <>
       <div>
-      <div className="d-flex">
-        <DepartmentFilter />
-      </div>
+        <div className="d-flex">
+          <DepartmentFilter />
+        </div>
         <div className="row department-item">
           {departments.length > 0 ? (
             departments.map((item, index) => (
@@ -67,6 +85,7 @@ const Department = () => {
             </h2>
           )}
         </div>
+        <Pager metadata={metadata} onPageChange={updatePageNumber} />
       </div>
     </>
   );

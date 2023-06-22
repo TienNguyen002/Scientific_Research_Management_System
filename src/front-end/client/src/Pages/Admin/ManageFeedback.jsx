@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  getFeedback,
-  deleteFeedback,
-} from "../../Services/AdminService";
+import { getFeedback, deleteFeedback } from "../../Services/AdminService";
 import { Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import Button from "react-bootstrap/Button";
@@ -14,16 +11,27 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import format from "date-fns/format";
 import Swal from "sweetalert2";
+import Pager from "../../Components/Shared/Pager";
 
 const ManageFeedback = () => {
-  const [feedbacksList, setFeedbacksList] = useState([]),
+  const [feedbacksList, setFeedbacksList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    [metadata, setMetadata] = useState({}),
     [reRender, setRender] = useState(false),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    feedbackFilter = useSelector((state) => state.feedbackFilter);
+    feedbackFilter = useSelector((state) => state.feedbackFilter),
+    [pageNumber, setPageNumber] = useState(1);
 
   let { id } = useParams,
-    ps = 10,
+    ps = 5,
     p = 1;
+    function updatePageNumber(inc) {
+      setPageNumber((curentVal) => curentVal + inc);
+    }
 
   useEffect(() => {
     document.title = "Danh sách Sinh viên";
@@ -32,14 +40,19 @@ const ManageFeedback = () => {
       feedbackFilter.year,
       feedbackFilter.month,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setFeedbacksList(data.items);
+        setData(data);
       } else setFeedbacksList([]);
       setIsVisibleLoading(false);
     });
-  }, [feedbackFilter, ps, p, reRender]);
+
+    function setData(props) {
+      setFeedbacksList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [feedbackFilter, ps, pageNumber, reRender]);
 
   const handleDelete = (e, id) => {
     e.preventDefault();
@@ -52,19 +65,18 @@ const ManageFeedback = () => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "XÓA"
+        confirmButtonText: "XÓA",
       }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
           deleteFeedback(id);
           setRender(true);
           window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",
-          }
-          )
+          });
         }
-      })
+      });
     }
   };
 
@@ -75,7 +87,9 @@ const ManageFeedback = () => {
       </div>
       <div>
         <div className="row department-item">
-          <div className="item-filter-admin"><FeedbackFilter /></div>
+          <div className="item-filter-admin">
+            <FeedbackFilter />
+          </div>
           {isVisibleLoading ? (
             <Loading />
           ) : (
@@ -96,10 +110,11 @@ const ManageFeedback = () => {
                       <td>{item.content}</td>
                       <td>{format(new Date(item.createDate), "dd/MM/yyyy")}</td>
                       <td className="text-center">
-                        <div
-                          onClick={(e) => handleDelete(e, item.id)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} className="text-danger"/>
+                        <div onClick={(e) => handleDelete(e, item.id)}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="text-danger"
+                          />
                         </div>
                       </td>
                     </tr>
@@ -117,6 +132,7 @@ const ManageFeedback = () => {
             </Table>
           )}
         </div>
+        <Pager metadata={metadata} onPageChange={updatePageNumber}  />
       </div>
     </>
   );

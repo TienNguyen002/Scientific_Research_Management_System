@@ -9,17 +9,37 @@ import AdminTopicFilter from "../../../Components/Shared/Filter/Topic/AdminTopic
 import Loading from "../../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faTrash, faUserEdit, faCheck, faX, faCheckSquare, faHand } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faTrash,
+  faUserEdit,
+  faCheck,
+  faX,
+  faCheckSquare,
+  faHand,
+} from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
+import Pager from "../../../Components/Shared/Pager";
 
 const ManageTopic = () => {
-  const [topicsList, setTopicsList] = useState([]),
+  const [topicsList, setTopicsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
     [reRender, setRender] = useState(false),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     topicFilter = useSelector((state) => state.topicFilter);
 
   let p = 1,
-    ps = 11;
+    ps = 5;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
+
   useEffect(() => {
     getTopicsFilter(
       topicFilter.keyword,
@@ -29,19 +49,24 @@ const ManageTopic = () => {
       topicFilter.year,
       topicFilter.month,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setTopicsList(data.items);
+        setData(data);
         console.log(data.items);
       } else setTopicsList([]);
       setIsVisibleLoading(false);
     });
-  }, [topicFilter, ps, p, reRender]);
+
+    function setData(props) {
+      setTopicsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [topicFilter, ps, pageNumber, reRender]);
 
   const handleDelete = (e, id) => {
     e.preventDefault();
-    
+
     RemoveTopic(id);
     async function RemoveTopic(id) {
       Swal.fire({
@@ -56,7 +81,7 @@ const ManageTopic = () => {
         if (result.isConfirmed) {
           deleteTopic(id);
           setRender(true);
-	        window.location.reload(false);
+          window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",
@@ -112,15 +137,18 @@ const ManageTopic = () => {
                       <FontAwesomeIcon icon={faCheck} className="regis" />
                     ) : item.status?.id == 3 ? (
                       <FontAwesomeIcon icon={faCheckSquare} className="done" />
-                    ) : (
-                    item.status?.id == 4 ? (
+                    ) : item.status?.id == 4 ? (
                       <FontAwesomeIcon icon={faHand} className="stop" />
-                    ) : (<p></p>)
+                    ) : (
+                      <p></p>
                     )}
                   </td>
                   <td className="text-center">
                     <Link to={`/admin/de-tai/edit/${item.id}`}>
-                      <FontAwesomeIcon icon={faPenToSquare} className="text-warning"/>
+                      <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        className="text-warning"
+                      />
                     </Link>
                   </td>
                   <td className="text-center">
@@ -130,7 +158,7 @@ const ManageTopic = () => {
                   </td>
                   <td className="text-center">
                     <div onClick={(e) => handleDelete(e, item.id)}>
-                      <FontAwesomeIcon icon={faTrash} className="text-danger"/>
+                      <FontAwesomeIcon icon={faTrash} className="text-danger" />
                     </div>
                   </td>
                 </tr>
@@ -147,10 +175,13 @@ const ManageTopic = () => {
           </tbody>
         </Table>
       )}
-      <p>Ghi chú:
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
+      <p>
+        Ghi chú:
         <FontAwesomeIcon icon={faCheck} className="regis" />: Đã đăng ký |
         <FontAwesomeIcon icon={faX} className="not" />: Chưa đăng ký |
-        <FontAwesomeIcon icon={faCheckSquare} className="done" />: Đã nghiệm thu |
+        <FontAwesomeIcon icon={faCheckSquare} className="done" />: Đã nghiệm thu
+        |
         <FontAwesomeIcon icon={faHand} className="stop" />: Tạm dừng
       </p>
     </>

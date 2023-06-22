@@ -16,6 +16,7 @@ const Featured = () => {
     })
   }, []);
 
+  const percent = Math.floor((featured.countTopicDone/featured.countTopic)*100)
   return (
     <div className='featured'>
         <div className="featured-top">
@@ -23,7 +24,7 @@ const Featured = () => {
         </div>
         <div className="featured-bottom">
             <div className="featured-chart">
-                <CircularProgressbar value={(featured.countTopicDone/featured.countTopic)*100} strokeWidth={5}/>
+                <CircularProgressbar value={percent} text={percent + "%"} strokeWidth={5}/>
             </div>
             <p>Tổng đề tài đã được nghiệm thu</p>
             <p className='text-center'>{featured.countTopicDone} đề tài / {featured.countTopic} đề tài</p>

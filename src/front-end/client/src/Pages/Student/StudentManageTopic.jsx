@@ -7,25 +7,39 @@ import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import ShowMoreText from "../../Components/Shared/ShowMoreText";
+import Pager from "../../Components/Shared/Pager";
 
 const StudentManageTopic = () => {
-  const [topicsList, setTopicsList] = useState([]);
+  const [topicsList, setTopicsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1);
   const params = useParams();
   const { slug } = params;
 
   let p = 1,
     ps = 5;
-  useEffect(
-    (ps, p) => {
-      document.title = "Quản lý đề tài";
-      getTopicsByStudentSlug(slug).then((data) => {
-        if (data) {
-          setTopicsList(data.items);
-        } else setTopicsList([]);
-      });
-    },
-    [ps, p]
-  );
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
+
+  useEffect(() => {
+    document.title = "Quản lý đề tài";
+    getTopicsByStudentSlug(slug, pageNumber, ps).then((data) => {
+      if (data) {
+        setData(data);
+      } else setTopicsList([]);
+    });
+
+    function setData(props) {
+      setTopicsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [ps, pageNumber]);
 
   return (
     <>
@@ -56,11 +70,11 @@ const StudentManageTopic = () => {
                 </td>
                 <td>
                   <p className="shortDescription">
-                    <ShowMoreText text={item.description} maxLength={50} />
+                    {/* <ShowMoreText text={item.description} maxLength={50} /> */}
                   </p>
                 </td>
-                <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>
-                <td>{item.department.name}</td>
+                <td>{item.registrationDate}</td>
+                <td>{item.department?.name}</td>
                 <td>
                   <Link
                     className="table-content"
@@ -77,9 +91,7 @@ const StudentManageTopic = () => {
                   </Link>
                 </td>
                 <td>
-                  <Link
-                    to={`/sinh-vien/${slug}/dang-ket-qua/${item.urlSlug}`}
-                  >
+                  <Link to={`/sinh-vien/${slug}/dang-ket-qua/${item.urlSlug}`}>
                     <FontAwesomeIcon icon={faUpload} className="text-success" />
                   </Link>
                 </td>
@@ -94,6 +106,7 @@ const StudentManageTopic = () => {
           )}
         </tbody>
       </Table>
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };

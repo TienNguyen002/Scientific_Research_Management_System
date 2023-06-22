@@ -16,8 +16,8 @@ export function getDepartmentBySlug(slug){
 
 export function getDepartmentsFilter(
     keyword = "",
-    pageSize = 11,
-    pageNumber = 1,
+    pageSize = 5,
+    pageNumber = "",
     sortColumn = "",
     sortOrder = ""
   ) {
@@ -26,7 +26,7 @@ export function getDepartmentsFilter(
     sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
     sortOrder !== "" && url.searchParams.append("SortOrder", sortOrder);
     url.searchParams.append("PageSize", pageSize);
-    url.searchParams.append("PageNumber", pageNumber);
+    pageNumber !== "" && url.searchParams.append("PageNumber", pageNumber);
     return get_api(url.href);
   }
 

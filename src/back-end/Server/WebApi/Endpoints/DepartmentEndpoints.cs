@@ -17,7 +17,7 @@ using WebApi.Models.Topic;
 
 namespace WebApi.Endpoints
 {
-    public class DepartmentEndpoint : ICarterModule
+    public class DepartmentEndpoints : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {

@@ -13,17 +13,27 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
-
+import Pager from "../../../Components/Shared/Pager";
 
 const ManageLecturer = () => {
-  const [lecturersList, setLecturersList] = useState([]),
+  const [lecturersList, setLecturersList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
     [reRender, setRender] = useState(false),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     lecturerFilter = useSelector((state) => state.lecturerFilter);
 
   let { id } = useParams,
-    ps = 10,
+    ps = 5,
     p = 1;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
 
   useEffect(() => {
     document.title = "Danh sách Giảng viên";
@@ -31,14 +41,19 @@ const ManageLecturer = () => {
       lecturerFilter.keyword,
       lecturerFilter.departmentId,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setLecturersList(data.items);
+        setData(data);
       } else setLecturersList([]);
       setIsVisibleLoading(false);
     });
-  }, [lecturerFilter, ps, p, reRender]);
+
+    function setData(props) {
+      setLecturersList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [lecturerFilter, ps, pageNumber, reRender]);
 
   const handleDelete = (e, id) => {
     e.preventDefault();
@@ -51,31 +66,35 @@ const ManageLecturer = () => {
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "XÓA"
+        confirmButtonText: "XÓA",
       }).then((result) => {
         if (result.isConfirmed) {
           deleteLecturer(id);
-     	    window.location.reload(false);
+          window.location.reload(false);
           Swal.fire({
             title: "Xóa thành công",
             icon: "success",
-          }
-          )
+          });
         }
-      })
+      });
     }
   };
 
   return (
     <>
       <div className="department">
-        <h1 className="text danger text-center department">Quản lý Giảng viên</h1>
+        <h1 className="text danger text-center department">
+          Quản lý Giảng viên
+        </h1>
       </div>
       <div>
         <div className="row department-item">
           <div className="item-filter-admin">
             <LecturerFilter />
-            <Link className="text-decoration-none" to={`/admin/giang-vien/edit`}>
+            <Link
+              className="text-decoration-none"
+              to={`/admin/giang-vien/edit`}
+            >
               <Button>Thêm mới</Button>
             </Link>
           </div>
@@ -101,14 +120,18 @@ const ManageLecturer = () => {
                       <td>{item.department?.name}</td>
                       <td className="text-center">
                         <Link to={`/admin/giang-vien/edit/${item.id}`}>
-                          <FontAwesomeIcon icon={faPenToSquare} className="text-warning"/>
+                          <FontAwesomeIcon
+                            icon={faPenToSquare}
+                            className="text-warning"
+                          />
                         </Link>
                       </td>
                       <td className="text-center">
-                        <div
-                          onClick={(e) => handleDelete(e, item.id)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} className="text-danger"/>
+                        <div onClick={(e) => handleDelete(e, item.id)}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="text-danger"
+                          />
                         </div>
                       </td>
                     </tr>
@@ -126,6 +149,7 @@ const ManageLecturer = () => {
             </Table>
           )}
         </div>
+        <Pager metadata={metadata} onPageChange={updatePageNumber} />
       </div>
     </>
   );

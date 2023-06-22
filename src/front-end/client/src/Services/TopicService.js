@@ -10,9 +10,9 @@ export function getTopicBySlug(slug) {
   return get_api(`https://localhost:7129/api/topics/byslug/${slug}`);
 }
 
-export function getTopicsByStudentSlug(slug) {
+export function getTopicsByStudentSlug(slug, pageNumber, pageSize) {
   return get_api(
-    `https://localhost:7129/api/topics?Students=${slug}&PageSize=11&PageNumber=1`
+    `https://localhost:7129/api/topics?Students=${slug}&PageSize=${pageSize}&PageNumber=${pageNumber}`
   );
 }
 

@@ -9,14 +9,26 @@ import TopicFilterSearch from "../../Components/Shared/Filter/Topic/TopicFilterS
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import ShowMoreText from "../Shared/ShowMoreText";
+import Pager from "../../Components/Shared/Pager";
 
 const ListTopic = () => {
-  const [topicsList, setTopicsList] = useState([]),
+  const [topicsList, setTopicsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     topicFilter = useSelector((state) => state.topicFilter);
 
   let p = 1,
-    ps = 11;
+    ps = 5;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
+
   useEffect(() => {
     getTopicsFilter(
       topicFilter.keyword,
@@ -26,14 +38,19 @@ const ListTopic = () => {
       topicFilter.year,
       topicFilter.month,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setTopicsList(data.items);
+        setData(data);
       } else setTopicsList([]);
       setIsVisibleLoading(false);
     });
-  }, [topicFilter, ps, p]);
+
+    function setData(props) {
+      setTopicsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [topicFilter, ps, pageNumber]);
 
   return (
     <>
@@ -66,7 +83,7 @@ const ListTopic = () => {
                   </td>
                   <td>
                     <p className="sdescription">
-                      <ShowMoreText text={item.description} maxLength={50}/>
+                      <ShowMoreText text={item.description} maxLength={50} />
                     </p>
                   </td>
                   <td>
@@ -100,6 +117,7 @@ const ListTopic = () => {
           </tbody>
         </Table>
       )}
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };
