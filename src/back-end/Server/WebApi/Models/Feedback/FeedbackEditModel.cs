@@ -6,7 +6,6 @@ namespace WebApi.Models.Feedback
 {
     public class FeedbackEditModel
     {
-        public int Id { get; set; }
 
         [DisplayName("Tên người dùng")]
         [Required(ErrorMessage = "Tên người dùng không được để trống")]
@@ -21,7 +20,6 @@ namespace WebApi.Models.Feedback
             var form = await context.Request.ReadFormAsync();
             return new FeedbackEditModel()
             {
-                Id = int.Parse(form["Id"]),
                 Username = form["Username"],
                 Content = form["Content"],
             };

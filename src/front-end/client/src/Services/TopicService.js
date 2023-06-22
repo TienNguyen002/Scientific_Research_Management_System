@@ -16,15 +16,15 @@ export function getTopicsByStudentSlug(slug, pageNumber, pageSize) {
   );
 }
 
-export function getTopicsByLecturerSlug(slug) {
+export function getTopicsByLecturerSlug(slug, pageNumber, pageSize) {
   return get_api(
-    `https://localhost:7129/api/topics?LecturerSlug=${slug}&PageSize=11&PageNumber=1`
+    `https://localhost:7129/api/topics?LecturerSlug=${slug}&PageSize=${pageSize}&PageNumber=${pageNumber}`
   );
 }
 
-export function getTopicsByDepartmentSlug(slug) {
+export function getTopicsByDepartmentSlug(slug, pageNumber, pageSize) {
   return get_api(
-    `https://localhost:7129/api/topics?DepartmentSlug=${slug}&PageSize=11&PageNumber=1`
+    `https://localhost:7129/api/topics?DepartmentSlug=${slug}&PageSize=${pageSize}&PageNumber=${pageNumber}`
   );
 }
 

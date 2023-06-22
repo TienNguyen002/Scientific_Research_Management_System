@@ -146,7 +146,14 @@ namespace Services.Apps.Students
         public async Task<bool> Register(Student student, CancellationToken cancellationToken = default)
         {
             student.UrlSlug = student.FullName.GenerateSlug();
-            _context.Add(student);
+            if(student.Id > 0)
+            {
+                _context.Update(student);
+            }
+            else
+            {
+                _context.Add(student);
+            }
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 

@@ -62,4 +62,8 @@ export function changePassword(formData){
   return post_api(`https://localhost:7129/api/students/change-password`, formData);
 }
 
+export function registerAccount(formData){
+  return post_api(`https://localhost:7129/api/auth/register`, formData);
+}
+
 

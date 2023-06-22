@@ -25,6 +25,8 @@ namespace WebApi.Endpoints
 
             routeGroupBulder.MapPost("/register", Register)
                 .WithName("Register")
+                .Accepts<RegisterRequest>("multipart/form-data")
+                .Produces(401)
                 .Produces<ApiResponse<AccountDto>>();
 
             routeGroupBulder.MapPost("/login-student", LoginStudent)
@@ -39,22 +41,29 @@ namespace WebApi.Endpoints
         }
 
         private static async Task<IResult> Register(
-            RegisterRequest model, 
+            HttpContext context,
             IStudentRepository studentRepository,
             IMapper mapper)
         {
-            if(model.ConfirmPassword != model.Password)
+            var model = await RegisterRequest.BindAsync(context);
+            var slug = model.FullName.GenerateSlug();
+            if (model.ConfirmPassword != model.Password)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Mật khẩu không trùng khớp"));
+            }
+            if (await studentRepository.IsStudentEmailExitedAsync(0, model.Email))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Đã tồn tại email {model.Email}"));
             }
             var student = new Student()
             {
                 FullName = model.FullName,
+                UrlSlug = model.FullName.GenerateSlug(),
                 Email = model.Email,
-                Password = BCrypt.Net.BCrypt.HashPassword(model.Password)
+                Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
             };
             await studentRepository.Register(student);
-            return Results.Ok(ApiResponse.Success(mapper.Map<AccountDto>(student)));
+            return Results.Ok(ApiResponse.Success(mapper.Map<AccountDto>(student), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> LoginStudent(

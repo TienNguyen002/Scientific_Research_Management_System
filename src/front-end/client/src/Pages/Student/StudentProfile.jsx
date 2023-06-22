@@ -5,6 +5,7 @@ import { getStudentBySlug, updateStudent, getFilter } from "../../Services/Stude
 import { useSnackbar } from "notistack";
 import format from "date-fns/format";
 import { isEmptyOrSpaces } from "../../Utils/Utils";
+import DateFormat from "../../Components/Shared/DateFormat"
 
 const StudentProfile = () => {
   const initialState = {

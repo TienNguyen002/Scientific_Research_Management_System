@@ -10,6 +10,7 @@ import StudentList from "../../../Components/Shared/StudentList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileWord } from "@fortawesome/free-regular-svg-icons";
 import PriceComponent from "../../../Components/Shared/PriceComponent";
+import DateFormat from "../../../Components/Shared/DateFormat";
 
 const TopicDetails = () => {
   const params = useParams();
@@ -44,11 +45,11 @@ const TopicDetails = () => {
           </tr>
           <tr>
             <th>Ngày thực hiện</th>
-            <td>{topic.registrationDate}</td>
+            <td><DateFormat date={topic.registrationDate}/></td>
           </tr>
           <tr>
             <th>Ngày nghiệm thu</th>
-            <td>{topic.endDate}</td>
+            <td><DateFormat date={topic.endDate}/></td>
           </tr>
           <tr>
             <th>Số sinh viên thực hiện</th>

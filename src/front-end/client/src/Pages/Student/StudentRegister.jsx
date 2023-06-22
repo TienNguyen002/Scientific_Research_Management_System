@@ -65,7 +65,7 @@ const StudentRegister = () => {
     async function Register(id, modelslug) {
       Swal.fire({
         title: "Bạn có muốn đăng ký đề tài này không?",
-        text: "Chỉ được đăng ký 1 lần!",
+        text: "Lưu ý: Nếu như khác khoa sẽ không đăng ký được!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -127,13 +127,13 @@ const StudentRegister = () => {
                   </td>
                   <td>
                     <p className="shortDescription">
-                      <ShowMoreText text={item.description} maxLength={50} />
+                      <ShowMoreText text={item?.description} maxLength={50} />
                     </p>
                   </td>
                   <td>
-                    {format(new Date(item.registrationDate), "dd/MM/yyyy")}
+                    {format(new Date(item?.registrationDate), "dd/MM/yyyy")}
                   </td>
-                  <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
+                  <td>{format(new Date(item?.endDate), "dd/MM/yyyy")}</td>
                   <td>{item.studentNumbers}</td>
                   <td>{item.department.name}</td>
                   <td>

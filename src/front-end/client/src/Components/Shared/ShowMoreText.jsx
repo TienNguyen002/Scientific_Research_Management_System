@@ -8,11 +8,11 @@ const ShowMoreText = ({ text, maxLength }) => {
     setShowFullText(!showFullText);
   };
 
-  const displayText = showFullText ? text : text.substring(0, maxLength);
+  const displayText = showFullText ? text : text?.substring(0, maxLength);
 
   return (
     <div className="d-flex">
-      {text.length > maxLength && (
+      {text?.length > maxLength && (
         <p onClick={handleToggleText} className="">
           {displayText}{showFullText ? "" : "..."}
         </p>

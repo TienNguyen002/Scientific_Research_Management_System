@@ -11,31 +11,19 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useParams } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import { sendFeedback, getFeedbackById } from "../../Services/FeedbackService";
+import { sendFeedback } from "../../Services/FeedbackService";
 import { useSnackbar } from "notistack";
 
 const Contact = () => {
   const initialState = {
-    id: 0,
     username: "",
     content: ""
   },
   [feedback, setFeedback] = useState(initialState),
   { enqueueSnackbar } = useSnackbar();
 
-  let {id} = useParams();
-  id = id ?? 0;
-
   useEffect(() => {
     document.title = "Liên hệ";
-    GetFeedback();
-    async function GetFeedback(){
-      const data = await getFeedbackById(id);
-      console.log(data);
-      if(data){
-        setFeedback(data);
-      } else setFeedback([]);
-    }
   }, []);
 
   const handleSubmit = (e) => {
@@ -76,7 +64,6 @@ const Contact = () => {
                   encType="multipart/form-data"
                   onSubmit={handleSubmit}
                 >
-                  <Form.Control type="hidden" name="id" value={feedback.id} />
                   <div className="row mb-3">
                     <Form.Label className="col-sm-2 col-form-label">
                       Tên người dùng

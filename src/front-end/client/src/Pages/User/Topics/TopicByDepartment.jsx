@@ -6,24 +6,38 @@ import format from "date-fns/format";
 import { Button } from "react-bootstrap";
 import StudentList from "../../../Components/Shared/StudentList";
 import ShowMoreText from "../../../Components/Shared/ShowMoreText";
+import Pager from "../../../Components/Shared/Pager";
+import DateFormat from "../../../Components/Shared/DateFormat";
 
 const TopicByDepartment = () => {
-  const [topicsList, setTopicsList] = useState([]);
-  const params = useParams();
-  const { slug } = params;
+  const [topicsList, setTopicsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    params = useParams(),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
+    { slug } = params;
 
   let p = 1,
     ps = 5;
-  useEffect(
-    (ps, p) => {
-      getTopicsByDepartmentSlug(slug).then((data) => {
-        if (data) {
-          setTopicsList(data.items);
-        } else setTopicsList([]);
-      });
-    },
-    [ps, p]
-  );
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
+
+  useEffect(() => {
+    getTopicsByDepartmentSlug(slug, pageNumber, ps).then((data) => {
+      if (data) {
+        setData(data);
+      } else setTopicsList([]);
+    });
+    function setData(props) {
+      setTopicsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [ps, pageNumber]);
 
   return (
     <>
@@ -56,18 +70,18 @@ const TopicByDepartment = () => {
                 </td>
                 <td>
                   <p className="shortDescription">
-                    <ShowMoreText text={item.description} maxLength={50}/>
+                    <ShowMoreText text={item.description} maxLength={50} />
                   </p>
                 </td>
-                <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>
-                <td>{format(new Date(item.endDate), "dd/MM/yyyy")}</td>
+                <td><DateFormat date={item.registrationDate}/></td>
+                <td><DateFormat date={item?.endDate}/></td>
                 <td>{item.studentNumbers}</td>
-                <td>{item.department.name}</td>
+                <td>{item.department?.name}</td>
                 <td>{item.lecturer?.fullName}</td>
                 <td className="table-content">
                   <StudentList studentList={item.students} />
                 </td>
-                <td>{item.status.name}</td>
+                <td>{item.status?.name}</td>
               </tr>
             ))
           ) : (
@@ -79,6 +93,7 @@ const TopicByDepartment = () => {
           )}
         </tbody>
       </Table>
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };

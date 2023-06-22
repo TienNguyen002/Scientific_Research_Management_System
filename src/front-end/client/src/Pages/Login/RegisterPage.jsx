@@ -1,27 +1,155 @@
-import { Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Button, Form } from "react-bootstrap";
+import { Link, useParams } from "react-router-dom";
 import "./login.scss";
+import { useSnackbar } from "notistack";
+import { registerAccount } from "../../Services/StudentService";
 
 const RegisterPage = () => {
-    return (
+  const initialState = {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    [student, setStudent] = useState(initialState),
+    { enqueueSnackbar } = useSnackbar(),
+    [validated, setValidated] = useState(false);
 
-        <div className="login">
-            <div className="login-mainpage">
-                <h1 className="login-header">Đăng ký</h1>
-                <form action="#">
-                    <input type="text" placeholder="Họ và tên" className="login-form"/>
-                    <input type="text" placeholder="Email" className="login-form"/>
-                    <input type="password" placeholder="Mật khẩu" className="login-form"/>
-                    <input type="password" placeholder="Nhập lại mật khẩu" className="login-form"/>
-                </form>
-                <Button className="login-register">Đăng ký</Button>
-                <div className="login-member">
-                    Đã có tài khoản? <Link to={`/dang-nhap`} className="text-decoration-none">Đăng nhập ngay</Link>
-                </div>
+  let { id } = useParams();
+  id = id ?? null;
+
+  useEffect(() => {
+    document.title = "Đăng ký tài khoản";
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (e.currentTarget.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+    } else {
+      let data = new FormData(e.target);
+      data.forEach((x) => console.log(x));
+      registerAccount(data).then((data) => {
+        if (data) {
+          console.log(data);
+          enqueueSnackbar("Đăng ký thành công", {
+            variant: "success",
+            autoHideDuration: 2000,
+          });
+          window.location.reload(false);
+        } else {
+          enqueueSnackbar("Đã xảy ra lỗi khi đăng ký ", {
+            variant: "error",
+            autoHideDuration: 2000,
+          });
+        }
+      });
+    }
+  };
+
+  return (
+    <div className="login">
+      <div className="login-mainpage">
+        <h1 className="login-header">Đăng ký</h1>
+        <div className="card-body">
+          <Form
+            method="post"
+            encType="multipart/form-data"
+            onSubmit={handleSubmit}
+            noValidate
+            validated={validated}
+          >
+            <div className="row mb-3">
+              <div className="col-sm-10">
+                <Form.Control
+                  type="text"
+                  name="fullName"
+                  title="Full Name"
+                  required
+                  placeholder="Họ và tên"
+                  onChange={(e) =>
+                    setStudent({ ...student, fullName: e.target.value })
+                  }
+                  className="login-form"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Họ và tên không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
             </div>
+            <div className="row mb-3">
+              <div className="col-sm-10">
+                <Form.Control
+                  type="email"
+                  name="email"
+                  title="Email"
+                  required
+                  placeholder="Email"
+                  onChange={(e) =>
+                    setStudent({ ...student, email: e.target.value })
+                  }
+                  className="login-form"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Email không được bỏ trống hoặc sai định dạng
+                </Form.Control.Feedback>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-sm-10">
+                <Form.Control
+                  type="password"
+                  name="password"
+                  title="Password"
+                  required
+                  placeholder="Mật khẩu"
+                  onChange={(e) =>
+                    setStudent({ ...student, password: e.target.value })
+                  }
+                  className="login-form"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Mật khẩu không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+            <div className="row mb-3">
+              <div className="col-sm-10">
+                <Form.Control
+                  type="password"
+                  name="confirmPassword"
+                  title="Confirm Password"
+                  required
+                  placeholder="Mật khẩu xác nhận"
+                  onChange={(e) =>
+                    setStudent({ ...student, confirmPassword: e.target.value })
+                  }
+                  className="login-form"
+                />
+                <Form.Control.Feedback type="invalid">
+                  Mật khẩu xác nhận không được bỏ trống
+                </Form.Control.Feedback>
+              </div>
+            </div>
+            <div className="text-center">
+              <Button variant="success" type="submit">
+                Đăng ký
+              </Button>
+            </div>
+          </Form>
         </div>
 
-    )
-}
+        <div className="login-member">
+          Đã có tài khoản?
+          <Link to={`/dang-nhap`} className="text-decoration-none">
+            Đăng nhập ngay
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default RegisterPage;

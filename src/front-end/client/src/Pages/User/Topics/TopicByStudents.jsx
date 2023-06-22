@@ -5,24 +5,39 @@ import { Link, useParams } from "react-router-dom";
 import format from "date-fns/format";
 import { Button } from "react-bootstrap";
 import ShowMoreText from "../../../Components/Shared/ShowMoreText";
+import Pager from "../../../Components/Shared/Pager";
+import DateFormat from "../../../Components/Shared/DateFormat";
 
 const TopicByStudents = () => {
-  const [topicsList, setTopicsList] = useState([]);
-  const params = useParams();
-  const { slug } = params;
+  const [topicsList, setTopicsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    params = useParams(),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
+    { slug } = params;
 
   let p = 1,
     ps = 5;
-  useEffect(
-    (ps, p) => {
-      getTopicsByStudentSlug(slug).then((data) => {
-        if (data) {
-          setTopicsList(data.items);
-        } else setTopicsList([]);
-      });
-    },
-    [ps, p]
-  );
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
+
+  useEffect(() => {
+    getTopicsByStudentSlug(slug, pageNumber, ps).then((data) => {
+      if (data) {
+        setData(data);
+      } else setTopicsList([]);
+    });
+
+    function setData(props) {
+      setTopicsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [ps, pageNumber]);
 
   return (
     <>
@@ -53,12 +68,12 @@ const TopicByStudents = () => {
                 </td>
                 <td>
                   <p className="shortDescription">
-                    <ShowMoreText text={item.description} maxLength={50}/>
+                    <ShowMoreText text={item.description} maxLength={50} />
                   </p>
                 </td>
-                <td>{format(new Date(item.registrationDate), "dd/MM/yyyy")}</td>
+                <td><DateFormat date={item.registrationDate}/></td>
                 <td>{item.studentNumbers}</td>
-                <td>{item.department.name}</td>
+                <td>{item.department?.name}</td>
                 <td>
                   <Link
                     className="table-content"
@@ -79,6 +94,7 @@ const TopicByStudents = () => {
           )}
         </tbody>
       </Table>
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };

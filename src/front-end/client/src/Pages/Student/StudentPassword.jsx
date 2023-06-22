@@ -81,7 +81,7 @@ const StudentPassword = () => {
                   required
                 />
                 <Form.Control.Feedback type="invalid">
-                    Password không được bỏ trống
+                    Mật khẩu không được bỏ trống
                 </Form.Control.Feedback>
               </div>
             </div>

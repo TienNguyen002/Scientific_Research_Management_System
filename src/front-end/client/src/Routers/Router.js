@@ -33,6 +33,7 @@ import StudentManageTopic from "../Pages/Student/StudentManageTopic";
 import LecturerEditAdmin from "../Pages/Admin/Lecturer/LecturerEdit";
 import UploadOutlineFile from "../Pages/Student/UploadFileTopic/UploadOutlineFile";
 import UploadResultFile from "../Pages/Student/UploadFileTopic/UploadResultFile";
+import LoginLayout from "../Pages/Login/LoginLayout"
 
 const Router = () => {
     return(
@@ -80,9 +81,11 @@ const Router = () => {
                     <Route path="/sinh-vien/doi-mat-khau" element={<StudentPassword/>}/>
                     <Route path="/sinh-vien/:slug/doi-mat-khau" element={<StudentPassword/>}/>
                 </Route>
-                <Route path="/dang-nhap" element={<LoginPage/>}/>
-                <Route path="/dang-ky" element={<RegisterPage/>}/>
-                <Route path="/dang-nhap-admin" element={<AdminLoginPage/>}/>
+                <Route path="/" element={<LoginLayout/>}>
+                    <Route path="/dang-nhap" element={<LoginPage/>}/>
+                    <Route path="/dang-ky" element={<RegisterPage/>}/>
+                    <Route path="/dang-nhap-admin" element={<AdminLoginPage/>}/>
+                </Route>
             </Routes>
         </BrowserRouter>
     )

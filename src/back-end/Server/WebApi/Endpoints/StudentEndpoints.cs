@@ -195,9 +195,9 @@ namespace WebApi.Endpoints
         {
             var model = await ResetPasswordRequest.BindAsync(context);
             var student = !string.IsNullOrWhiteSpace(model.UrlSlug) ? await studentRepository.GetStudentBySlugAsync(model.UrlSlug) : null;
-            if(model.Password != student.Password)
+            if (!BCrypt.Net.BCrypt.Verify(model.Password, student.Password))
             {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Mật khẩu sai"));
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Sai mật khẩu"));
             }
             if (model.NewPassword == model.Password)
             {

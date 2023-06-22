@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import ShowMoreText from "../../Components/Shared/ShowMoreText";
 import Pager from "../../Components/Shared/Pager";
+import DateFormat from "../../Components/Shared/DateFormat"
 
 const StudentManageTopic = () => {
   const [topicsList, setTopicsList] = useState([
@@ -70,10 +71,10 @@ const StudentManageTopic = () => {
                 </td>
                 <td>
                   <p className="shortDescription">
-                    {/* <ShowMoreText text={item.description} maxLength={50} /> */}
+                    <ShowMoreText text={item.description} maxLength={50} />
                   </p>
                 </td>
-                <td>{item.registrationDate}</td>
+                <td><DateFormat date={item.registrationDate}/></td>
                 <td>{item.department?.name}</td>
                 <td>
                   <Link

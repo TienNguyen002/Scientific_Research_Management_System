@@ -9,17 +9,28 @@ import Loading from "../../../Components/Shared/Loading";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
+import Pager from "../../../Components/Shared/Pager";
 
 const StudentByDepartment = () => {
-  const [studentsList, setStudentsList] = useState([]),
+  const [studentsList, setStudentsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
     params = useParams(),
     { slug } = params,
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     studentFilter = useSelector((state) => state.studentFilter);
 
   let departmentSlug = slug,
     p = 1,
     ps = 5;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
 
   useEffect(() => {
     document.title = "Danh sách Sinh viên";
@@ -27,14 +38,19 @@ const StudentByDepartment = () => {
       studentFilter.keyword,
       departmentSlug,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setStudentsList(data.items);
+        setData(data);
       } else setStudentsList([]);
       setIsVisibleLoading(false);
     });
-  }, [studentFilter, ps, p]);
+
+    function setData(props) {
+      setStudentsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [studentFilter, ps, pageNumber]);
 
   return (
     <>
@@ -96,6 +112,7 @@ const StudentByDepartment = () => {
           )}
         </div>
       )}
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };

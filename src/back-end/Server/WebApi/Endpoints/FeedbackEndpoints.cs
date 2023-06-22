@@ -73,16 +73,12 @@ namespace WebApi.Endpoints
             IMediaManager mediaManager)
         {
             var model = await FeedbackEditModel.BindAsync(context);
-            var feedback = model.Id > 0 ? await feedbackRepository.GetFeedbackByIdAsync(model.Id) : null;
-            if (feedback == null)
+            var feedback = new Feedback()
             {
-                feedback = new Feedback()
-                {
-                    CreateDate = DateTime.Now,
-                };
-            }
-            feedback.Username = model.Username;
-            feedback.Content = model.Content;
+                Username = model.Username,
+                Content = model.Content,
+                CreateDate = DateTime.Now,
+            };
             await feedbackRepository.AddFeedbackAsync(feedback);
             return Results.Ok(ApiResponse.Success(mapper.Map<FeedbackDto>(feedback), HttpStatusCode.Created));
         }

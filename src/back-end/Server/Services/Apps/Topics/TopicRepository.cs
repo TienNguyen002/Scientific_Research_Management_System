@@ -314,6 +314,7 @@ namespace Services.Apps.Topics
         {
             var topic = await _context.Set<Topic>()
                 .Where(x => x.UrlSlug == slug)
+                .Where(x => x.StatusId == 3)
                 .FirstOrDefaultAsync(cancellationToken);
             topic.ViewCount = topic.ViewCount + 1;
             _context.Update(topic);
