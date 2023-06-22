@@ -167,5 +167,13 @@ namespace Services.Apps.Students
         {
             return await _context.Set<Student>().CountAsync(cancellationToken);
         }
+
+        public async Task<Student> GetStudentByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>()
+                .Include(s => s.Role)
+                .Where(s => s.Email == email)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using BCrypt.Net;
+using Core.Entities;
 using Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -174,7 +175,7 @@ namespace Data.Seeders
                     StudentId = "2015749",
                     FullName = "Nguyễn Hoàng Nhật Tiến",
                     Email = "2015749@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("tiennguyen123"),
                     UrlSlug = "nguyen-hoang-nhat-tien",
                     DoB = new DateTime(2002, 12, 18),
                     Phone = "0819104319",
@@ -189,7 +190,7 @@ namespace Data.Seeders
                     StudentId = "2011382",
                     FullName = "Trần Trung Hiếu",
                     Email = "2011382@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "tran-trung-hieu",
                     DoB = new DateTime(2002, 7, 1),
                     Phone = "0869820809",
@@ -204,7 +205,7 @@ namespace Data.Seeders
                     StudentId = "2015840",
                     FullName = "Nguyễn Ngọc Minh Tiến",
                     Email = "2015840@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "nguyen-ngoc-minh-tien",
                     DoB = new DateTime(2002, 2, 17),
                     Phone = "0918277182",
@@ -219,7 +220,7 @@ namespace Data.Seeders
                     StudentId = "2011928",
                     FullName = "Lê Đức Anh",
                     Email = "2011928@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "le-duc-anh",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
@@ -234,7 +235,7 @@ namespace Data.Seeders
                     StudentId = "2011927",
                     FullName = "Đinh Văn Thanh Phước Khoa",
                     Email = "2011927@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "dinh-van-thanh-phuoc-khoa",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
@@ -249,7 +250,7 @@ namespace Data.Seeders
                     StudentId = "2011926",
                     FullName = "Nguyễn Văn Thuận",
                     Email = "2011926@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "nguyen-van-thuan",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
@@ -264,7 +265,7 @@ namespace Data.Seeders
                     StudentId = "2011925",
                     FullName = "Trần Thái Linh",
                     Email = "2011925@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "tran-thai-linh",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
@@ -279,7 +280,7 @@ namespace Data.Seeders
                     StudentId = "2011924",
                     FullName = "Nguyễn Minh Hoàng",
                     Email = "2011924@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "nguyen-minh-hoang",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
@@ -313,7 +314,7 @@ namespace Data.Seeders
                 {
                     FullName = "Lê Hoàng Nghĩa",
                     Email = "nghiahoang@dlu.edu.vn",
-                    Password = "Password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
                     UrlSlug = "le-hoang-nghia",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
@@ -324,7 +325,7 @@ namespace Data.Seeders
                 {
                     FullName = "Nguyễn Phương",
                     Email = "nguyenphuong@dlu.edu.vn",
-                    Password = "Password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
                     UrlSlug = "nguyen-phuong",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
@@ -335,7 +336,7 @@ namespace Data.Seeders
                 {
                     FullName = "Lê Hải",
                     Email = "lehai@dlu.edu.vn",
-                    Password = "Password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
                     UrlSlug = "le-hai",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
@@ -346,7 +347,7 @@ namespace Data.Seeders
                 {
                     FullName = "Lê Thanh Tịnh",
                     Email = "thanhtinh@dlu.edu.vn",
-                    Password = "Password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
                     UrlSlug = "le-thanh-tinh",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
@@ -357,7 +358,7 @@ namespace Data.Seeders
                 {
                     FullName = "Nguyễn Đức Anh",
                     Email = "ducanhnguyen@dlu.edu.vn",
-                    Password = "Password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
                     UrlSlug = "nguyen-duc-anh",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
@@ -368,7 +369,7 @@ namespace Data.Seeders
                 {
                     FullName = "Phan Sĩ Phương",
                     Email = "siphuong@dlu.edu.vn",
-                    Password = "Password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
                     UrlSlug = "phan-si-phuong",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),

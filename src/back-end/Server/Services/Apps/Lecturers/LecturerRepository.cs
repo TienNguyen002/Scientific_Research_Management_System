@@ -175,5 +175,13 @@ namespace Services.Apps.Lecturers
             } 
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
+
+        public async Task<Lecturer> GetLecturerByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>()
+                .Include(x => x.Role)
+                .Where(x => x.Email == email)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

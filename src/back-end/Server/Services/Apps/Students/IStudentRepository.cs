@@ -26,6 +26,8 @@ namespace Services.Apps.Students
 
         Task<Student> GetStudentByIdAsync(int id, bool includeDetails = false, CancellationToken cancellationToken = default);
 
+        Task<Student> GetStudentByEmailAsync(string email, CancellationToken cancellationToken = default);
+
         Task<bool> IsStudentEmailExitedAsync(int id, string email, CancellationToken cancellationToken = default);
 
         Task<bool> IsStudentExistByFullNameAsync(int id, string fullName, CancellationToken cancellationToken = default);

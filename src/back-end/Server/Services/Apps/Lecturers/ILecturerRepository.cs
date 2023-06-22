@@ -18,6 +18,8 @@ namespace Services.Apps.Lecturers
 
         Task<Lecturer> GetLecturerBySlugAsync(string slug, bool includeDetails = false, CancellationToken cancellationToken = default);
 
+        Task<Lecturer> GetLecturerByEmailAsync(string email, CancellationToken cancellationToken = default);
+
         Task<bool> IsLecturerEmailExitedAsync(int id, string email, CancellationToken cancellationToken = default);
 
         Task<bool> IsLecturerSlugExitedAsync(int id, string slug, CancellationToken cancellationToken = default);

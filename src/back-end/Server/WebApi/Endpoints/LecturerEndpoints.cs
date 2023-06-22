@@ -227,7 +227,7 @@ namespace WebApi.Endpoints
             }
             lecturer.FullName = model.FullName;
             lecturer.Email = model.Email;
-            lecturer.Password = model.Password;
+            lecturer.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
             lecturer.Qualification = model.Qualification;
             lecturer.DoB = model.DoB;
             lecturer.DepartmentId = model.DepartmentId;
