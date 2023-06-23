@@ -3,31 +3,29 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useState } from "react";
+import StudentIcon from "../Student/Shared/StudentIcon"
 
 const Login = () => {
   const [isUser, setIsUser] = useState(false);
   const [reRender, setReRender] = useState(false);
-  let token = localStorage.getItem("Token");
-  let urlSlug = localStorage.getItem("UrlSlug");
+  let token = sessionStorage.getItem("Token");
+  let urlSlug = sessionStorage.getItem("UrlSlug");
 
   useEffect(() => {
     if (token === null) {
       setIsUser(false);
     } else setIsUser(true);
-  },[reRender]);
+  }, [reRender]);
 
   const handleLogout = () => {
-    localStorage.clear()
+    sessionStorage.clear();
     setReRender(true);
-  }
+  };
 
   return (
     <div className="loginnn">
       {isUser ? (
-        <div>
-          <Link to={`/sinh-vien/${urlSlug}`}>Hello {urlSlug}</Link>
-          <Link to={`/`} onClick={handleLogout}>Dang xuat</Link>
-        </div>
+        <StudentIcon slug={urlSlug} logout={handleLogout}/>
       ) : (
         <Link to={`/dang-nhap`} className="text-decoration-none login-button">
           <FontAwesomeIcon icon={faUser} />

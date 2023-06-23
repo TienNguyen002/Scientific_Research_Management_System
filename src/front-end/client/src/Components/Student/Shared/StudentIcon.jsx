@@ -1,11 +1,12 @@
-import React, {useState, useEffect} from 'react'
-import "./style/student-component.scss"
-import { getStudentBySlug } from "../../../Services/StudentService"
+import { useEffect, useState } from "react";
+import { getStudentBySlug } from "../../../Services/StudentService";
 import { isEmptyOrSpaces } from "../../../Utils/Utils";
+import "./style/student-component.scss";
+import { Link } from "react-router-dom";
 
-const StudentNavbar = () => {
-  let slug = sessionStorage.getItem("UrlSlug")
+const StudentIcon = ({ slug, logout }) => {
   const [student, setStudent] = useState();
+  const [reRender, setReRender] = useState(false);
 
   useEffect(() => {
     getStudentBySlug(slug).then((data) => {
@@ -13,14 +14,18 @@ const StudentNavbar = () => {
         setStudent(data);
       } else setStudent([]);
     });
-  }, []);
+  }, [reRender]);
+
+
 
   return (
-    <div className='student-navbar'>
-      <div className="student-navbar-wrapper">
-        <div></div>
-        <div className="student-navbar-items">
-          <div className="student-navbar-item">
+    <div className="d-flex">
+      <div>
+        <p className="hello-user">Xin chào, {student?.fullName}</p>
+        <Link to={`/`} className="logout" onClick={logout}>Đăng xuất</Link>
+      </div>
+      <div>
+        <Link to={`/sinh-vien`}>
           {isEmptyOrSpaces(student?.imageUrl) ? (
             <div className="student-navbar-items">
               <div className="student-navbar-item">
@@ -40,11 +45,10 @@ const StudentNavbar = () => {
               />
             </div>
           )}
-          </div>
-        </div>
+        </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default StudentNavbar;
+export default StudentIcon;

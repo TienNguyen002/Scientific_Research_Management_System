@@ -3,9 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { getStudentBySlug, updateStudent, getFilter } from "../../Services/StudentService";
 import { useSnackbar } from "notistack";
-import format from "date-fns/format";
 import { isEmptyOrSpaces } from "../../Utils/Utils";
-import DateFormat from "../../Components/Shared/DateFormat"
 
 const StudentProfile = () => {
   const initialState = {

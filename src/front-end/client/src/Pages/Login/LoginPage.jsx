@@ -22,9 +22,9 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     if(error === null || error === undefined){
-      setError(sessionStorage.getItem("EData"));
+      setError(localStorage.getItem("EData"));
     }
-    setError(sessionStorage.getItem("EData"));
+    setError(localStorage.getItem("EData"));
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();
@@ -114,7 +114,7 @@ const LoginPage = () => {
         </div>
         <div className="login-member">
           <Link to={`/dang-nhap-admin`} className="text-decoration-none">
-            ADMIN
+            Giảng viên
           </Link>
         </div>
         <div className="login-member">

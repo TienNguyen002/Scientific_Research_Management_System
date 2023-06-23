@@ -23,6 +23,7 @@ const StudentRegister = () => {
       },
     ]),
     [error, setError] = useState(),
+    [reRender, setRender] = useState(false),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     [metadata, setMetadata] = useState({}),
     [pageNumber, setPageNumber] = useState(1),
@@ -57,10 +58,10 @@ const StudentRegister = () => {
       setTopicsList(props.items);
       setMetadata(props.metadata);
     }
-  }, [topicFilter, ps, pageNumber, slug]);
+  }, [topicFilter, ps, pageNumber, slug, reRender]);
 
   const handleRegister = (e, id, modelslug) => {
-    setError(sessionStorage.getItem("EData"))
+    setError(localStorage.getItem("EData"))
     Register(id, modelslug);
     async function Register(id, modelslug) {
       Swal.fire({
@@ -80,14 +81,14 @@ const StudentRegister = () => {
                 variant: "success",
                 autoHideDuration: 2000,
               });
-              window.location.reload(false);
+              setRender(true)
             } else {
               enqueueSnackbar("Đăng ký thất bại: " + error, {
                 variant: "error",
                 autoHideDuration: 2000,
               });
               setTimeout(()=> {
-                sessionStorage.removeItem("EData")
+                localStorage.removeItem("EData")
               }, 5000)
             }
           });

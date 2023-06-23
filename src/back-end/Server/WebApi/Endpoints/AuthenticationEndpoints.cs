@@ -89,7 +89,7 @@ namespace WebApi.Endpoints
             var result = new TokenDto()
             {
                 Token = token,
-                UrlSlug = student.UrlSlug,
+                Slug = student.UrlSlug,
             };
             return Results.Ok(ApiResponse.Success(mapper.Map<TokenDto>(result), HttpStatusCode.Created));
         }
@@ -111,7 +111,12 @@ namespace WebApi.Endpoints
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Sai mật khẩu"));
             }
             string token = CreateLecturerToken(lecturer, configuration);
-            return Results.Ok(ApiResponse.Success(token));
+            var result = new TokenDto()
+            {
+                AdToken = token,
+                Slug = lecturer.UrlSlug,
+            };
+            return Results.Ok(ApiResponse.Success(mapper.Map<TokenDto>(result), HttpStatusCode.Created));
         }
 
         private static string CreateStudentToken(Student student, IConfiguration configuration)

@@ -2,12 +2,14 @@ import React from "react";
 import "./style/admin-component.scss";
 import logo from "../../../Components/Shared/images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faGraduationCap, faBook, faUser, faUsers, faComment, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faGraduationCap, faBook, faUser, faUsers, faComment, faUserTie, faRightFromBracket, faKey } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const AdminSidebar = () => {
+  let slug = sessionStorage.getItem("UrlSlug")
+
   const handleLogout = () => {
-    localStorage.clear()
+    sessionStorage.clear()
   }
 
   return (
@@ -59,12 +61,18 @@ const AdminSidebar = () => {
             </li>
           </Link>
           <p className="sidebar-center-title">Người dùng</p>
-          {/* <Link className="text-decoration-none" to={`/admin/thong-tin`}>
+          <Link className="text-decoration-none" to={`/admin/${slug}/thong-tin`}>
             <li>
               <FontAwesomeIcon icon={faUserTie} className="sidebar-center-icon" />
               <span>Thông tin</span>
             </li>
-          </Link> */}
+          </Link>
+          <Link className="text-decoration-none" to={`/admin/${slug}/doi-mat-khau`}>
+            <li>
+              <FontAwesomeIcon icon={faKey} className="sidebar-center-icon" />
+              <span>Đổi mật khẩu</span>
+            </li>
+          </Link>
           <Link className="text-decoration-none" to={`/`} onClick={handleLogout}>
             <li>
               <FontAwesomeIcon icon={faRightFromBracket} className="sidebar-center-icon" />

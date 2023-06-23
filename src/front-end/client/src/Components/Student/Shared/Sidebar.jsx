@@ -6,7 +6,7 @@ import { faBook, faUserTie, faRightFromBracket, faKey, faBookOpen } from "@forta
 import { Link } from "react-router-dom";
 
 const StudentSidebar = () => {
-  let slug = localStorage.getItem("UrlSlug")
+  let slug = sessionStorage.getItem("UrlSlug")
 
   return (
     <div className="sidebar">

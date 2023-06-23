@@ -21,7 +21,7 @@ const AdminLoginPage = () => {
   }, []);
 
   const handleSubmit = (e) => {
-    setError(sessionStorage.getItem("EData"));
+    setError(localStorage.getItem("EData"));
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();

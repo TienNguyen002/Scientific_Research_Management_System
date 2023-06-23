@@ -1,7 +1,6 @@
 ﻿using Carter;
 using Core.Collections;
 using Core.DTO.Lecturer;
-using Core.DTO.Others;
 using Core.Entities;
 using Mapster;
 using MapsterMapper;
@@ -10,7 +9,6 @@ using Services.Apps.Departments;
 using Services.Apps.Lecturers;
 using Services.Media;
 using System.Net;
-using WebApi.Filters;
 using WebApi.Models;
 using WebApi.Models.Account;
 using WebApi.Models.Lecturer;
@@ -63,11 +61,23 @@ namespace WebApi.Endpoints
             //  .Accepts<IFormFile>("multipart/form-data")
             //  .Produces<ApiResponse<string>>();
 
-            routeGroupBuilder.MapPost("/", AddLecturer)
-                .WithName("AddLecturer")
+            routeGroupBuilder.MapPost("/", ChangeInformation)
+                .WithName("ChangeLecturerInformation")
                 .Accepts<LecturerEditModel>("multipart/form-data")
                 .Produces(401)
                 .Produces<ApiResponse<LecturerItem>>();
+
+            routeGroupBuilder.MapPost("/add", AddLecturer)
+                .WithName("AddLecturer")
+                .Accepts<LecturerAddModel>("multipart/form-data")
+                .Produces(401)
+                .Produces<ApiResponse<LecturerItem>>();
+
+            routeGroupBuilder.MapPost("/change-password", ChangePassword)
+                .WithName("ChangeLecturerPassword")
+                .Accepts<ResetPasswordRequest>("multipart/form-data")
+                .Produces(401)
+                .Produces<ApiResponse<string>>();
         }
 
         private static async Task<IResult> GetAllLecturers(
@@ -205,19 +215,14 @@ namespace WebApi.Endpoints
         }
 
         
-        private static async Task<IResult> AddLecturer(
+        private static async Task<IResult> ChangeInformation(
             HttpContext context,
             IMapper mapper,
             ILecturerRepository lecturerRepository,
             IMediaManager mediaManager)
         {
             var model = await LecturerEditModel.BindAsync(context);
-            var slug = model.FullName.GenerateSlug();
-            if (await lecturerRepository.IsLecturerSlugExitedAsync(model.Id, slug))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Slug '{slug}' đã được sử dụng"));
-            }
-            var lecturer = model.Id > 0 ? await lecturerRepository.GetLecturerByIdAsync(model.Id) : null;
+            var lecturer = !string.IsNullOrWhiteSpace(model.UrlSlug) ? await lecturerRepository.GetLecturerBySlugAsync(model.UrlSlug) : null;
             if (lecturer == null)
             {
                 lecturer = new Lecturer()
@@ -227,7 +232,6 @@ namespace WebApi.Endpoints
             }
             lecturer.FullName = model.FullName;
             lecturer.Email = model.Email;
-            lecturer.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
             lecturer.Qualification = model.Qualification;
             lecturer.DoB = model.DoB;
             lecturer.DepartmentId = model.DepartmentId;
@@ -244,6 +248,47 @@ namespace WebApi.Endpoints
                 }
             }
             await lecturerRepository.AddOrUpdateLecturerAsync(lecturer);
+            return Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer), HttpStatusCode.Created));
+        }
+
+        private static async Task<IResult> AddLecturer(
+            HttpContext context,
+            IMapper mapper,
+            ILecturerRepository lecturerRepository)
+        {
+            var model = await LecturerAddModel.BindAsync(context);
+            var lecturer = new Lecturer()
+            {
+                FullName = model.FullName,
+                Email = model.Email,
+                Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                DepartmentId = model.DepartmentId,
+            };
+            await lecturerRepository.AddOrUpdateLecturerAsync(lecturer);
+            return Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer), HttpStatusCode.Created));
+        }
+
+        private static async Task<IResult> ChangePassword(
+            HttpContext context,
+            IMapper mapper,
+            ILecturerRepository lecturerRepository)
+        {
+            var model = await ResetPasswordRequest.BindAsync(context);
+            var lecturer = !string.IsNullOrWhiteSpace(model.UrlSlug) ? await lecturerRepository.GetLecturerBySlugAsync(model.UrlSlug) : null;
+            if (!BCrypt.Net.BCrypt.Verify(model.Password, lecturer.Password))
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Sai mật khẩu"));
+            }
+            if (model.NewPassword == model.Password)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Vui lòng nhập mật khẩu mới khác với mật khẩu cũ"));
+            }
+            if (model.ConfirmPassword != model.NewPassword)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Mật khẩu xác nhận không trùng khớp"));
+            }
+            lecturer.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+            await lecturerRepository.UpdateLecturerAsync(lecturer);
             return Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer), HttpStatusCode.Created));
         }
     } 

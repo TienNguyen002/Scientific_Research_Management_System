@@ -25,12 +25,36 @@ export async function post_api(your_api, formData) {
     });
     const data = response.data;
     console.log("postdata", data);
-    sessionStorage.setItem("EData", data.errors);
+    localStorage.setItem("EData", data.errors);
     if (data.isSuccess) {
-      sessionStorage.removeItem("EData");
-      localStorage.setItem("Token", data.result.token)
-      localStorage.setItem("UrlSlug", data.result.urlSlug)
-      localStorage.setItem("TokenAdmin", data.result)
+      localStorage.removeItem("EData");
+      return data.result;
+    } else return null;
+  } catch (error) {
+    console.log("Error", error.message);
+    return null;
+  }
+}
+
+export async function post_login_api(your_api, formData) {
+  try {
+    const response = await axios({
+      method: "post",
+      url: your_api,
+      data: formData,
+      headers: {
+        accept: "multipart/form-data",
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    const data = response.data;
+    console.log("postdata", data);
+    localStorage.setItem("EData", data.errors);
+    if (data.isSuccess) {
+      localStorage.removeItem("EData");
+      sessionStorage.setItem("Token", data.result.token)
+      sessionStorage.setItem("UrlSlug", data.result.slug)
+      sessionStorage.setItem("AdToken", data.result.adToken)
       return data.result;
     } else return null;
   } catch (error) {

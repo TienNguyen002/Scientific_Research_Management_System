@@ -1,22 +1,17 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  getLecturerBySlug,
-  updateLecturer,
+  addLecturer,
   getFilter,
 } from "../../../Services/LecturerService";
-import { isEmptyOrSpaces, isInteger } from "../../../Utils/Utils";
 import { Button, Form } from "react-bootstrap";
 import { useSnackbar } from "notistack";
 
-const LecturerEditAdmin = () => {
+const LecturerAddAdmin = () => {
   const initialState = {
-      slug: "",
       fullName: "",
       email: "",
-      qualification: "",
-      doB: "",
-      imageUrl: "",
+      password: "",
       departmentId: 0,
     },
     [lecturer, setLecturer] = useState(initialState),
@@ -27,19 +22,8 @@ const LecturerEditAdmin = () => {
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false);
 
-  let { slug } = useParams();
-  slug = slug ?? null;
-
   useEffect(() => {
     document.title = "Cập nhật giảng viên";
-    GetLecturer();
-    async function GetLecturer() {
-      const data = await getLecturerBySlug(slug);
-      console.log(data);
-      if (data) {
-        setLecturer(data);
-      } else setLecturer([]);
-    }
 
     getFilter().then((data) => {
       if (data) {
@@ -62,16 +46,16 @@ const LecturerEditAdmin = () => {
     } else {
       let data = new FormData(e.target);
       data.forEach((x) => console.log(x));
-      updateLecturer(data).then((data) => {
+      addLecturer(data).then((data) => {
         if (data) {
           console.log(data);
-          enqueueSnackbar("Đã thay đổi thông tin thành công", {
+          enqueueSnackbar("Thêm giảng viên thành công", {
             variant: "success",
             autoHideDuration: 2000,
           });
-          window.location.reload(false);
+          navigate(`/admin/giang-vien`)
         } else {
-          enqueueSnackbar("Đã xảy ra lỗi khi thay đổi", {
+          enqueueSnackbar("Đã xảy ra lỗi khi thêm", {
             variant: "error",
             autoHideDuration: 2000,
           });
@@ -84,7 +68,7 @@ const LecturerEditAdmin = () => {
     <>
       <div className="col-10">
         <div className="department-wrapper">
-          <h3 className="text-success py-3">Thông tin cá nhân</h3>
+          <h3 className="text-success py-3">Thêm giảng viên</h3>
           <Form
             method="post"
             encType="multipart/form-data"
@@ -92,44 +76,6 @@ const LecturerEditAdmin = () => {
             noValidate
             validated={validated}
           >
-            <Form.Control
-              type="hidden"
-              name="urlSlug"
-              value={lecturer.urlSlug}
-            />
-            {!isEmptyOrSpaces(lecturer.imageUrl) && (
-              <div className="row mb-3">
-                <Form.Label className="col-sm-2 col-form-label">
-                  Avatar
-                </Form.Label>
-                <div className="col-sm-10">
-                  <img
-                    src={`https://localhost:7129/${lecturer.imageUrl}`}
-                    alt={lecturer.fullName}
-                    className="img-thumbnail"
-                  />
-                </div>
-              </div>
-            )}
-            <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Chọn hình ảnh
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  type="file"
-                  name="imageFile"
-                  accept="image/*"
-                  title="Image File"
-                  onChange={(e) =>
-                    setLecturer({
-                      ...lecturer,
-                      imageFile: e.target.files[0],
-                    })
-                  }
-                />
-              </div>
-            </div>
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
                 Họ và tên
@@ -140,7 +86,6 @@ const LecturerEditAdmin = () => {
                   name="fullName"
                   title="Full Name"
                   required
-                  value={lecturer.fullName || ""}
                   onChange={(e) =>
                     setLecturer({ ...lecturer, fullName: e.target.value })
                   }
@@ -154,51 +99,32 @@ const LecturerEditAdmin = () => {
               <Form.Label className="col-sm-2 col-form-label">Email</Form.Label>
               <div className="col-sm-10">
                 <Form.Control
-                  type="text"
+                  type="email"
                   name="email"
                   title="Email"
                   required
-                  value={lecturer.email || ""}
                   onChange={(e) =>
                     setLecturer({ ...lecturer, email: e.target.value })
                   }
                 />
                 <Form.Control.Feedback type="invalid">
-                  Email không được bỏ trống
+                  Email không được bỏ trống hoặc sai định dạng
                 </Form.Control.Feedback>
               </div>
             </div>
             <div className="row mb-3">
               <Form.Label className="col-sm-2 col-form-label">
-                Cấp bậc
+                Mật khẩu
               </Form.Label>
               <div className="col-sm-10">
                 <Form.Control
-                  type="text"
-                  name="qualification"
-                  title="Qualification"
-                  value={lecturer.qualification || ""}
+                  type="password"
+                  name="password"
+                  title="Password"
                   onChange={(e) =>
-                    setLecturer({ ...lecturer, qualification: e.target.value })
+                    setLecturer({ ...lecturer, password: e.target.value })
                   }
                 />
-              </div>
-            </div>
-            <div className="row mb-3">
-              <Form.Label className="col-sm-2 col-form-label">
-                Ngày tháng năm sinh
-              </Form.Label>
-              <div className="col-sm-10">
-                <Form.Control
-                  type="text"
-                  name="doB"
-                  title="Day Of Birth"
-                  value={lecturer.doB || ""}
-                  onChange={(e) =>
-                    setLecturer({ ...lecturer, doB: e.target.value })
-                  }
-                />
-                (Theo định dạng MM/dd/yyyy)
               </div>
             </div>
             <div className="row mb-3">
@@ -231,7 +157,7 @@ const LecturerEditAdmin = () => {
             </div>
             <div className="text-center">
               <Button variant="success" type="submit">
-                Lưu các thay đổi
+                Thêm giảng viên
               </Button>
               <Link to="/admin/giang-vien" className="btn btn-danger ms-2">
                 Hủy và quay lại
@@ -243,4 +169,4 @@ const LecturerEditAdmin = () => {
     </>
   );
 };
-export default LecturerEditAdmin;
+export default LecturerAddAdmin;

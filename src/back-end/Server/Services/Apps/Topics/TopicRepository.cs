@@ -288,13 +288,13 @@ namespace Services.Apps.Topics
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
-        private async Task<Student> GetStudentBySlugAsync(string slug, CancellationToken cancellationToken = default)
-        {
-            return await _context.Set<Student>()
-                .Include(x => x.Topics)
-                .Where(x => x.UrlSlug == slug)
-                .FirstOrDefaultAsync(cancellationToken);
-        }
+        //private async Task<Student> GetStudentBySlugAsync(string slug, CancellationToken cancellationToken = default)
+        //{
+        //    return await _context.Set<Student>()
+        //        .Include(x => x.Topics)
+        //        .Where(x => x.UrlSlug == slug)
+        //        .FirstOrDefaultAsync(cancellationToken);
+        //}
 
         public async Task<bool> SetOutlineUrlAsync(string slug, string outlineUrl, CancellationToken cancellationToken = default)
         {

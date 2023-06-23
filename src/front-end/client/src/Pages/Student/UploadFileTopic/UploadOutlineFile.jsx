@@ -16,8 +16,8 @@ const UploadOutlineFile = () => {
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false);
 
-  let { slug, slug2 } = useParams();
-  slug = slug ?? 0;
+  let slug = sessionStorage.getItem("UrlSlug")
+  let { slug2 } = useParams();
   slug2 = slug2 ?? 0;
 
   useEffect(() => {

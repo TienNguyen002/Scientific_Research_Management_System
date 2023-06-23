@@ -53,6 +53,7 @@ const StudentManageTopic = () => {
             <th>Ngày đăng ký</th>
             <th>Khoa</th>
             <th>Giảng viên</th>
+            <th>Trạng thái</th>
             <th>Đăng thuyết minh đề tài</th>
             <th>Đăng kết quả đề tài</th>
           </tr>
@@ -84,6 +85,7 @@ const StudentManageTopic = () => {
                     {item.lecturer?.fullName}
                   </Link>
                 </td>
+                <td>{item.status?.name}</td>
                 <td>
                   <Link
                     to={`/sinh-vien/${slug}/dang-thuyet-minh/${item.urlSlug}`}

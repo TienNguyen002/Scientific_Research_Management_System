@@ -1,4 +1,4 @@
-import { get_api, delete_api, post_api } from "./Method";
+import { get_api, delete_api, post_api, post_login_api } from "./Method";
 
 export function getLecturers(pageSize = 10, pageNumber = 1) {
   return get_api(
@@ -60,10 +60,18 @@ export function getLecturerById(id) {
   return get_api(`https://localhost:7129/api/lecturers/${id}`);
 }
 
+export function addLecturer(formData){
+  return post_api(`https://localhost:7129/api/lecturers/add`, formData)
+}
+
 export function updateLecturer(formData){
   return post_api(`https://localhost:7129/api/lecturers`, formData)
 }
 
 export function loginAccount(formData){
-  return post_api(`https://localhost:7129/api/auth/login-lecturer`, formData);
+  return post_login_api(`https://localhost:7129/api/auth/login-lecturer`, formData);
+}
+
+export function changePassword(formData){
+  return post_api(`https://localhost:7129/api/lecturers/change-password`, formData);
 }

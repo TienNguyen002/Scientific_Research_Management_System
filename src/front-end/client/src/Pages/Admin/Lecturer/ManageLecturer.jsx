@@ -28,9 +28,7 @@ const ManageLecturer = () => {
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     lecturerFilter = useSelector((state) => state.lecturerFilter);
 
-  let { id } = useParams,
-    ps = 5,
-    p = 1;
+  let ps = 5;
   function updatePageNumber(inc) {
     setPageNumber((curentVal) => curentVal + inc);
   }
@@ -93,7 +91,7 @@ const ManageLecturer = () => {
             <LecturerFilter />
             <Link
               className="text-decoration-none"
-              to={`/admin/giang-vien/edit`}
+              to={`/admin/giang-vien/add`}
             >
               <Button>Thêm mới</Button>
             </Link>
@@ -107,7 +105,6 @@ const ManageLecturer = () => {
                   <th>Họ và tên</th>
                   <th>Email</th>
                   <th>Khoa</th>
-                  <th>Sửa</th>
                   <th>Xoá</th>
                 </tr>
               </thead>
@@ -118,14 +115,6 @@ const ManageLecturer = () => {
                       <td>{item.fullName}</td>
                       <td>{item.email}</td>
                       <td>{item.department?.name}</td>
-                      <td className="text-center">
-                        <Link to={`/admin/giang-vien/edit/${item.id}`}>
-                          <FontAwesomeIcon
-                            icon={faPenToSquare}
-                            className="text-warning"
-                          />
-                        </Link>
-                      </td>
                       <td className="text-center">
                         <div onClick={(e) => handleDelete(e, item.id)}>
                           <FontAwesomeIcon

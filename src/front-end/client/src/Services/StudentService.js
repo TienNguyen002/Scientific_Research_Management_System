@@ -1,4 +1,4 @@
-import { get_api, delete_api, post_api } from "./Method";
+import { get_api, delete_api, post_api, post_login_api } from "./Method";
 
 export function getStudents(pageSize = 11, pageNumber = 1) {
   return get_api(
@@ -67,7 +67,7 @@ export function registerAccount(formData){
 }
 
 export function loginAccount(formData){
-  return post_api(`https://localhost:7129/api/auth/login-student`, formData);
+  return post_login_api(`https://localhost:7129/api/auth/login-student`, formData);
 }
 
 

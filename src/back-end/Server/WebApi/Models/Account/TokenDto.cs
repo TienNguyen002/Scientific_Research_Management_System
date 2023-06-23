@@ -3,6 +3,7 @@
     public class TokenDto
     {
         public string Token { get; set; }
-        public string UrlSlug { get; set; }
+        public string AdToken { get; set; }
+        public string Slug { get; set; }
     }
 }
