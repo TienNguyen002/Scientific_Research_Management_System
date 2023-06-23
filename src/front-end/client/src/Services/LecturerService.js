@@ -63,3 +63,7 @@ export function getLecturerById(id) {
 export function updateLecturer(formData){
   return post_api(`https://localhost:7129/api/lecturers`, formData)
 }
+
+export function loginAccount(formData){
+  return post_api(`https://localhost:7129/api/auth/login-lecturer`, formData);
+}

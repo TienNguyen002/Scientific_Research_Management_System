@@ -31,12 +31,14 @@ namespace WebApi.Endpoints
 
             routeGroupBulder.MapPost("/login-student", LoginStudent)
                 .WithName("LoginStudent")
-                .AddEndpointFilter<ValidatorFilter<LoginRequest>>()
+                .Accepts<LoginRequest>("multipart/form-data")
+                .Produces(401)
                 .Produces<ApiResponse<TokenDto>>();
 
             routeGroupBulder.MapPost("/login-lecturer", LoginLecturer)
                 .WithName("LoginLecturer")
-                .AddEndpointFilter<ValidatorFilter<LoginRequest>>()
+                .Accepts<LoginRequest>("multipart/form-data")
+                .Produces(401)
                 .Produces<ApiResponse<TokenDto>>();
         }
 
@@ -61,17 +63,19 @@ namespace WebApi.Endpoints
                 UrlSlug = model.FullName.GenerateSlug(),
                 Email = model.Email,
                 Password = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                RoleId = 1,
             };
             await studentRepository.Register(student);
             return Results.Ok(ApiResponse.Success(mapper.Map<AccountDto>(student), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> LoginStudent(
-            LoginRequest model,
+            HttpContext context,
             IStudentRepository studentRepository,
             IMapper mapper,
             IConfiguration configuration)
         {
+            var model = await LoginRequest.BindAsync(context);
             if(!await studentRepository.IsStudentEmailExitedAsync(0, model.Email))
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tồn tại sinh viên có email {model.Email}"));
@@ -82,15 +86,21 @@ namespace WebApi.Endpoints
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Sai mật khẩu"));
             }
             string token = CreateStudentToken(student, configuration);
-            return Results.Ok(ApiResponse.Success(token));
+            var result = new TokenDto()
+            {
+                Token = token,
+                UrlSlug = student.UrlSlug,
+            };
+            return Results.Ok(ApiResponse.Success(mapper.Map<TokenDto>(result), HttpStatusCode.Created));
         }
 
         private static async Task<IResult> LoginLecturer(
-            LoginRequest model,
+            HttpContext context,
             ILecturerRepository lecturerRepository,
             IMapper mapper,
             IConfiguration configuration)
         {
+            var model = await LoginRequest.BindAsync(context);
             if (!await lecturerRepository.IsLecturerEmailExitedAsync(0, model.Email))
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tồn tại giảng viên có email {model.Email}"));
@@ -109,7 +119,7 @@ namespace WebApi.Endpoints
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Email, student.Email),
-                new Claim(ClaimTypes.Uri, student.UrlSlug),
+                new Claim(ClaimTypes.Name, student.FullName),
                 new Claim(ClaimTypes.Role, student.Role.Name),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(configuration.GetSection("AppSettings:Token").Value!));
@@ -128,7 +138,7 @@ namespace WebApi.Endpoints
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Email, lecturer.Email),
-                new Claim(ClaimTypes.Uri, lecturer.UrlSlug),
+                new Claim(ClaimTypes.Name, lecturer.FullName),
                 new Claim(ClaimTypes.Role, lecturer.Role.Name)
             };
             var key = new SymmetricSecurityKey(Encoding.UTF32.GetBytes(configuration.GetSection("AppSettings:Token").Value!));

@@ -66,4 +66,8 @@ export function registerAccount(formData){
   return post_api(`https://localhost:7129/api/auth/register`, formData);
 }
 
+export function loginAccount(formData){
+  return post_api(`https://localhost:7129/api/auth/login-student`, formData);
+}
+
 

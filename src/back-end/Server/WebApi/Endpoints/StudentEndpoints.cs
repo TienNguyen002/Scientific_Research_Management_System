@@ -207,7 +207,7 @@ namespace WebApi.Endpoints
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Mật khẩu xác nhận không trùng khớp"));
             }
-            student.Password = model.NewPassword;
+            student.Password = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
             await studentRepository.UpdateStudentAsync(student);
             return Results.Ok(ApiResponse.Success(mapper.Map<StudentDto>(student), HttpStatusCode.Created));
         }

@@ -16,9 +16,6 @@ const RegisterPage = () => {
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false);
 
-  let { id } = useParams();
-  id = id ?? null;
-
   useEffect(() => {
     document.title = "Đăng ký tài khoản";
   }, []);
