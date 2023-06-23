@@ -4,6 +4,7 @@ import { Button, Form } from "react-bootstrap";
 import { getStudentBySlug, updateStudent, getFilter } from "../../Services/StudentService";
 import { useSnackbar } from "notistack";
 import { isEmptyOrSpaces } from "../../Utils/Utils";
+import "./style/student-page.scss"
 
 const StudentProfile = () => {
   const initialState = {
@@ -99,7 +100,7 @@ const StudentProfile = () => {
                 Avatar
             </Form.Label>
                 <div className="col-sm-10">
-                    <img src={`https://localhost:7129/${student.imageUrl}`} alt={student.fullName} className="img-thumbnail"/>
+                    <img src={`https://localhost:7129/${student.imageUrl}`} alt={student.fullName} className="avatar-user"/>
                 </div>
             </div>}
             <div className="row mb-3">

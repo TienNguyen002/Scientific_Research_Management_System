@@ -35,7 +35,7 @@ const StudentDetails = () => {
             <tbody className="table-content">
               <tr>
                 <th>Avatar</th>
-                <td><img src={`https://localhost:7129/${student.imageUrl}`} alt={student.fullName} className="img-thumbnail"/></td>
+                <td><img src={`https://localhost:7129/${student.imageUrl}`} alt={student.fullName} className="avatar-user"/></td>
               </tr>
               <tr>
                 <th>MSSV</th>

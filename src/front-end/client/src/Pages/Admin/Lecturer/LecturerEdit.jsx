@@ -8,6 +8,7 @@ import {
 import { isEmptyOrSpaces, isInteger } from "../../../Utils/Utils";
 import { Button, Form } from "react-bootstrap";
 import { useSnackbar } from "notistack";
+import "../style/admin-page.scss"
 
 const LecturerEditAdmin = () => {
   const initialState = {
@@ -106,7 +107,7 @@ const LecturerEditAdmin = () => {
                   <img
                     src={`https://localhost:7129/${lecturer.imageUrl}`}
                     alt={lecturer.fullName}
-                    className="img-thumbnail"
+                    className="avatar-user"
                   />
                 </div>
               </div>

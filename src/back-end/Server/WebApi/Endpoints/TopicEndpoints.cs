@@ -35,9 +35,9 @@ namespace WebApi.Endpoints
                 .WithName("GetAllTopic")
                 .Produces<ApiResponse<PaginationResult<TopicDto>>>();
 
-            routeGroupBuilder.MapGet("/done", GetDoneTopics)
-                .WithName("GetDoneTopics")
-                .Produces<ApiResponse<PaginationResult<TopicDto>>>();
+            //routeGroupBuilder.MapGet("/done", GetDoneTopics)
+            //    .WithName("GetDoneTopics")
+            //    .Produces<ApiResponse<PaginationResult<TopicDto>>>();
 
             routeGroupBuilder.MapGet("/{id:int}", GetTopicById)
                   .WithName("GetTopicById")
@@ -131,17 +131,17 @@ namespace WebApi.Endpoints
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
 
-        private static async Task<IResult> GetDoneTopics(
-            [AsParameters] TopicFilterModel model,
-            ITopicRepository topicRepository,
-            IMapper mapper)
-        {
-            var query = mapper.Map<TopicQuery>(model);
-            var topics = await topicRepository.GetPagedDoneTopicsAsync<TopicDto>(query, model,
-                topics => topics.ProjectToType<TopicDto>());
-            var paginationResult = new PaginationResult<TopicDto>(topics);
-            return Results.Ok(ApiResponse.Success(paginationResult));
-        }
+        //private static async Task<IResult> GetDoneTopics(
+        //    [AsParameters] TopicFilterModel model,
+        //    ITopicRepository topicRepository,
+        //    IMapper mapper)
+        //{
+        //    var query = mapper.Map<TopicQuery>(model);
+        //    var topics = await topicRepository.GetPagedDoneTopicsAsync<TopicDto>(query, model,
+        //        topics => topics.ProjectToType<TopicDto>());
+        //    var paginationResult = new PaginationResult<TopicDto>(topics);
+        //    return Results.Ok(ApiResponse.Success(paginationResult));
+        //}
 
         private static async Task<IResult> GetTopicById(int id,
             ITopicRepository topicRepository,
