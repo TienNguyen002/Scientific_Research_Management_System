@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { getTopicsFilter, increaseView } from "../../Services/TopicService";
+import { getTopicsFilter } from "../../Services/TopicService";
 import { Link } from "react-router-dom";
 import "./style/user.scss";
 import StudentList from "../Shared/StudentList";
-import format from "date-fns/format";
 import TopicFilterSearch from "../../Components/Shared/Filter/Topic/TopicFilterSearch";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
@@ -23,8 +22,7 @@ const ListTopic = () => {
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     topicFilter = useSelector((state) => state.topicFilter);
 
-  let p = 1,
-    ps = 5;
+  let ps = 5;
   function updatePageNumber(inc) {
     setPageNumber((curentVal) => curentVal + inc);
   }

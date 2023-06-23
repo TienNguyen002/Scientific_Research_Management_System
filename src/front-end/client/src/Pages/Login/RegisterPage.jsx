@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./login.scss";
 import { useSnackbar } from "notistack";
 import { registerAccount } from "../../Services/StudentService";
@@ -12,7 +12,9 @@ const RegisterPage = () => {
       password: "",
       confirmPassword: "",
     },
+    [error, setError] = useState(),
     [student, setStudent] = useState(initialState),
+    navigate = useNavigate(),
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false);
 
@@ -21,6 +23,7 @@ const RegisterPage = () => {
   }, []);
 
   const handleSubmit = (e) => {
+    setError(sessionStorage.getItem("EData"));
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();
@@ -35,9 +38,9 @@ const RegisterPage = () => {
             variant: "success",
             autoHideDuration: 2000,
           });
-          window.location.reload(false);
+          navigate(`/dang-nhap`)
         } else {
-          enqueueSnackbar("Đã xảy ra lỗi khi đăng ký ", {
+          enqueueSnackbar("Lỗi: " + error, {
             variant: "error",
             autoHideDuration: 2000,
           });

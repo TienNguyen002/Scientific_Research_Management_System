@@ -2,10 +2,14 @@ import React from "react";
 import "./style/admin-component.scss";
 import logo from "../../../Components/Shared/images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faGraduationCap, faBook, faUser, faUsers, faComment, faUserTie, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faGraduationCap, faBook, faUser, faUsers, faComment, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const AdminSidebar = () => {
+  const handleLogout = () => {
+    localStorage.clear()
+  }
+
   return (
     <div className="sidebar">
       <div className="sidebar-top">
@@ -61,7 +65,7 @@ const AdminSidebar = () => {
               <span>Thông tin</span>
             </li>
           </Link> */}
-          <Link className="text-decoration-none" to={`/`}>
+          <Link className="text-decoration-none" to={`/`} onClick={handleLogout}>
             <li>
               <FontAwesomeIcon icon={faRightFromBracket} className="sidebar-center-icon" />
               <span>Đăng xuất</span>

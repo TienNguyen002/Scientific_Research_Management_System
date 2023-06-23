@@ -9,7 +9,8 @@ const AdminLoginPage = () => {
   const initialState = {
       email: "",
       password: "",
-    },
+    },    
+    [error, setError] = useState(),
     [lecturer, setLecturer] = useState(initialState),
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false),
@@ -20,6 +21,7 @@ const AdminLoginPage = () => {
   }, []);
 
   const handleSubmit = (e) => {
+    setError(sessionStorage.getItem("EData"));
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();
@@ -36,7 +38,7 @@ const AdminLoginPage = () => {
           });
           navigate(`/admin`);
         } else {
-          enqueueSnackbar("Đã xảy ra lỗi khi đăng nhập ", {
+          enqueueSnackbar("Lỗi: " + error, {
             variant: "error",
             autoHideDuration: 2000,
           });

@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { isEmptyOrSpaces } from "../../../Utils/Utils";
 import { getTopicBySlug, increaseView } from "../../../Services/TopicService";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import format from "date-fns/format";
 import { Button } from "react-bootstrap";
 import StudentList from "../../../Components/Shared/StudentList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

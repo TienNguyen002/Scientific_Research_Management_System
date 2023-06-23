@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import {
   getDepartmentsFilter,
   deleteDepartment,
 } from "../../../Services/DepartmentService";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../style/admin-page.scss";
 import Loading from "../../../Components/Shared/Loading";
 import DepartmentFilter from "../../../Components/Shared/Filter/Department/DepartmentFilter";
@@ -27,9 +27,7 @@ const ManageDepartment = () => {
     departmentFilter = useSelector((state) => state.departmentFilter),
     [pageNumber, setPageNumber] = useState(1);
 
-  let { id } = useParams,
-    p = 1,
-    ps = 5;
+  let ps = 5;
   function updatePageNumber(inc) {
     setPageNumber((curentVal) => curentVal + inc);
   }

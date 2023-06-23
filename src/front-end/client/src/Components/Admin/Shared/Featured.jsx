@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import "./style/admin-component.scss"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CircularProgressbar } from 'react-circular-progressbar';
 import "react-circular-progressbar/dist/styles.css"
 import { getInfoDashboard } from "../../../Services/AdminService"

@@ -10,6 +10,7 @@ const LoginPage = () => {
       email: "",
       password: "",
     },
+    [error, setError] = useState(),
     [student, setStudent] = useState(initialState),
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false),
@@ -20,13 +21,17 @@ const LoginPage = () => {
   }, []);
 
   const handleSubmit = (e) => {
+    if(error === null || error === undefined){
+      setError(sessionStorage.getItem("EData"));
+    }
+    setError(sessionStorage.getItem("EData"));
     e.preventDefault();
     if (e.currentTarget.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
     } else {
       let data = new FormData(e.target);
-      data.forEach((x) => console.log(x));
+      //   data.forEach((x) => console.log(x));
       loginAccount(data).then((data) => {
         if (data) {
           console.log(data);
@@ -36,7 +41,7 @@ const LoginPage = () => {
           });
           navigate(`/`);
         } else {
-          enqueueSnackbar("Đã xảy ra lỗi khi đăng nhập ", {
+          enqueueSnackbar("Lỗi: " + error, {
             variant: "error",
             autoHideDuration: 2000,
           });

@@ -4,9 +4,8 @@ import Loading from "../../Components/Shared/Loading";
 import format from "date-fns/format";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getTopicsFilter, registerTopic } from "../../Services/TopicService";
 import Swal from "sweetalert2";
 import { useSnackbar } from "notistack";
@@ -23,6 +22,7 @@ const StudentRegister = () => {
         metadata: [],
       },
     ]),
+    [error, setError] = useState(),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     [metadata, setMetadata] = useState({}),
     [pageNumber, setPageNumber] = useState(1),
@@ -30,8 +30,7 @@ const StudentRegister = () => {
     { enqueueSnackbar } = useSnackbar(),
     { slug } = params;
 
-  let p = 1,
-    ps = 5;
+  let ps = 5;
   function updatePageNumber(inc) {
     setPageNumber((curentVal) => curentVal + inc);
   }
@@ -61,6 +60,7 @@ const StudentRegister = () => {
   }, [topicFilter, ps, pageNumber, slug]);
 
   const handleRegister = (e, id, modelslug) => {
+    setError(sessionStorage.getItem("EData"))
     Register(id, modelslug);
     async function Register(id, modelslug) {
       Swal.fire({
@@ -82,10 +82,13 @@ const StudentRegister = () => {
               });
               window.location.reload(false);
             } else {
-              enqueueSnackbar("Đăng ký thất bại", {
+              enqueueSnackbar("Đăng ký thất bại: " + error, {
                 variant: "error",
                 autoHideDuration: 2000,
               });
+              setTimeout(()=> {
+                sessionStorage.removeItem("EData")
+              }, 5000)
             }
           });
         }

@@ -277,12 +277,19 @@ namespace WebApi.Endpoints
             IStudentRepository studentRepository,
             IMediaManager mediaManager)
         {
-            if (await topicRepository.GetTopicByIdAsync(id) == null)
+            var topic = await topicRepository.GetTopicByIdAsync(id);
+            var student = await studentRepository.GetStudentBySlugAsync(model.StudentSlug);
+            if(topic.DepartmentId != student.DepartmentId)
+            {
+                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
+                        $"Khoa không trùng khớp"));
+            }
+            if (topic == null)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
                         $"Không tìm thấy đề tài có id {id}"));
             }
-            if (await studentRepository.GetStudentBySlugAsync(model.StudentSlug) == null)
+            if (student == null)
             {
                 return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
                         $"Không tìm thấy sinh viên có slug {model.StudentSlug}"));

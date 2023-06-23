@@ -3,10 +3,10 @@ import "./style/student-component.scss";
 import logo from "../../../Components/Shared/images/logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faUserTie, faRightFromBracket, faKey, faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const StudentSidebar = () => {
-  const {slug} = useParams();
+  let slug = localStorage.getItem("UrlSlug")
 
   return (
     <div className="sidebar">

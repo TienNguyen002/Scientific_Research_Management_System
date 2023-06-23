@@ -1,10 +1,9 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   getDepartmentById,
   addOrUpdateDepartment,
 } from "../../../Services/DepartmentService";
-import { isEmptyOrSpaces, isInteger } from "../../../Utils/Utils";
 import { Button, Form } from "react-bootstrap";
 import { useSnackbar } from "notistack";
 
@@ -30,7 +29,7 @@ const DepartmentEditAdmin = () => {
         setDepartment(data);
       } else setDepartment([]);
     }
-  }, []);
+  }, [id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
