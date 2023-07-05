@@ -54,11 +54,6 @@ namespace WebApi.Endpoints
                 .Produces(401)
                 .Produces<ApiResponse<StudentDto>>();
 
-            //routeGroupBuilder.MapPost("/", CreateAccount)
-            //    .WithName("CreateStudentAccount")
-            //    .AddEndpointFilter<ValidatorFilter<RegisterRequest>>()
-            //    .Produces<ApiResponse<AccountDto>>();
-
             routeGroupBuilder.MapPost("/change-password", ChangePassword)
                 .WithName("ChangeStudentPassword")
                 .Accepts<ResetPasswordRequest>("multipart/form-data")
@@ -68,11 +63,6 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
                 .WithName("GetStudentFilter")
                 .Produces<ApiResponse<StudentFilterModel>>();
-
-            //routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
-            //  .WithName("SetStudentImage")
-            //  .Accepts<IFormFile>("multipart/form-data")
-            //  .Produces<ApiResponse<string>>();
         }
 
         private static async Task<IResult> GetStudent(
@@ -165,29 +155,6 @@ namespace WebApi.Endpoints
                 : Results.Ok(ApiResponse.Success(mapper.Map<StudentDto>(student)));
         }
 
-        private static async Task<IResult> CreateAccount(
-            RegisterRequest model,
-            IStudentRepository studentRepository,
-            IMapper mapper)
-        {
-            if (await studentRepository.IsStudentEmailExitedAsync(0, model.Email))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Email '{model.Email}' đã được sử dụng"));
-            }
-            if (model.ConfirmPassword != model.Password)
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Mật khẩu và mật khẩu xác nhận không trùng khớp"));
-            }
-            if (model == null)
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không được bỏ trống"));
-            }
-            var student = mapper.Map<Student>(model);
-            student.RoleId = 1;
-            await studentRepository.Register(student);
-            return Results.Ok(ApiResponse.Success(mapper.Map<AccountDto>(student), HttpStatusCode.Created));
-        }
-
         private static async Task<IResult> ChangePassword(
             HttpContext context,
             IMapper mapper,
@@ -225,23 +192,6 @@ namespace WebApi.Endpoints
                 })
             };
             return Results.Ok(ApiResponse.Success(model));
-        }
-
-        private static async Task<IResult> SetImage(
-            string slug,
-            IFormFile imageFile,
-            IStudentRepository studentRepository,
-            IMediaManager mediaManager)
-        {
-            var imageUrl = await mediaManager.SaveImgFileAsync(
-                imageFile.OpenReadStream(),
-                imageFile.FileName, imageFile.ContentType);
-            if (string.IsNullOrWhiteSpace(imageUrl))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
-            }
-            await studentRepository.SetImageAsync(slug, imageUrl);
-            return Results.Ok(ApiResponse.Success(imageUrl));
         }
     }
 }

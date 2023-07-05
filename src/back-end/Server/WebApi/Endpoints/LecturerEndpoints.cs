@@ -38,16 +38,6 @@ namespace WebApi.Endpoints
                 .WithName("GetLecturerBySlug")
                 .Produces<ApiResponse<LecturerDto>>();
 
-            //routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/information", ChangeInformation)
-            //    .WithName("ChangeInformation")
-            //    .AddEndpointFilter<ValidatorFilter<LecturerEditModel>>()
-            //    .Produces<ApiResponse<string>>();
-
-            //routeGroupBuilder.MapPut("/{slug:regex(^[a-z0-9_-]+$)}/change-password", ChangePassword)
-            //    .WithName("ChangePassword")
-            //    .AddEndpointFilter<ValidatorFilter<PasswordRequest>>()
-            //    .Produces<ApiResponse<string>>();
-
             routeGroupBuilder.MapDelete("/{id:int}", DeleteLecturer)
                 .WithName("DeleteLecturer")
                 .Produces<ApiResponse<string>>();
@@ -55,11 +45,6 @@ namespace WebApi.Endpoints
             routeGroupBuilder.MapGet("/get-filter", GetFilter)
                 .WithName("GetLecturerFilter")
                 .Produces<ApiResponse<LecturerFilterModel>>();
-
-            //routeGroupBuilder.MapPost("/image/{slug:regex(^[a-z0-9_-]+$)}", SetImage)
-            //  .WithName("SetLecturerImage")
-            //  .Accepts<IFormFile>("multipart/form-data")
-            //  .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapPost("/", ChangeInformation)
                 .WithName("ChangeLecturerInformation")
@@ -120,59 +105,7 @@ namespace WebApi.Endpoints
                 ? Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có Slug {slug}"))
                 : Results.Ok(ApiResponse.Success(mapper.Map<LecturerDto>(lecturer)));
         }
-
-        //private static async Task<IResult> ChangeInformation(
-        //    string slug,
-        //    [AsParameters] LecturerEditModel model,
-        //    IMapper mapper,
-        //    ILecturerRepository lecturerRepository)
-        //{
-        //    var lecturer = await lecturerRepository.GetLecturerBySlugAsync(slug);
-        //    if(lecturer == null)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-        //            $"Không tìm thấy giảng viên có slug {slug}"));
-        //    }
-        //    mapper.Map(model, lecturer);
-        //    return await lecturerRepository.UpdateLecturerAsync(lecturer)
-        //       ? Results.Ok(ApiResponse.Success($"Thay đổi giảng viên có slug = {slug} thành công"))
-        //       : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có có slug = {slug}"));
-        //}
-
-        //private static async Task<IResult> ChangePassword(
-        //    string slug,
-        //    PasswordRequest model,
-        //    IMapper mapper,
-        //    ILecturerRepository lecturerRepository)
-        //{
-        //    var lecturer = await lecturerRepository.GetLecturerBySlugAsync(slug);
-        //    if (lecturer == null)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-        //            $"Không tìm thấy giảng viên có slug {slug}"));
-        //    }
-        //    if(await lecturerRepository.GetLecturerPasswordBySlugAsync(slug, model.Password))
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-        //            $"Mật khẩu hiện tại không đúng"));
-        //    }
-        //    if(model.NewPassword == model.Password)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-        //            $"Mật khẩu mới không được trùng với mật khẩu cũ"));
-        //    }
-        //    if (model.ConfirmPassword != model.Password)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-        //            $"Mật khẩu xác nhận không trùng khớp"));
-        //    }
-        //    model.Password = model.NewPassword;
-        //    mapper.Map(model, lecturer);
-        //    return await lecturerRepository.UpdateLecturerAsync(lecturer)
-        //       ? Results.Ok(ApiResponse.Success($"Đổi mật khẩu của giảng viên có slug {slug} thành công"))
-        //       : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy giảng viên có có slug = {slug}"));
-        //}
-
+                
         private static async Task<IResult> DeleteLecturer(
             int id,
             ILecturerRepository lecturerRepository)
@@ -196,24 +129,6 @@ namespace WebApi.Endpoints
             };
             return Results.Ok(ApiResponse.Success(model));
         }
-
-        private static async Task<IResult> SetImage(
-            string slug,
-            IFormFile imageFile,
-            ILecturerRepository lecturerRepository,
-            IMediaManager mediaManager)
-        {
-            var imageUrl = await mediaManager.SaveImgFileAsync(
-                imageFile.OpenReadStream(),
-                imageFile.FileName, imageFile.ContentType);
-            if (string.IsNullOrWhiteSpace(imageUrl))
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
-            }
-            await lecturerRepository.SetImageAsync(slug, imageUrl);
-            return Results.Ok(ApiResponse.Success(imageUrl));
-        }
-
         
         private static async Task<IResult> ChangeInformation(
             HttpContext context,

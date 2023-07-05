@@ -38,6 +38,7 @@ const StudentRegister = () => {
 
   useEffect(() => {
     document.title = "Đăng ký đề tài";
+
     getTopicsFilter(
       topicFilter.keyword,
       topicFilter.departmentId,

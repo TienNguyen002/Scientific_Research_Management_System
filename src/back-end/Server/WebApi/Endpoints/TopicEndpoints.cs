@@ -35,10 +35,6 @@ namespace WebApi.Endpoints
                 .WithName("GetAllTopic")
                 .Produces<ApiResponse<PaginationResult<TopicDto>>>();
 
-            //routeGroupBuilder.MapGet("/done", GetDoneTopics)
-            //    .WithName("GetDoneTopics")
-            //    .Produces<ApiResponse<PaginationResult<TopicDto>>>();
-
             routeGroupBuilder.MapGet("/{id:int}", GetTopicById)
                   .WithName("GetTopicById")
                   .Produces<ApiResponse<TopicDto>>();
@@ -52,11 +48,6 @@ namespace WebApi.Endpoints
                 .Accepts<TopicEditModel>("multipart/form-data")
                 .Produces(401)
                 .Produces<ApiResponse<TopicItem>>();
-
-            //routeGroupBuilder.MapPut("/{id:int}", UpdateTopic)
-            //    .WithName("UpdateTopic")
-            //    .AddEndpointFilter<ValidatorFilter<TopicEditModel>>()
-            //    .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapDelete("/{id:int}", DeleteTopic)
                 .WithName("DeleteTopic")
@@ -76,16 +67,6 @@ namespace WebApi.Endpoints
                   .Accepts<TopicAddLecturer>("multipart/form-data")
                   .Produces(401)
                   .Produces<ApiResponse<TopicItem>>();
-
-            //routeGroupBuilder.MapPost("/outlineFile/{slug:regex(^[a-z0-9_-]+$)}", SetTopicOutline)
-            //  .WithName("SetTopicOutline")
-            //  .Accepts<IFormFile>("multipart/form-data")
-            //  .Produces<ApiResponse<string>>();
-
-            //routeGroupBuilder.MapPost("/resultFile/{slug:regex(^[a-z0-9_-]+$)}", SetTopicResult)
-            //  .WithName("SetTopicResult")
-            //  .Accepts<IFormFile>("multipart/form-data")
-            //  .Produces<ApiResponse<string>>();
 
             routeGroupBuilder.MapPost("/view/{slug:regex(^[a-z0-9_-]+$)}", IncreaseView)
               .WithName("IncreaseView")
@@ -130,18 +111,6 @@ namespace WebApi.Endpoints
             var paginationResult = new PaginationResult<TopicDto>(topics);
             return Results.Ok(ApiResponse.Success(paginationResult));
         }
-
-        //private static async Task<IResult> GetDoneTopics(
-        //    [AsParameters] TopicFilterModel model,
-        //    ITopicRepository topicRepository,
-        //    IMapper mapper)
-        //{
-        //    var query = mapper.Map<TopicQuery>(model);
-        //    var topics = await topicRepository.GetPagedDoneTopicsAsync<TopicDto>(query, model,
-        //        topics => topics.ProjectToType<TopicDto>());
-        //    var paginationResult = new PaginationResult<TopicDto>(topics);
-        //    return Results.Ok(ApiResponse.Success(paginationResult));
-        //}
 
         private static async Task<IResult> GetTopicById(int id,
             ITopicRepository topicRepository,
@@ -196,42 +165,7 @@ namespace WebApi.Endpoints
             await topicRepository.AddOrUpdateTopicAsync(topic);
             return Results.Ok(ApiResponse.Success(mapper.Map<TopicDto>(topic), HttpStatusCode.Created));
         }
-
-        //private static async Task<IResult> UpdateTopic(
-        //    int id,
-        //    [AsParameters]TopicEditModel model,
-        //    IMapper mapper,
-        //    ITopicRepository topicRepository,
-        //    IDepartmentRepository departmentRepository,
-        //    ILecturerRepository lecturerRepository,
-        //    IAppRepository appRepository,
-        //    IMediaManager mediaManager)
-        //{
-        //    var topic = await topicRepository.GetTopicByIdAsync(id);
-        //    if(topic == null)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-        //            $"Không tìm thấy đề tài có id {id}"));
-        //    }
-        //    if(model.EndDate == null)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Thời gian nghiệm thu không được để trống"));
-        //    }
-        //    if (await departmentRepository.GetDepartmentByIdAsync(model.DepartmentId) == null)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy khoa có id = '{model.DepartmentId}' "));
-        //    }
-        //    if (await appRepository.GetStatusByIdAsync(model.StatusId) == null)
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.Conflict, $"Không tìm thấy trạng thái có id = '{model.StatusId}' "));
-        //    }
-        //    mapper.Map(model, topic);
-        //    topic.Id = id;
-        //    return await topicRepository.AddOrUpdateTopicAsync(topic)
-        //       ? Results.Ok(ApiResponse.Success($"Thay đổi đề tài có id = {id} thành công"))
-        //       : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có id = {id}"));
-        //}
-
+        
         private static async Task<IResult> DeleteTopic(int id,
             ITopicRepository topicRepository)
         {
@@ -298,40 +232,6 @@ namespace WebApi.Endpoints
                 ? Results.Ok(ApiResponse.Success($"Đăng ký thành công"))
                : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy đề tài có id {id}"));
         }
-
-        //private static async Task<IResult> SetTopicOutline(
-        //    string slug,
-        //    IFormFile outlineFile,
-        //    ITopicRepository topicRepository,
-        //    IMediaManager mediaManager)
-        //{
-        //    var outlineUrl = await mediaManager.SaveFileAsync(
-        //        outlineFile.OpenReadStream(),
-        //        outlineFile.FileName, outlineFile.ContentType);
-        //    if (string.IsNullOrWhiteSpace(outlineUrl))
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
-        //    }
-        //    await topicRepository.SetOutlineUrlAsync(slug, outlineUrl);
-        //    return Results.Ok(ApiResponse.Success(outlineUrl));
-        //}
-
-        //private static async Task<IResult> SetTopicResult(
-        //    string slug,
-        //    IFormFile resultFile,
-        //    ITopicRepository topicRepository,
-        //    IMediaManager mediaManager)
-        //{
-        //    var resultUrl = await mediaManager.SaveFileAsync(
-        //        resultFile.OpenReadStream(),
-        //        resultFile.FileName, resultFile.ContentType);
-        //    if (string.IsNullOrWhiteSpace(resultUrl))
-        //    {
-        //        return Results.Ok(ApiResponse.Fail(HttpStatusCode.BadRequest, "Không lưu được tập tin"));
-        //    }
-        //    await topicRepository.SetResultUrlAsync(slug, resultUrl);
-        //    return Results.Ok(ApiResponse.Success(resultFile));
-        //}
 
         private static async Task<IResult> SetTopicLecturer(
             HttpContext context,

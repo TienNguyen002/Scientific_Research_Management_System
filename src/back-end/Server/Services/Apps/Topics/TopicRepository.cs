@@ -288,14 +288,6 @@ namespace Services.Apps.Topics
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
-        //private async Task<Student> GetStudentBySlugAsync(string slug, CancellationToken cancellationToken = default)
-        //{
-        //    return await _context.Set<Student>()
-        //        .Include(x => x.Topics)
-        //        .Where(x => x.UrlSlug == slug)
-        //        .FirstOrDefaultAsync(cancellationToken);
-        //}
-
         public async Task<bool> SetOutlineUrlAsync(string slug, string outlineUrl, CancellationToken cancellationToken = default)
         {
             return await _context.Set<Topic>()
@@ -331,14 +323,6 @@ namespace Services.Apps.Topics
             return await _context.Set<Topic>()
                 .Where(t => t.StatusId == 3)
                 .CountAsync(cancellationToken);
-        }
-
-        public async Task<IPagedList<T>> GetPagedDoneTopicsAsync<T>(TopicQuery query, IPagingParams pagingParams, Func<IQueryable<Topic>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
-        {
-            IQueryable<Topic> topicsResult = FindTopicByQueryable(query)
-                .Where(t => t.StatusId == 3);
-            IQueryable<T> result = mapper(topicsResult);
-            return await result.ToPagedListAsync(pagingParams, cancellationToken);
         }
 
         public async Task<IList<T>> GetNTopViewAsync<T>(int n, Func<IQueryable<Topic>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)

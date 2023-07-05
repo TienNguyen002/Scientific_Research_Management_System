@@ -24,7 +24,6 @@ const StudentProfile = () => {
     [filter, setFilter] = useState({
       departmentList: [],
     }),
-    navigate = useNavigate(),
     { enqueueSnackbar } = useSnackbar(),
     [validated, setValidated] = useState(false);
 

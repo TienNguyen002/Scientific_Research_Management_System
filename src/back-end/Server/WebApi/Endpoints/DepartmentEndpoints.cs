@@ -45,11 +45,6 @@ namespace WebApi.Endpoints
                 .Produces(401)
                 .Produces<ApiResponse<DepartmentItems>>();
 
-            //routeGroupBuilder.MapPut("/{id:int}", UpdateDepartment)
-            //    .WithName("UpdateDepartment")
-            //    .AddEndpointFilter<ValidatorFilter<DepartmentEditModel>>()
-            //    .Produces<ApiResponse<string>>();
-
             routeGroupBuilder.MapDelete("/{id:int}", DeleteDepartment)
                 .WithName("DeleteDepartment")
                 .Produces<ApiResponse<string>>();
@@ -119,26 +114,6 @@ namespace WebApi.Endpoints
 
             return Results.Ok(ApiResponse.Success(
                 mapper.Map<DepartmentItems>(depart), HttpStatusCode.Created));
-        }
-
-        private static async Task<IResult> UpdateDepartment(
-            int id, DepartmentEditModel model,
-            IDepartmentRepository departmentRepository,
-            IMapper mapper)
-        {
-            var depart = await departmentRepository.GetDepartmentByIdAsync(id);
-            if (depart == null)
-            {
-                return Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound,
-                    $"Không tìm thấy khoa có id {id}"));
-            }
-
-            mapper.Map(model, depart);
-            depart.Id = id;
-
-            return await departmentRepository.AddOrUpdateDepartmentAsync(depart)
-              ? Results.Ok(ApiResponse.Success("Cập nhật Khoa thành công", HttpStatusCode.NoContent))
-              : Results.Ok(ApiResponse.Fail(HttpStatusCode.NotFound, $"Không tìm thấy Khoa có id = {id}"));
         }
 
         private static async Task<IResult> DeleteDepartment(

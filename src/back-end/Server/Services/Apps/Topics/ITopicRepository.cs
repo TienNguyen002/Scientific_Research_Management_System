@@ -24,11 +24,6 @@ namespace Services.Apps.Topics
             Func<IQueryable<Topic>, IQueryable<T>> mapper,
             CancellationToken cancellationToken = default);
 
-        Task<IPagedList<T>> GetPagedDoneTopicsAsync<T>(TopicQuery query,
-            IPagingParams pagingParams,
-            Func<IQueryable<Topic>, IQueryable<T>> mapper,
-            CancellationToken cancellationToken = default);
-
         Task<bool> AddOrUpdateTopicAsync(Topic topic, CancellationToken cancellationToken = default);
 
         Task<bool> AddOrUpdateTopicBySlugAsync(Topic topic, CancellationToken cancellationToken = default);
