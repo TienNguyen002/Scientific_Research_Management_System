@@ -12,17 +12,35 @@ import DepartmentDetails from "../Pages/User/Details/DepartmentDetails";
 import AdminLayout from "../Pages/Admin/AdminLayout";
 import Dashboard from "../Pages/Admin/Dashboard";
 import ManageDepartment from "../Pages/Admin/Department/ManageDepartment";
-import ManageTopic from "../Pages/Admin/ManageTopic";
-import ManageStudent from "../Pages/Admin/ManageStudent";
-import ManageLecturer from "../Pages/Admin/ManageLecturer";
+import ManageTopic from "../Pages/Admin/Topic/ManageTopic";
+import ManageStudent from "../Pages/Admin/Student/ManageStudent";
+import ManageLecturer from "../Pages/Admin/Lecturer/ManageLecturer";
 import ManageFeedback from "../Pages/Admin/ManageFeedback";
-import AdminProfile from "../Pages/Admin/AdminProfile"
 import DepartmentEditAdmin from "../Pages/Admin/Department/DepartmentEdit";
+import Contact from "../Pages/User/Contact";
+import TopicEditAdmin from "../Pages/Admin/Topic/TopicEdit";
+import AssignmentTopic from "../Pages/Admin/Topic/AssignmentTopic";
+import StudentLayout from "../Pages/Student/StudentLayout";
+import StudentPage from "../Pages/Student/StudentPage";
+import StudentProfile from "../Pages/Student/StudentProfile";
+import StudentRegister from "../Pages/Student/StudentRegister";
+import StudentPassword from "../Pages/Student/StudentPassword";
+import LoginPage from "../Pages/Login/LoginPage";
+import RegisterPage from "../Pages/Login/RegisterPage";
+import AdminLoginPage from "../Pages/Login/AdminLoginPage";
+import StudentManageTopic from "../Pages/Student/StudentManageTopic";
+import LecturerEditAdmin from "../Pages/Admin/Lecturer/LecturerEdit";
+import LecturerAddAdmin from "../Pages/Admin/Lecturer/LecturerAdd";
+import LecturerPassword from "../Pages/Admin/Lecturer/LecturerPassword";
+import UploadOutlineFile from "../Pages/Student/UploadFileTopic/UploadOutlineFile";
+import UploadResultFile from "../Pages/Student/UploadFileTopic/UploadResultFile";
+import LoginLayout from "../Pages/Login/LoginLayout"
 
 const Router = () => {
     return(
         <BrowserRouter>
             <Routes>
+                //Người dùng
                 <Route path="/" element={<Layout/>}>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/khoa" element={<Department/>}/>
@@ -33,15 +51,44 @@ const Router = () => {
                     <Route path="/sinh-vien-nghien-cuu/:slug" element={<StudentDetails/>}/>
                     <Route path="/giang-vien/:slug" element={<LecturerDetails/>}/>
                     <Route path="/khoa/:slug" element={<DepartmentDetails/>}/>
+                    <Route path="/lien-he" element={<Contact/>}/>
                 </Route>
+
+                //Admin
                 <Route path="/admin" element={<AdminLayout/>}>
                     <Route path="/admin" element={<Dashboard/>}/>
                     <Route path="/admin/khoa" element={<ManageDepartment/>}/>
+                    <Route path="/admin/khoa/edit" element={<DepartmentEditAdmin/>}/>
+                    <Route path="/admin/khoa/edit/:id" element={<DepartmentEditAdmin/>}/>
                     <Route path="/admin/de-tai" element={<ManageTopic/>}/>
+                    <Route path="/admin/de-tai/phan-cong/:id" element={<AssignmentTopic/>}/>
+                    <Route path="/admin/de-tai/edit" element={<TopicEditAdmin/>}/>
+                    <Route path="/admin/de-tai/edit/:id" element={<TopicEditAdmin/>}/>
                     <Route path="/admin/sinh-vien" element={<ManageStudent/>}/>
                     <Route path="/admin/giang-vien" element={<ManageLecturer/>}/>
+                    <Route path="/admin/giang-vien/add/" element={<LecturerAddAdmin/>}/>
+                    <Route path="/admin/giang-vien/edit/:id" element={<LecturerEditAdmin/>}/>
                     <Route path="/admin/feedback" element={<ManageFeedback/>}/>
-                    <Route path="/admin/thong-tin" element={<AdminProfile/>}/>
+                    <Route path="/admin/:slug/thong-tin" element={<LecturerEditAdmin/>}/>
+                    <Route path="/admin/:slug/doi-mat-khau" element={<LecturerPassword/>}/>
+                </Route>
+                
+                //Sinh viên
+                <Route path="/sinh-vien" element={<StudentLayout/>}>
+                    <Route path="/sinh-vien/:slug" element={<StudentPage/>}/>
+                    <Route path="/sinh-vien/:slug/thong-tin" element={<StudentProfile/>}/>
+                    <Route path="/sinh-vien/:slug/dang-ky-de-tai" element={<StudentRegister/>}/>
+                    <Route path="/sinh-vien/:slug/quan-ly-de-tai" element={<StudentManageTopic/>}/>
+                    <Route path="/sinh-vien/:slug/dang-thuyet-minh/:slug2" element={<UploadOutlineFile/>}/>
+                    <Route path="/sinh-vien/:slug/dang-ket-qua/:slug2" element={<UploadResultFile/>}/>
+                    <Route path="/sinh-vien/:slug/doi-mat-khau" element={<StudentPassword/>}/>
+                </Route>
+
+                //Đăng nhập
+                <Route path="/" element={<LoginLayout/>}>
+                    <Route path="/dang-nhap" element={<LoginPage/>}/>
+                    <Route path="/dang-ky" element={<RegisterPage/>}/>
+                    <Route path="/dang-nhap-admin" element={<AdminLoginPage/>}/>
                 </Route>
             </Routes>
         </BrowserRouter>

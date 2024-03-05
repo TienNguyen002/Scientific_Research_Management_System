@@ -35,6 +35,16 @@ const LecturerDetails = () => {
           <Table striped responsive bordered>
             <tbody className="table-content">
               <tr>
+                <th>Avatar</th>
+                <td>
+                  <img
+                    src={`https://localhost:7129/${lecturer.imageUrl}`}
+                    alt={lecturer.fullName}
+                    className="avatar-user"
+                  />
+                </td>
+              </tr>
+              <tr>
                 <th>Họ và tên</th>
                 <td>{lecturer.fullName}</td>
               </tr>
@@ -64,7 +74,7 @@ const LecturerDetails = () => {
           <TopicByLecturers />
         </Tab>
       </Tabs>
-      <hr/>
+      <hr />
       <Button onClick={() => navigate(-1)} className="btn-danger white-text">
         Quay lại
       </Button>

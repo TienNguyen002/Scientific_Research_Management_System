@@ -17,7 +17,7 @@ namespace Core.Entities
         public DateTime RegistrationDate { get; set; }
         public DateTime EndDate { get; set; }
         public int StudentNumbers { get; set; }
-        public string Price { get; set; }
+        public int Price { get; set; }
         public string OutlineUrl { get; set; }
         public string ResultUrl { get; set; }
         public int ViewCount { get; set; }

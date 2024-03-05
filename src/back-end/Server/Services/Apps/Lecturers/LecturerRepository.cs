@@ -76,6 +76,12 @@ namespace Services.Apps.Lecturers
                 .AnyAsync(l => l.Id != id && l.Email == email, cancellationToken);
         }
 
+        public async Task<bool> IsLecturerSlugExitedAsync(int id, string slug, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>()
+                .AnyAsync(t => t.Id != id && t.UrlSlug == slug, cancellationToken);
+        }
+
         private IQueryable<Lecturer> GetLecturerByQueryable(LecturerQuery query)
         {
             IQueryable<Lecturer> lecturerQuery = _context.Set<Lecturer>()
@@ -143,6 +149,39 @@ namespace Services.Apps.Lecturers
             _context.Remove(lecturerToDelete);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        public async Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.ImageUrl, imageUrl), cancellationToken) > 0;
+        }
+
+        public async Task<int> CountLecturerAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>().CountAsync(cancellationToken);
+        }
+
+        public async Task<bool> AddOrUpdateLecturerAsync(Lecturer lecturer, CancellationToken cancellationToken = default)
+        {
+            if (lecturer.Id > 0)
+            {
+                _context.Update(lecturer);
+            }
+            else
+            {
+                _context.Add(lecturer);
+            } 
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<Lecturer> GetLecturerByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Lecturer>()
+                .Include(x => x.Role)
+                .Where(x => x.Email == email)
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }

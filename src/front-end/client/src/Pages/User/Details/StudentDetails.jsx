@@ -6,16 +6,15 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import format from "date-fns/format";
 import { Button } from "react-bootstrap";
 import TopicByStudents from "../Topics/TopicByStudents";
 import "../style/user.scss";
 
 const StudentDetails = () => {
-  const params = useParams();
-  const [student, setStudent] = useState([]);
-  const { slug } = params;
-  const navigate = useNavigate();
+  const params = useParams(),
+  [student, setStudent] = useState([]),
+  { slug } = params,
+  navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Chi tiết sinh viên";
@@ -34,6 +33,10 @@ const StudentDetails = () => {
         <Tab eventKey="thong-tin" title="Thông tin chi tiết">
           <Table striped responsive bordered>
             <tbody className="table-content">
+              <tr>
+                <th>Avatar</th>
+                <td><img src={`https://localhost:7129/${student.imageUrl}`} alt={student.fullName} className="avatar-user"/></td>
+              </tr>
               <tr>
                 <th>MSSV</th>
                 <td>{student.studentId}</td>
@@ -72,7 +75,7 @@ const StudentDetails = () => {
           <TopicByStudents />
         </Tab>
       </Tabs>
-      <hr/>
+      <hr />
       <Button onClick={() => navigate(-1)} className="btn-danger white-text">
         Quay lại
       </Button>

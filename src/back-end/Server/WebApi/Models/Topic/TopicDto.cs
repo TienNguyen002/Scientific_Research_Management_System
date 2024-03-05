@@ -16,10 +16,11 @@ namespace WebApi.Models.Topic
         public DateTime RegistrationDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int StudentNumbers { get; set; }
-        public string Price { get; set; }
+        public int Price { get; set; }
         public string OutlineUrl { get; set; }
         public string ResultUrl { get; set; }
         public int Point { get; set; }
+        public int ViewCount { get; set; }
         public DepartmentDto Department { get; set; }
         public LecturerDto Lecturer { get; set; }
         public IList<StudentDto> Students { get; set; }

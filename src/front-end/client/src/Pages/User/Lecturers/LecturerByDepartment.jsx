@@ -1,22 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { getLecturersFilterByDepartmentSlug } from "../../../Services/LecturerService";
 import { Link, useParams } from "react-router-dom";
-import LecturerFilterSearch from "../../../Components/User/Filter/Lecturer/LecturerFilterSearch";
+import LecturerFilterSearch from "../../../Components/Shared/Filter/Lecturer/LecturerFilterSearch";
 import Loading from "../../../Components/Shared/Loading";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
+import { Button } from "react-bootstrap";
+import Pager from "../../../Components/Shared/Pager";
 
 const LecturerByDepartment = () => {
-  const [lecturersList, setLecturersList] = useState([]),
+  const [lecturersList, setLecturersList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
     params = useParams(),
     { slug } = params,
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
     lecturerFilter = useSelector((state) => state.lecturerFilter);
 
   let departmentSlug = slug,
     p = 1,
     ps = 5;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
 
   useEffect(() => {
     document.title = "Danh sách Giảng viên";
@@ -24,14 +36,19 @@ const LecturerByDepartment = () => {
       lecturerFilter.keyword,
       departmentSlug,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setLecturersList(data.items);
+        setData(data);
       } else setLecturersList([]);
       setIsVisibleLoading(false);
     });
-  }, [lecturerFilter, ps, p]);
+
+    function setData(props) {
+      setLecturersList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [lecturerFilter, ps, pageNumber]);
 
   return (
     <>
@@ -43,7 +60,7 @@ const LecturerByDepartment = () => {
           {lecturersList.length > 0 ? (
             lecturersList.map((item, index) => (
               <div className="col-6" key={index}>
-                <div className="card mt-3">
+                <div className="item-card mt-3">
                   <div className="d-flex card-content">
                     <FontAwesomeIcon
                       icon={faUser}
@@ -72,11 +89,16 @@ const LecturerByDepartment = () => {
                       )}
                       <Link
                         className="text-decoration-none"
-                        to={`/khoa/${item.department.urlSlug}`}
+                        to={`/khoa/${item.department?.urlSlug}`}
                       >
-                        Khoa: {item.department.name}
+                        Khoa: {item.department?.name}
                       </Link>
                     </div>
+                  </div>
+                  <div>
+                    <Link to={`/giang-vien/${item.urlSlug}`}>
+                      <Button>Xem chi tiết</Button>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -88,6 +110,7 @@ const LecturerByDepartment = () => {
           )}
         </div>
       )}
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };

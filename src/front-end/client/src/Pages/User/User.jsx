@@ -4,19 +4,30 @@ import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import "./style/user.scss";
-import StudentFilter from "../../Components/User/Filter/Student/StudentFilter";
+import StudentFilter from "../../Components/Shared/Filter/Student/StudentFilter";
 import Loading from "../../Components/Shared/Loading";
 import { useSelector } from "react-redux";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Pager from "../../Components/Shared/Pager";
 
 const User = () => {
-  const [studentsList, setStudentsList] = useState([]),
+  const [studentsList, setStudentsList] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
+    [metadata, setMetadata] = useState({}),
+    [pageNumber, setPageNumber] = useState(1),
     studentFilter = useSelector((state) => state.studentFilter);
 
-  let ps = 10,
+  let ps = 6,
     p = 1;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
 
   useEffect(() => {
     document.title = "Danh sách Sinh viên";
@@ -24,14 +35,19 @@ const User = () => {
       studentFilter.keyword,
       studentFilter.departmentId,
       ps,
-      p
+      pageNumber
     ).then((data) => {
       if (data) {
-        setStudentsList(data.items);
+        setData(data);
       } else setStudentsList([]);
       setIsVisibleLoading(false);
     });
-  }, [studentFilter, ps, p]);
+
+    function setData(props) {
+      setStudentsList(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [studentFilter, ps, pageNumber]);
 
   return (
     <>
@@ -72,14 +88,14 @@ const User = () => {
                       )}
                       <Link
                         className="text-decoration-none"
-                        to={`/khoa/${item.department.urlSlug}`}
+                        to={`/khoa/${item.department?.urlSlug}`}
                       >
-                        Khoa: {item.department.name}
+                        Khoa: {item.department?.name}
                       </Link>
                     </div>
                   </div>
                   <div>
-                  <Link to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}>
+                    <Link to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}>
                       <Button>Xem chi tiết</Button>
                     </Link>
                   </div>
@@ -93,6 +109,7 @@ const User = () => {
           )}
         </div>
       )}
+      <Pager metadata={metadata} onPageChange={updatePageNumber} />
     </>
   );
 };

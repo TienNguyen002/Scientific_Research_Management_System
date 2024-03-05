@@ -9,7 +9,8 @@ namespace Services.Media
 {
     public class LocalFileSystemMediaManager : IMediaManager
     {
-        private const string PicturesFolder = "uploads/pictures/{0}{1}";
+        private const string FilesFolder = "uploads/files/{0}{1}";
+        private const string ImagesFolder = "uploads/images/{0}{1}";
         private readonly ILogger<LocalFileSystemMediaManager> _logger;
         public LocalFileSystemMediaManager(ILogger<LocalFileSystemMediaManager> logger)
         {
@@ -35,6 +36,26 @@ namespace Services.Media
                 return null;
             }
         }
+        public async Task<string> SaveImgFileAsync(Stream buffer, string originalFileName, string contentType, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                if (!buffer.CanRead || !buffer.CanSeek || buffer.Length == 0)
+                    return null;
+                var fileExt = Path.GetExtension(originalFileName).ToLower();
+                var returnedFilePath = CreateImgFilePath(fileExt, contentType.ToLower());
+                var fullPath = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, "wwwroot", returnedFilePath));
+                buffer.Position = 0;
+                await using var fileStream = new FileStream(fullPath, FileMode.Create);
+                await buffer.CopyToAsync(fileStream, cancellationToken);
+                return returnedFilePath;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Không thể lưu file '{originalFileName}'.");
+                return null;
+            }
+        }
         public Task<bool> DeleteFileAsync(string filePath, CancellationToken cancellationToken = default)
         {
             try
@@ -54,7 +75,12 @@ namespace Services.Media
 
         private string CreateFilePath(string fileExt, string contentType = "")
         {
-            return string.Format(PicturesFolder, Guid.NewGuid().ToString("N"), fileExt);
+            return string.Format(FilesFolder, Guid.NewGuid().ToString("N"), fileExt);
+        }
+
+        private string CreateImgFilePath(string fileExt, string contentType = "")
+        {
+            return string.Format(ImagesFolder, Guid.NewGuid().ToString("N"), fileExt);
         }
     }
 }

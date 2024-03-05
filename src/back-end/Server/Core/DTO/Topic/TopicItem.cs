@@ -16,6 +16,5 @@ namespace Core.DTO.Topic
         public string Lecturer { get; set; }
         public string Students { get; set; }
         public string Status { get; set; }
-        public string Process { get; set; }
     }
 }

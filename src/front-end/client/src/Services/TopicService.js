@@ -1,4 +1,4 @@
-import { get_api, delete_api } from "./Method";
+import { get_api, delete_api, post_api, put_api } from "./Method";
 
 export function getTopics(pageNumber = 1, pageSize = 5) {
   return get_api(
@@ -6,31 +6,25 @@ export function getTopics(pageNumber = 1, pageSize = 5) {
   );
 }
 
-export function getTopicsNotRegis(pageNumber = 1, pageSize = 5) {
-  return get_api(
-    `https://localhost:7129/api/topics?StatusId=1&PageSize=${pageSize}&PageNumber=${pageNumber}&SortOrder=ASC`
-  );
-}
-
 export function getTopicBySlug(slug) {
   return get_api(`https://localhost:7129/api/topics/byslug/${slug}`);
 }
 
-export function getTopicsByStudentSlug(slug) {
+export function getTopicsByStudentSlug(slug, pageNumber, pageSize) {
   return get_api(
-    `https://localhost:7129/api/topics?Students=${slug}&PageSize=11&PageNumber=1`
+    `https://localhost:7129/api/topics?Students=${slug}&PageSize=${pageSize}&PageNumber=${pageNumber}`
   );
 }
 
-export function getTopicsByLecturerSlug(slug) {
+export function getTopicsByLecturerSlug(slug, pageNumber, pageSize) {
   return get_api(
-    `https://localhost:7129/api/topics?LecturerSlug=${slug}&PageSize=11&PageNumber=1`
+    `https://localhost:7129/api/topics?LecturerSlug=${slug}&PageSize=${pageSize}&PageNumber=${pageNumber}`
   );
 }
 
-export function getTopicsByDepartmentSlug(slug) {
+export function getTopicsByDepartmentSlug(slug, pageNumber, pageSize) {
   return get_api(
-    `https://localhost:7129/api/topics?DepartmentSlug=${slug}&PageSize=11&PageNumber=1`
+    `https://localhost:7129/api/topics?DepartmentSlug=${slug}&PageSize=${pageSize}&PageNumber=${pageNumber}`
   );
 }
 
@@ -38,54 +32,11 @@ export function getFilter() {
   return get_api(`https://localhost:7129/api/topics/get-filter`);
 }
 
-export function getTopicsFilterNotRegis(
-  keyword = "",
-  departmentId = "",
-  lecturerId = "",
-  statusId = 1,
-  year = "",
-  month = "",
-  pageSize = 11,
-  pageNumber = 1,
-  sortColumn = "",
-  sortOrder = ""
-) {
-  let url = new URL(`https://localhost:7129/api/topics`);
-  keyword !== "" && url.searchParams.append("Keyword", keyword);
-  departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
-  lecturerId !== "" && url.searchParams.append("LecturerId", lecturerId);
-  url.searchParams.append("StatusId", statusId);
-  month !== "" && url.searchParams.append("RegistrationMonth", month);
-  year !== "" && url.searchParams.append("RegistrationYear", year);
-  sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
-  sortOrder !== "" && url.searchParams.append("SortOrder", sortOrder);
-  url.searchParams.append("PageSize", pageSize);
-  url.searchParams.append("PageNumber", pageNumber);
-  return get_api(url.href);
-}
-
 export function getTopicsFilter(
   keyword = "",
   departmentId = "",
-  pageSize = 11,
-  pageNumber = 1,
-  sortColumn = "",
-  sortOrder = "ASC"
-) {
-  let url = new URL(`https://localhost:7129/api/topics`);
-  keyword !== "" && url.searchParams.append("Keyword", keyword);
-  departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
-  sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
-  sortOrder !== "" && url.searchParams.append("SortOrder", sortOrder);
-  url.searchParams.append("PageSize", pageSize);
-  url.searchParams.append("PageNumber", pageNumber);
-  return get_api(url.href);
-}
-
-export function getAdminTopicsFilter(
-  keyword = "",
-  departmentId = "",
   lecturerId = "",
+  statusId = "",
   year = "",
   month = "",
   pageSize = 11,
@@ -97,6 +48,7 @@ export function getAdminTopicsFilter(
   keyword !== "" && url.searchParams.append("Keyword", keyword);
   departmentId !== "" && url.searchParams.append("DepartmentId", departmentId);
   lecturerId !== "" && url.searchParams.append("LecturerId", lecturerId);
+  statusId !== "" && url.searchParams.append("StatusId", statusId);
   month !== "" && url.searchParams.append("RegistrationMonth", month);
   year !== "" && url.searchParams.append("RegistrationYear", year);
   sortColumn !== "" && url.searchParams.append("SortColumn", sortColumn);
@@ -108,4 +60,40 @@ export function getAdminTopicsFilter(
 
 export function deleteTopic(id) {
   return delete_api(`https://localhost:7129/api/topics/${id}`);
+}
+
+export function increaseView(slug){
+  return post_api(`https://localhost:7129/api/topics/view/${slug}`)
+}
+
+export function getTopicById(id) {
+  return get_api(`https://localhost:7129/api/topics/${id}`);
+}
+
+export function addOrUpdateTopic(formData){
+  return post_api(`https://localhost:7129/api/topics`, formData)
+}
+
+export function assignmentTopic(formData){
+  return post_api(`https://localhost:7129/api/topics/assignment`, formData)
+}
+
+export function registerTopic(id, slug){
+  return post_api(`https://localhost:7129/api/topics/register/${id}?StudentSlug=${slug}`)
+}
+
+export function getTopTopic(){
+  return get_api(`https://localhost:7129/api/topics/top/3`)
+}
+
+export function getNewTopic(){
+  return get_api(`https://localhost:7129/api/topics/new/3`)
+}
+
+export function uploadOutlineFile(formData){
+  return post_api(`https://localhost:7129/api/topics/outlineFile`, formData)
+}
+
+export function uploadResultFile(formData){
+  return post_api(`https://localhost:7129/api/topics/resultFile`, formData)
 }

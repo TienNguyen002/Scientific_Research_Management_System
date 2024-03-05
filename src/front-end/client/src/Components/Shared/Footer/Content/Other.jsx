@@ -8,10 +8,10 @@ const Other = () => {
             <div className="link">
                 <h4>LIÊN KẾT</h4>
                 <ul>
-                    <li> <Link to="https://dlu.edu.vn">Trường Đại học Đà Lạt</Link></li>
-                    <li><Link to="https://thuvien.dlu.edu.vn">Thư viện</Link></li>
-                    <li><Link to="https://tckh.dlu.edu.vn/index.php/tckhdhdl">Tạp chí Khoa học Đại học Đà Lạt</Link></li>
-                    <li><Link to="https://tuyensinh.dlu.edu.vn">Tuyển sinh</Link></li>
+                    <li> <Link to="https://dlu.edu.vn" className="text-light text-decoration-none">Trường Đại học Đà Lạt</Link></li>
+                    <li><Link to="https://thuvien.dlu.edu.vn" className="text-light text-decoration-none">Thư viện</Link></li>
+                    <li><Link to="https://tckh.dlu.edu.vn/index.php/tckhdhdl" className="text-light text-decoration-none">Tạp chí Khoa học Đại học Đà Lạt</Link></li>
+                    <li><Link to="https://tuyensinh.dlu.edu.vn" className="text-light text-decoration-none">Tuyển sinh</Link></li>
                 </ul>   
             </div>
         </>

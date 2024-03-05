@@ -1,52 +1,81 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, Table } from "react-bootstrap";
+import { Button, Table } from "react-bootstrap";
 import {
   getDepartmentsFilter,
   deleteDepartment,
 } from "../../../Services/DepartmentService";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../style/admin-page.scss";
 import Loading from "../../../Components/Shared/Loading";
-import DepartmentFilter from "../../../Components/User/Filter/Department/DepartmentFilter";
+import DepartmentFilter from "../../../Components/Shared/Filter/Department/DepartmentFilter";
 import { useSelector } from "react-redux";
-import { IconButton, Fab } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Swal from "sweetalert2";
+import Pager from "../../../Components/Shared/Pager";
 
 const ManageDepartment = () => {
-  const [departments, setDepartments] = useState([]),
+  const [departments, setDepartments] = useState([
+      {
+        items: [],
+        metadata: [],
+      },
+    ]),
+    [metadata, setMetadata] = useState({}),
     [reRender, setRender] = useState(false),
     [isVisibleLoading, setIsVisibleLoading] = useState(true),
-    departmentFilter = useSelector((state) => state.departmentFilter);
+    departmentFilter = useSelector((state) => state.departmentFilter),
+    [pageNumber, setPageNumber] = useState(1);
 
-  let { id } = useParams,
-    p = 1,
-    ps = 10;
+  let ps = 5;
+  function updatePageNumber(inc) {
+    setPageNumber((curentVal) => curentVal + inc);
+  }
 
   useEffect(() => {
     document.title = "Danh sách Khoa";
-    getDepartmentsFilter(departmentFilter.keyword).then((data) => {
-      if (data) {
-        setDepartments(data.items);
-      } else {
-        setDepartments([]);
-      }
-      setIsVisibleLoading(false);
-    });
-  }, [departmentFilter, ps, p, reRender]);
 
-  const handleDeleteDepartment = (e, id) => {
+    getDepartmentsFilter(departmentFilter.keyword, ps, pageNumber).then(
+      (data) => {
+        if (data) {
+          setData(data);
+        } else {
+          setDepartments([]);
+        }
+        setIsVisibleLoading(false);
+      }
+    );
+
+    function setData(props) {
+      setDepartments(props.items);
+      setMetadata(props.metadata);
+    }
+  }, [departmentFilter, ps, pageNumber, reRender]);
+
+  const handleDelete = (e, id) => {
     e.preventDefault();
+
     RemoveDepartment(id);
     async function RemoveDepartment(id) {
-      if (window.confirm("Bạn có muốn xoá phòng khoa này?")) {
-        const response = await deleteDepartment(id);
-        if (response) {
-          alert("Đã xoá phòng khoa này");
+      Swal.fire({
+        title: "Bạn có muốn xóa khoa này không?",
+        text: "Sau khi xóa sẽ không thể khôi phục!",
+        icon: "error",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "XÓA",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteDepartment(id);
           setRender(true);
-        } else alert("Đã xảy ra lỗi khi xoá");
-      }
+          window.location.reload(false);
+          Swal.fire({
+            title: "Xóa thành công",
+            icon: "success",
+          });
+        }
+      });
     }
   };
 
@@ -56,13 +85,11 @@ const ManageDepartment = () => {
         <h1 className="text danger text-center department">Quản lý Khoa</h1>
       </div>
       <div>
-        <div className="row department-item">
+        <div className="row department-item d-flex">
           <div className="item-filter-admin">
             <DepartmentFilter />
             <Link className="text-decoration-none" to={`/admin/khoa/edit`}>
-              <Fab color="primary" aria-label="add">
-                <AddIcon />
-              </Fab>
+              <Button>Thêm mới</Button>
             </Link>
           </div>
           {isVisibleLoading ? (
@@ -83,16 +110,18 @@ const ManageDepartment = () => {
                       <td>{item.name}</td>
                       <td className="text-center">
                         <Link to={`/admin/khoa/edit/${item.id}`}>
-                          <IconButton aria-label="edit" color="primary">
-                            <EditIcon />
-                          </IconButton>
+                          <FontAwesomeIcon
+                            icon={faPenToSquare}
+                            className="text-warning"
+                          />
                         </Link>
                       </td>
                       <td className="text-center">
-                        <div
-                          onClick={(e) => handleDeleteDepartment(e, item.id)}
-                        >
-                          <DeleteIcon color="secondary" />
+                        <div onClick={(e) => handleDelete(e, item.id)}>
+                          <FontAwesomeIcon
+                            icon={faTrash}
+                            className="text-danger"
+                          />
                         </div>
                       </td>
                     </tr>
@@ -110,6 +139,7 @@ const ManageDepartment = () => {
             </Table>
           )}
         </div>
+        <Pager metadata={metadata} onPageChange={updatePageNumber} />
       </div>
     </>
   );

@@ -7,15 +7,6 @@ namespace WebApi.Validations.Students
     {
         public TopicValidator() 
         {
-            RuleFor(x => x.StudentId)
-                .NotEmpty()
-                .WithMessage("StudentID không được để trống");
-
-            RuleFor(x => x.FullName)
-                .NotEmpty()
-                .WithMessage("FullName không được để trống")
-                .MaximumLength(1000)
-                .WithMessage("FullName chỉ tối đa 1000 ký tự");
 
             RuleFor(x => x.Email)
                 .NotEmpty()
@@ -29,39 +20,16 @@ namespace WebApi.Validations.Students
 
             RuleFor(x => x.Phone)
                 .NotEmpty()
-                .WithMessage("Phone không được để trống")
-                .MaximumLength(11)
-                .WithMessage("Phone chỉ tối đa 11 ký tự");
-
-            RuleFor(x => x.Class)
-                .NotEmpty()
-                .WithMessage("Class không được để trống")
-                .MaximumLength(200)
-                .WithMessage("Class chỉ tối đa 200 ký tự");
-
-            RuleFor(x => x.Year)
-                .NotEmpty()
-                .WithMessage("Year không được để trống")
-                .MaximumLength(100)
-                .WithMessage("Year chỉ tối đa 100 ký tự");
+                .WithMessage("SĐT không được để trống")
+                .MinimumLength(10)
+                .WithMessage("SĐT phải ít nhất 10 số");
 
             RuleFor(x => x.Address)
                 .NotEmpty()
-                .WithMessage("Address không được để trống")
+                .WithMessage("Địa chỉ không được để trống")
                 .MaximumLength(1000)
-                .WithMessage("Address chỉ tối đa 1000 ký tự");
+                .WithMessage("Địa chỉ chỉ tối đa 1000 ký tự");
 
-            RuleFor(x => x.DepartmentId)
-                .NotEmpty()
-                .WithMessage("Tên khoa không được để trống");
-
-            RuleFor(x => x.GroupId)
-                .NotEmpty()
-                .WithMessage("GroupID không được để trống");
-
-            RuleFor(x => x.RoleId)
-                .NotEmpty()
-                .WithMessage("RoleID không được để trống");
         }
     }
 }

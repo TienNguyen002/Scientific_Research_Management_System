@@ -28,8 +28,8 @@ namespace WebApi.Validations.Topics
                 .WithMessage("Số lượng học sinh không được để trống");
 
             RuleFor(x => x.Price)
-                .MaximumLength(100000)
-                .WithMessage("Số tiền chỉ tối đa 1000 ký tự");
+                .NotEmpty()
+                .WithMessage("Chi phí không được để trống");
 
             RuleFor(x => x.DepartmentId)
                 .NotEmpty()

@@ -53,12 +53,10 @@ namespace Services.Apps.Departments
         {
             if (depart.Id > 0)
             {
-                depart.UrlSlug = depart.Name.GenerateSlug();
                 _context.Update(depart);   
             }
             else
             {
-                depart.UrlSlug = depart.Name.GenerateSlug();
                 _context.Add(depart);
             }
             return await _context.SaveChangesAsync(cancellationToken) > 0;
@@ -128,6 +126,11 @@ namespace Services.Apps.Departments
             IQueryable<Department> departmentResults = FindDepartmentByQueryable(query);
             IQueryable<T> result = mapper(departmentResults);
             return await result.ToPagedListAsync(pagingParams, cancellationToken);
+        }
+
+        public async Task<int> CountDepartmentAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Department>().CountAsync(cancellationToken);
         }
     }
 }

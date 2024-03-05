@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using BCrypt.Net;
+using Core.Entities;
 using Data.Contexts;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace Data.Seeders
             var status = AddStatus();
             var departments = AddDepartments();
             var roles = AddRoles();
+            var feedbacks = AddFeedbacks();
 
             var students = AddStudents(departments, roles);
             var lecturers = AddLecturers(departments, roles);
@@ -96,8 +98,8 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    Name = "Khoa Ngoại ngữ",
-                    UrlSlug = "ngoai-ngu",
+                    Name = "Khoa Quốc tế học",
+                    UrlSlug = "quoc-te-hoc",
                 },
                 new()
                 {
@@ -146,6 +148,22 @@ namespace Data.Seeders
             return roles;
         }
 
+        private IList<Feedback> AddFeedbacks()
+        {
+            var feedbacks = new List<Feedback>()
+            {
+                new()
+                {
+                    Username = "Nguyễn Ngọc Minh Tiến",
+                    Content = "Em gặp lỗi trong quá trình đăng ký đề tài",
+                    CreateDate = DateTime.Now,
+                },
+            };
+            _context.AddRange(feedbacks);
+            _context.SaveChanges();
+            return feedbacks;
+        }
+
         private IList<Student> AddStudents(
             IList<Department> departments,
             IList<Role> roles)
@@ -157,7 +175,7 @@ namespace Data.Seeders
                     StudentId = "2015749",
                     FullName = "Nguyễn Hoàng Nhật Tiến",
                     Email = "2015749@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("tiennguyen123"),
                     UrlSlug = "nguyen-hoang-nhat-tien",
                     DoB = new DateTime(2002, 12, 18),
                     Phone = "0819104319",
@@ -172,7 +190,7 @@ namespace Data.Seeders
                     StudentId = "2011382",
                     FullName = "Trần Trung Hiếu",
                     Email = "2011382@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "tran-trung-hieu",
                     DoB = new DateTime(2002, 7, 1),
                     Phone = "0869820809",
@@ -187,7 +205,7 @@ namespace Data.Seeders
                     StudentId = "2015840",
                     FullName = "Nguyễn Ngọc Minh Tiến",
                     Email = "2015840@dlu.edu.vn",
-                    Password = "password",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
                     UrlSlug = "nguyen-ngoc-minh-tien",
                     DoB = new DateTime(2002, 2, 17),
                     Phone = "0918277182",
@@ -200,10 +218,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011928",
-                    FullName = "Test 1",
+                    FullName = "Lê Đức Anh",
                     Email = "2011928@dlu.edu.vn",
-                    Password = "password",
-                    UrlSlug = "test-1",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
+                    UrlSlug = "le-duc-anh",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Luật",
@@ -215,10 +233,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011927",
-                    FullName = "Test 2",
+                    FullName = "Đinh Văn Thanh Phước Khoa",
                     Email = "2011927@dlu.edu.vn",
-                    Password = "password",
-                    UrlSlug = "test-2",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
+                    UrlSlug = "dinh-van-thanh-phuoc-khoa",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Sư phạm",
@@ -230,10 +248,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011926",
-                    FullName = "Test 3",
+                    FullName = "Nguyễn Văn Thuận",
                     Email = "2011926@dlu.edu.vn",
-                    Password = "password",
-                    UrlSlug = "test-3",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
+                    UrlSlug = "nguyen-van-thuan",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Du lịch",
@@ -245,10 +263,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011925",
-                    FullName = "Test 4",
+                    FullName = "Trần Thái Linh",
                     Email = "2011925@dlu.edu.vn",
-                    Password = "password",
-                    UrlSlug = "test-4",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
+                    UrlSlug = "tran-thai-linh",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Ngoại ngữ",
@@ -260,10 +278,10 @@ namespace Data.Seeders
                 new()
                 {
                     StudentId = "2011924",
-                    FullName = "Test 5",
+                    FullName = "Nguyễn Minh Hoàng",
                     Email = "2011924@dlu.edu.vn",
-                    Password = "password",
-                    UrlSlug = "test-5",
+                    Password = BCrypt.Net.BCrypt.HashPassword("password"),
+                    UrlSlug = "nguyen-minh-hoang",
                     DoB = new DateTime(2002, 2, 2),
                     Phone = "0123456789",
                     Class = "Nông lâm",
@@ -294,10 +312,10 @@ namespace Data.Seeders
             {
                 new()
                 {
-                    FullName = "GV1",
-                    Email = "gv1@dlu.edu.vn",
-                    Password = "Password",
-                    UrlSlug = "gv1",
+                    FullName = "Lê Hoàng Nghĩa",
+                    Email = "nghiahoang@dlu.edu.vn",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
+                    UrlSlug = "le-hoang-nghia",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[0],
@@ -305,10 +323,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV2",
-                    Email = "gv2@dlu.edu.vn",
-                    Password = "Password",
-                    UrlSlug = "gv2",
+                    FullName = "Nguyễn Phương",
+                    Email = "nguyenphuong@dlu.edu.vn",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
+                    UrlSlug = "nguyen-phuong",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[1],
@@ -316,10 +334,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV3",
-                    Email = "gv3@dlu.edu.vn",
-                    Password = "Password",
-                    UrlSlug = "gv3",
+                    FullName = "Lê Hải",
+                    Email = "lehai@dlu.edu.vn",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
+                    UrlSlug = "le-hai",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[2],
@@ -327,10 +345,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV4",
-                    Email = "gv4@dlu.edu.vn",
-                    Password = "Password",
-                    UrlSlug = "gv4",
+                    FullName = "Lê Thanh Tịnh",
+                    Email = "thanhtinh@dlu.edu.vn",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
+                    UrlSlug = "le-thanh-tinh",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[3],
@@ -338,10 +356,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV5",
-                    Email = "gv5@dlu.edu.vn",
-                    Password = "Password",
-                    UrlSlug = "gv5",
+                    FullName = "Nguyễn Đức Anh",
+                    Email = "ducanhnguyen@dlu.edu.vn",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
+                    UrlSlug = "nguyen-duc-anh",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[4],
@@ -349,10 +367,10 @@ namespace Data.Seeders
                 },
                 new()
                 {
-                    FullName = "GV6",
-                    Email = "gv6@dlu.edu.vn",
-                    Password = "Password",
-                    UrlSlug = "gv6",
+                    FullName = "Phan Sĩ Phương",
+                    Email = "siphuong@dlu.edu.vn",
+                    Password = BCrypt.Net.BCrypt.HashPassword("Password"),
+                    UrlSlug = "phan-si-phuong",
                     Qualification = "Tiến sĩ",
                     DoB = new DateTime(1990, 1, 1),
                     Department = departments[5],
@@ -382,13 +400,14 @@ namespace Data.Seeders
             {
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - CNTT",
-                    UrlSlug = "nckh-cntt",
-                    Description = "Nghiên cứu khoa học - CNTT",
+                    Title = "Triển khai hệ thống cân bằng tải cho hệ thống mã nguồn mở Moodle",
+                    UrlSlug = "he-thong-ma-nguon-mo-moodle",
+                    Description = "Moodle là một hệ thống quản lý học tập - LMS (Learning Management System) mã nguồn mở phù hợp cho các trường đại học cho việc tổ chức học tập trực tuyến. Việc thay đổi hình thức học tập truyền thống sang hình thức trực tuyến đang được chú trọng hơn trong thời gian mà dịch COVID 19 đang diễn ra",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 3,
-                    Price = "1,000,000 VNĐ",
+                    Price = 1000000,
+                    ViewCount = 20,
                     Students = new List<Student>()
                     {
                         students[0],
@@ -397,69 +416,73 @@ namespace Data.Seeders
                     },
                     Lecturer = lecturers[0],
                     Department = departments[0],
+                    Status = status[2],
+                },
+                new()
+                {
+                    Title = "Pháp luật về phí trong bảo hiểm tài sản",
+                    UrlSlug = "phap-luat-ve-phi-trong-bao-hiem-tai-san",
+                    Description = "Pháp luật về phí trong bảo hiểm tài sản",
+                    RegistrationDate = new DateTime(2023, 4, 23),
+                    EndDate = new DateTime(2023,7,25),
+                    StudentNumbers = 1,
+                    Price = 500000,
+                    Students = new List<Student>()
+                    {
+                        students[3]
+                    },
+                    Lecturer = lecturers[1],
+                    Department = departments[1],
                     Status = status[1],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Luật",
-                    UrlSlug = "nckh-luat",
-                    Description = "Nghiên cứu khoa học - Luật",
+                    Title = "Sơ đồ hóa kiến thức một số phần chương sinh sản lớp 11 nhằm nâng cao kết quả học tập",
+                    UrlSlug = "kien-thuc-11",
+                    Description = "Sơ đồ hóa kiến thức một số phần chương sinh sản lớp 11 nhằm nâng cao kết quả học tập",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
-                    Lecturer = lecturers[1],
-                    Department = departments[1],
-                    Status = status[0],
-                },
-                new()
-                {
-                    Title = "Nghiên cứu khoa học - Sư phạm",
-                    UrlSlug = "nckh-su-pham",
-                    Description = "Nghiên cứu khoa học - Sư phạm",
-                    RegistrationDate = new DateTime(2023, 4, 23),
-                    EndDate = new DateTime(2023,7,25),
-                    StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[2],
                     Department = departments[2],
                     Status = status[0],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Du lịch",
-                    UrlSlug = "nckh-du-lich",
-                    Description = "Nghiên cứu khoa học - Du lịch",
+                    Title = "Tìm hiểu về kinh doanh du lịch bền vững tại hình mẫu làng văn hóa du lịch Sa Đéc",
+                    UrlSlug = "du-lich-sa-dec",
+                    Description = "Bài viết tập trung mô tả tổng quan nghiên cứu lý thuyết về kinh doanh du lịch bền vững, và đi vào nghiên cứu kinh doanh du lịch bền vững tại Làng văn hóa du lịch Sa Đéc, Đồng Tháp. Các vấn đề được đề cập bao gồm tổng quan về khái niệm, nguyên tắc đối với kinh doanh du lịch bền vững, những lợi ích cũng như rào cản đối với kinh doanh bền vững tại Làng văn hóa du lịch Sa Đéc. Từ đó, đề xuất những kiến nghị giải pháp phát triển kinh doanh du lịch bền vững tại đây.",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[3],
                     Department = departments[3],
                     Status = status[0],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Ngoại ngữ",
-                    UrlSlug = "nckh-ngoai-ngu",
-                    Description = "Nghiên cứu khoa học - Ngoại ngữ",
+                    Title = "Tính cách người Nhật qua một số truyện cổ tích Nhật bản đã dịch ở Việt Nam",
+                    UrlSlug = "tinh-cach-nguoi-nhat",
+                    Description = "Tính cách người Nhật qua một số truyện cổ tích Nhật bản",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[4],
                     Department = departments[4],
                     Status = status[0],
                 },
                 new()
                 {
-                    Title = "Nghiên cứu khoa học - Nông lâm",
-                    UrlSlug = "nckh-nong-lam",
-                    Description = "Nghiên cứu khoa học - Nông lâm",
+                    Title = "Thiết kế và thực hiện chính sách và dự án Các bon rừng ngập mặn hiệu quả, hiệu ích và công bằng",
+                    UrlSlug = "du-an-rung-ngap-man",
+                    Description = "Thiết kế và thực hiện chính sách và dự án Các bon rừng ngập mặn hiệu quả, hiệu ích và công bằng",
                     RegistrationDate = new DateTime(2023, 4, 23),
                     EndDate = new DateTime(2023,7,25),
                     StudentNumbers = 1,
-                    Price = "500,000 VNĐ",
+                    Price = 500000,
                     Lecturer = lecturers[5],
                     Department = departments[5],
                     Status = status[0],

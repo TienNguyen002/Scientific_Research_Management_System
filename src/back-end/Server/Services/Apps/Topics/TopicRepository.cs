@@ -1,9 +1,11 @@
-﻿using Core.Contracts;
+﻿using Azure;
+using Core.Contracts;
 using Core.DTO.Topic;
 using Core.Entities;
 using Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Services.Apps.Students;
 using Services.Extensions;
 using SlugGenerator;
 using System;
@@ -32,7 +34,7 @@ namespace Services.Apps.Topics
                 .Include(t => t.Students)
                 .Include(t => t.Status);
             return await topics
-                .OrderBy(t => t.Title)
+                .OrderBy(t => t.RegistrationDate)
                 .Select(t => new TopicItem()
                 {
                     Id = t.Id,
@@ -181,6 +183,19 @@ namespace Services.Apps.Topics
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
+        public async Task<bool> AddOrUpdateTopicBySlugAsync(Topic topic, CancellationToken cancellationToken = default)
+        {
+            if (!string.IsNullOrWhiteSpace(topic.UrlSlug))
+            {
+                _context.Update(topic);
+            }
+            else
+            {
+                _context.Add(topic);
+            }
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
         public async Task<bool> RemoveTopicAsync(int id, CancellationToken cancellationToken = default)
         {
             var topicToDelete = await _context.Set<Topic>()
@@ -197,6 +212,137 @@ namespace Services.Apps.Topics
             _context.Remove(topicToDelete);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        public async Task<bool> RegisterTopic(int topicId, string studentSlug, CancellationToken cancellationToken = default)
+        {
+            //if(topic.Id > 0)
+            //{
+            //    await _context.Entry(topic).Collection(t => t.Students).LoadAsync(cancellationToken);
+            //}
+            //else
+            //{
+            //    topic.Students = new List<Student>();
+            //}
+            //var validStudents = students.Where(x => !string.IsNullOrWhiteSpace(x))
+            //    .Select(x => new
+            //    {
+            //        Name = x,
+            //        Slug = x.GenerateSlug()
+            //    })
+            //    .GroupBy(x => x.Slug)
+            //    .ToDictionary(g => g.Key, g => g.First().Name);
+
+
+            //foreach (var kv in validStudents)
+            //{
+            //    if (topic.Students.Any(x => string.Compare(x.UrlSlug, kv.Key, StringComparison.InvariantCultureIgnoreCase) == 0)) continue;
+
+            //    var student = await GetStudentBySlugAsync(kv.Key, cancellationToken) ?? new Student()
+            //    {
+            //        FullName = kv.Value,
+            //        UrlSlug = kv.Key
+            //    };
+            //    if(student == null) { return false; }
+            //    topic.Students.Add(student);
+            //}
+
+            //topic.Students = topic.Students.Where(t => validStudents.ContainsKey(t.UrlSlug)).ToList();
+
+            //if(topic.Students.Count == topic.StudentNumbers)
+            //{
+            //    topic.StatusId = 2;
+            //}
+            //_context.Update(topic);
+            var topic = await _context.Set<Topic>()
+                .Include(t => t.Department)
+                .Include(t => t.Lecturer)
+                .Include(t => t.Students)
+                .Include(t => t.Status)
+                .Where(t => t.Id == topicId)
+                .FirstOrDefaultAsync(cancellationToken);
+            if(topic == null)
+            {
+                return false;
+            }
+            var student = await _context.Set<Student>()
+                .Where(s => s.UrlSlug == studentSlug)
+                .FirstOrDefaultAsync(cancellationToken); 
+            if(topic.DepartmentId != student.DepartmentId)
+            {
+                return false;
+            }
+            if (topic.Students.Equals(student.FullName))
+            {
+                return false;
+            }
+            else
+            {
+                topic.Students.Add(student);
+                if (topic.Students.Count == topic.StudentNumbers)
+                {
+                    topic.StatusId = 2;
+                }
+            }
+            _context.Update(topic);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<bool> SetOutlineUrlAsync(string slug, string outlineUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.OutlineUrl, outlineUrl), cancellationToken) > 0;
+        }
+
+        public async Task<bool> SetResultUrlAsync(string slug, string resultUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.ResultUrl, resultUrl), cancellationToken) > 0;
+        }
+
+        public async Task<bool> IncreaseViewCountAsync(string slug, CancellationToken cancellationToken = default)
+        {
+            var topic = await _context.Set<Topic>()
+                .Where(x => x.UrlSlug == slug)
+                .Where(x => x.StatusId == 3)
+                .FirstOrDefaultAsync(cancellationToken);
+            topic.ViewCount = topic.ViewCount + 1;
+            _context.Update(topic);
+            return await _context.SaveChangesAsync(cancellationToken) > 0;
+        }
+
+        public async Task<int> CountTopicAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>().CountAsync(cancellationToken);
+        }
+
+        public async Task<int> CountTopicDoneAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Topic>()
+                .Where(t => t.StatusId == 3)
+                .CountAsync(cancellationToken);
+        }
+
+        public async Task<IList<T>> GetNTopViewAsync<T>(int n, Func<IQueryable<Topic>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+        {
+            var topView = _context.Set<Topic>()
+                .Include(t => t.Department)
+                .Where(t => t.StatusId == 3)
+                .OrderByDescending(t => t.ViewCount)
+                .Take(n);
+            return await mapper(topView).ToListAsync(cancellationToken);
+        }
+
+        public async Task<IList<T>> GetNNewAsync<T>(int n, Func<IQueryable<Topic>, IQueryable<T>> mapper, CancellationToken cancellationToken = default)
+        {
+            var newTopic = _context.Set<Topic>()
+                .Include(t => t.Department)
+                .Where(t => t.StatusId == 3)
+                .OrderByDescending(t => t.Id)
+                .Take(n);
+            return await mapper(newTopic).ToListAsync(cancellationToken);
         }
     }
 }

@@ -134,10 +134,26 @@ namespace Services.Apps.Students
                 .AnyAsync(x => x.Id != id && x.Email == email, cancellationToken);
         }
 
-        public async Task<bool> CreateStudentAccountAsync(Student student, CancellationToken cancellationToken = default)
+        public async Task<bool> IsStudentExistByFullNameAsync(
+            int id,
+            string fullName,
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>()
+                .AnyAsync(c => c.Id == id && c.FullName == fullName, cancellationToken);
+        }
+
+        public async Task<bool> Register(Student student, CancellationToken cancellationToken = default)
         {
             student.UrlSlug = student.FullName.GenerateSlug();
-            _context.Add(student);
+            if(student.Id > 0)
+            {
+                _context.Update(student);
+            }
+            else
+            {
+                _context.Add(student);
+            }
             return await _context.SaveChangesAsync(cancellationToken) > 0;
         }
 
@@ -147,6 +163,24 @@ namespace Services.Apps.Students
                 .AnyAsync(x => x.UrlSlug == slug && x.Password != password, cancellationToken);
         }
 
-       
+        public async Task<bool> SetImageAsync(string slug, string imageUrl, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>()
+                .Where(t => t.UrlSlug == slug)
+                .ExecuteUpdateAsync(s => s.SetProperty(s => s.ImageUrl, imageUrl), cancellationToken) > 0;
+        }
+
+        public async Task<int> CountStudentAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>().CountAsync(cancellationToken);
+        }
+
+        public async Task<Student> GetStudentByEmailAsync(string email, CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<Student>()
+                .Include(s => s.Role)
+                .Where(s => s.Email == email)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
     }
 }

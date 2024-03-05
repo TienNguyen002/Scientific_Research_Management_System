@@ -16,12 +16,13 @@ namespace Data.Contexts
         public DbSet<Student> Students { get; set; }
         public DbSet<Topic> Topics { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
 
         public WebDbContext(DbContextOptions<WebDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-J07JCT0\SQLEXPRESS;Database=NCKHSV;Trusted_Connection=True;Encrypt=False;MultipleActiveResultSets=true");
+            optionsBuilder.UseSqlServer(@"Server=.\SQLEXPRESS;Database=NCKHSV;Trusted_Connection=True;Encrypt=False;MultipleActiveResultSets=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

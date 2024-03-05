@@ -7,7 +7,7 @@ const StudentList = ({studentList}) => {
         <>
             {studentList.map((item, index) =>{
                 return (
-                    <div>
+                    <div key={index}>
                         <Link to={`/sinh-vien-nghien-cuu/${item.urlSlug}`}
                         title={item.fullName}
                         className="table-content"

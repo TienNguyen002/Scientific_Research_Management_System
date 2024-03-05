@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style/admin-page.scss";
 import { Link } from "react-router-dom";
+import { getInfoDashboard } from "../../Services/AdminService"
 
 const Widget = ({ type }) => {
   let data;
+  const [dashboard, setDashboard] = useState([]);
+
+  useEffect(() => {
+    getInfoDashboard().then((data) => {
+      if(data){
+        setDashboard(data);
+      } else setDashboard([]);
+    })
+  }, []);
 
   switch (type) {
     case "topic":
       data = {
         title: "Đề tài",
-        counter: 6,
+        counter: dashboard.countTopic,
         slug: "de-tai",
         link: "Xem tất cả",
       };
@@ -17,7 +27,7 @@ const Widget = ({ type }) => {
     case "department":
       data = {
         title: "Khoa",
-        counter: 6,
+        counter: dashboard.countDepartment,
         slug: "khoa",
         link: "Xem tất cả",
       };
@@ -25,7 +35,7 @@ const Widget = ({ type }) => {
       case "student":
       data = {
         title: "Sinh viên",
-        counter: 8,
+        counter: dashboard.countStudent,
         slug: "sinh-vien",
         link: "Xem tất cả",
       };
@@ -34,7 +44,7 @@ const Widget = ({ type }) => {
       data = {
         title: "Giảng viên",
         slug: "giang-vien",
-        counter: 7,
+        counter: dashboard.countLecturer,
         link: "Xem tất cả",
       };
       break;

@@ -21,14 +21,14 @@ const About = () => {
                 <div className="footer-hotline">
                     <FontAwesomeIcon icon={faPhone} className="footer-fa-icon fa-phone" />
                     Hotline: 
-                    <Link to={"tel:0263 3822 246"} className="footer-hotline-call">
+                    <Link to={"tel:0263 3822 246"} className="footer-hotline-call text-success">
                         0263 3822 246
                     </Link>
                 </div>
                 <div>
-                    <FontAwesomeIcon icon={faEnvelope} className="footer-fa-icon fa-envelope" />
+                    <FontAwesomeIcon icon={faEnvelope} className="footer-fa-icon fa-envelope " />
                     Email:
-                    <Link to={"mailto:info@dlu.edu.vn"} className="footer-email-send">
+                    <Link to={"mailto:info@dlu.edu.vn"} className="footer-email-send text-success">
                         info@dlu.edu.vn
                     </Link>
                 </div>
