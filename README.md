@@ -40,7 +40,6 @@ The Scientific Research Management System is a full-stack web application develo
 - Clean RESTful APIs and layered architecture.
 - Statistical reporting by department and semester.
 - 200+ topics and 120+ users supported in testing phase.
-- Presented at faculty-level tech showcase and received top evaluation.
 
 ---
 
@@ -50,13 +49,51 @@ The Scientific Research Management System is a full-stack web application develo
 
 ## 🚀 Getting Started
 
-> _Instructions to run locally (for developers):_
+### 🧰 Prerequisites
 
-1. Clone the repository  
-2. Configure `appsettings.json` for SQL Server connection  
-3. Run migrations: `dotnet ef database update`  
-4. Start back-end: `dotnet run`  
-5. Start front-end: `npm start` (inside client folder)
+Make sure the following tools are installed on your machine:
+
+- [Visual Studio 2022](https://visualstudio.microsoft.com/)
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server)
+- [Node.js](https://nodejs.org/)
+- [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/)
+
+### ⚙️ Backend Setup (.NET Web API)
+
+1. Navigate to the project folder:  
+   `src/back-end/Server`
+
+2. Open `Server.sln` using **Visual Studio 2022**.
+
+3. In the Solution Explorer:  
+   - Right-click on `WebApi`  
+   - Select **"Set as Startup Project"**
+
+4. Press `F5` or click the green ▶️ button (with **https**) to run the project.
+
+5. The API Swagger UI should appear in your browser.
+
+### 🌐 Frontend Setup (ReactJS)
+
+1. Open a terminal in:  
+   `src/front-end/client`
+
+2. Run the following command to install dependencies:
+
+   ```bash
+   yarn install
+   ```
+
+   > After installation, the `node_modules` folder will be created.
+
+3. Start the React client:
+
+   ```bash
+   yarn start
+   ```
+
+4. The app will be served at [http://localhost:3000](http://localhost:3000)
 
 ---
 
