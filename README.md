@@ -52,91 +52,91 @@ The Scientific Research Management System is a full-stack web application develo
 
 ### 👨‍🎓 User Page (Student & Lecturer)
 
-🔸 Home Page
-![Home Page](screenshots/home-page.png)
+🔸 Home Page <br/>
+![Home Page](screenshots/home-page.png) <br/>
 
-🔸 Research Topics List Page
-![Research List](screenshots/research-list.png)
+🔸 Research Topics List Page <br/>
+![Research List](screenshots/research-list.png) <br/>
 
-🔸 Research Topics Detail
-![Research Detail](screenshots/research-detail.png)
+🔸 Research Topics Detail <br/>
+![Research Detail](screenshots/research-detail.png) <br/>
 
-🔸 Faculties List Page
-![Faculties List](screenshots/faculities-list.png)
+🔸 Faculties List Page <br/>
+![Faculties List](screenshots/faculities-list.png) <br/>
 
-🔸 Faculty Detail
-![Faculty Detail](screenshots/faculity-detail-1.png)
-![Faculty Detail](screenshots/faculity-detail-2.png)
-![Faculty Detail](screenshots/faculity-detail-3.png)
-![Faculty Detail](screenshots/faculity-detail-4.png)
+🔸 Faculty Detail <br/>
+![Faculty Detail](screenshots/faculity-detail-1.png) <br/>
+![Faculty Detail](screenshots/faculity-detail-2.png) <br/>
+![Faculty Detail](screenshots/faculity-detail-3.png) <br/>
+![Faculty Detail](screenshots/faculity-detail-4.png) <br/>
 
-🔸 Students List Page
-![Students List](screenshots/students-list.png)
+🔸 Students List Page <br/>
+![Students List](screenshots/students-list.png) <br/>
 
-🔸 Student Detail
-![Student Detail](screenshots/student-detail-1.png)
-![Student Detail](screenshots/student-detail-2.png)
+🔸 Student Detail <br/>
+![Student Detail](screenshots/student-detail-1.png) <br/>
+![Student Detail](screenshots/student-detail-2.png) <br/>
 
-🔸 Lecturers List Page
-![Lecturers List](screenshots/lecturers-list.png)
+🔸 Lecturers List Page <br/>
+![Lecturers List](screenshots/lecturers-list.png) <br/>
 
-🔸 Lecturer Detail
-![Lecturer Detail](screenshots/lecturer-detail-1.png)
-![Lecturer Detail](screenshots/lecturer-detail-2.png)
+🔸 Lecturer Detail <br/>
+![Lecturer Detail](screenshots/lecturer-detail-1.png) <br/>
+![Lecturer Detail](screenshots/lecturer-detail-2.png) <br/>
 
-🔸 Admin Contact
-![Admin Contact](screenshots/admin-contact.png)
+🔸 Admin Contact <br/>
+![Admin Contact](screenshots/admin-contact.png) <br/>
 
-🔸 Login & Register
-![Login](screenshots/login.png)
-![Register](screenshots/register.png)
-![Student Login](screenshots/student-login.png)
+🔸 Login & Register <br/>
+![Login](screenshots/login.png) <br/>
+![Register](screenshots/register.png) <br/>
+![Student Login](screenshots/student-login.png) <br/>
 
 ### 👨‍🎓 Student Profile Page
 
-🔸 Student Profile
-![Student Profile](screenshots/student-profile.png)
+🔸 Student Profile <br/>
+![Student Profile](screenshots/student-profile.png) <br/>
 
-🔸 Student Register Topic
-![Student Register Topic](screenshots/student-register-topic.png)
+🔸 Student Register Topic <br/>
+![Student Register Topic](screenshots/student-register-topic.png) <br/>
 
-🔸 Student Manage Topic
-![Student Manage Topic](screenshots/student-manage-topic-1.png)
-![Student Manage Topic](screenshots/student-manage-topic-2.png)
-![Student Manage Topic](screenshots/student-manage-topic-3.png)
+🔸 Student Manage Topic <br/>
+![Student Manage Topic](screenshots/student-manage-topic-1.png) <br/>
+![Student Manage Topic](screenshots/student-manage-topic-2.png) <br/>
+![Student Manage Topic](screenshots/student-manage-topic-3.png) <br/>
 
-🔸 Student Change Password
-![Student Change Password](screenshots/student-change-password.png)
+🔸 Student Change Password <br/>
+![Student Change Password](screenshots/student-change-password.png) <br/>
 
 ### 🛡️ Admin Page
 
-🔸 Login
-![Login](screenshots/admin-login.png)
+🔸 Login <br/>
+![Login](screenshots/admin-login.png) <br/>
 
-🔸 Dashboard
-![Dashboard](screenshots/admin-dashboard.png)
+🔸 Dashboard <br/>
+![Dashboard](screenshots/admin-dashboard.png) <br/>
 
-🔸 Manage Faculities
-![Manage Faculities](screenshots/admin-manage-faculties.png)
-![Add Or Update](screenshots/admin-manage-faculity-addorupdate.png)
+🔸 Manage Faculities <br/>
+![Manage Faculities](screenshots/admin-manage-faculties.png) <br/>
+![Add Or Update](screenshots/admin-manage-faculity-addorupdate.png) <br/>
 
-🔸 Manage Topics
-![Manage Topics](screenshots/admin-manage-topics.png)
-![Add Or Update](screenshots/admin-manage-topic-addorupdate.png)
+🔸 Manage Topics <br/>
+![Manage Topics](screenshots/admin-manage-topics.png) <br/>
+![Add Or Update](screenshots/admin-manage-topic-addorupdate.png) <br/>
 
-🔸 Manage Students
-![Manage Students](screenshots/admin-manage-students.png)
+🔸 Manage Students <br/>
+![Manage Students](screenshots/admin-manage-students.png) <br/>
 
 🔸 Manage Lecturers
-![Manage FaculitLecturersies](screenshots/admin-manage-lecturers.png)
-![Add Or Update](screenshots/admin-manage-lecturer-addorupdate.png)
+![Manage FaculitLecturersies](screenshots/admin-manage-lecturers.png) <br/>
+![Add Or Update](screenshots/admin-manage-lecturer-addorupdate.png) <br/>
 
-🔸 Manage Feedbacks
-![Manage Feedbacks](screenshots/admin-manage-feedbacks.png)
+🔸 Manage Feedbacks <br/>
+![Manage Feedbacks](screenshots/admin-manage-feedbacks.png) <br/>
 
-🔸 Manage Profile
-![Manage Profile](screenshots/admin-manage-profile.png)
-![Change Password](screenshots/admin-change-password.png)
+🔸 Manage Profile <br/>
+![Manage Profile](screenshots/admin-manage-profile.png) <br/>
+![Change Password](screenshots/admin-change-password.png) <br/>
 
 ---
 
