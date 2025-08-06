@@ -127,7 +127,7 @@ The Scientific Research Management System is a full-stack web application develo
 🔸 Manage Students <br/>
 ![Manage Students](screenshots/admin-manage-students.png) <br/>
 
-🔸 Manage Lecturers
+🔸 Manage Lecturers <br/>
 ![Manage FaculitLecturersies](screenshots/admin-manage-lecturers.png) <br/>
 ![Add Or Update](screenshots/admin-manage-lecturer-addorupdate.png) <br/>
 
